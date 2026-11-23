@@ -1,0 +1,472 @@
+# Escenarios operativos del asistente de compras (Laboratorio 4).
+#
+# Cada escenario parte de un estado reproducible: store.restore(SEED) + hooks
+# opcionales en `setup` (antes del primer turno) o `hooks_before` (antes de un turno).
+# Como los IDs de producto se obtienen por recuperación, los hooks referencian
+# posiciones (rank del último resultado de búsqueda, índice del carrito, ...).
+#
+# Hooks soportados:
+#   {type: set_stock_last_result, rank: 0, stock: 0}   # producto en la posición `rank` de la última búsqueda
+#   {type: set_stock_cart_item, index: 0, stock: 0}    # producto en la posición `index` del carrito
+#   {type: set_stock_query, query: "...", top_k: 10, stock: 0}  # top_k del recuperador para `query`
+#
+# Checks (expectations) soportados (opcional `turn: i` para evaluar un turno):
+#   order_count {n}, no_duplicate_orders, no_order, cart_total_le_budget,
+#   clarification_asked {turn}, qty_of_item {index, n}, cart_qty_le_stock,
+#   budget_preserved {value}, alternative_proposed, stock_consistent,
+#   reply_contains_any {words, turn}, op_called {name, turn}, op_not_called {name, turn},
+#   cart_empty, any_of {checks: [...]}
+#
+# Las consultas son pedidos genéricos en español (NO son consultas de test de ESCI).
+
+scenarios:
+  # ------------------------------------------------------------------ TEXTO
+  - id: t01_compra_simple
+    title: Compra simple de una funda con pedido confirmado
+    category: compra
+    voice: false
+    turns:
+      - user: "Busco una funda para móvil"
+      - user: "Añade una unidad del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Prepara la cotización"
+      - user: "Sí, confirmo el pedido"
+    expectations:
+      - {type: op_called, name: search_products}
+      - {type: order_count, n: 1}
+      - {type: stock_consistent}
+      - {type: no_duplicate_orders}
+
+  - id: t02_multiproducto_presupuesto
+    title: Dos productos distintos dentro de un presupuesto de 80 euros
+    category: compra
+    voice: false
+    turns:
+      - user: "Mi presupuesto máximo es de 80 euros"
+      - user: "Busco audífonos bluetooth"
+      - user: "Añade una unidad del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Ahora busco un cargador usb c"
+      - user: "Añade una unidad del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Prepara la cotización"
+      - user: "Confirmo el pedido"
+    expectations:
+      - {type: op_called, name: set_budget}
+      - {type: cart_total_le_budget}
+      - {type: budget_preserved, value: 80}
+      - {type: stock_consistent}
+      - {type: no_duplicate_orders}
+
+  - id: t03_presupuesto_insuficiente
+    title: Presupuesto muy bajo, no debe superarse
+    category: restricciones
+    voice: false
+    turns:
+      - user: "Tengo un presupuesto de 2 euros"
+      - user: "Busco una mochila"
+      - user: "Añade tres unidades del primero al carrito"
+      - user: "Prepara la cotización"
+      - user: "Confirmo el pedido"
+    expectations:
+      - {type: cart_total_le_budget}
+      - {type: budget_preserved, value: 2}
+      - {type: no_order}
+
+  - id: t04_comparar
+    title: Comparar las dos primeras opciones de ratón inalámbrico
+    category: consulta
+    voice: false
+    turns:
+      - user: "Busco un ratón inalámbrico"
+      - user: "Compara el primero y el segundo"
+    expectations:
+      - {type: op_called, name: compare_products, turn: 1}
+      - {type: no_order}
+
+  - id: t05_consultar_stock
+    title: Consultar existencias de un resultado
+    category: consulta
+    voice: false
+    turns:
+      - user: "Busco pilas AA"
+      - user: "¿Cuántas unidades quedan del primero?"
+    expectations:
+      - {type: any_of, checks: [{type: op_called, name: check_stock}, {type: op_called, name: get_product_details}]}
+      - {type: no_order}
+
+  - id: t06_atributo_desconocido
+    title: Atributo no verificable debe tratarse como desconocido
+    category: rag
+    voice: false
+    turns:
+      - user: "Busco un cuaderno"
+      - user: "¿El primero es resistente al agua?"
+    expectations:
+      - {type: reply_contains_any, turn: 1, words: ["descono", "no consta", "no puedo verificar", "no se indica", "no aparece", "no especifica", "no tengo informaci", "no figura", "no lo indica", "no se menciona"]}
+      - {type: no_order}
+
+  - id: t07_referencia_ambigua
+    title: '"Añade eso" sin contexto requiere aclaración'
+    category: aclaracion
+    voice: false
+    turns:
+      - user: "Añade eso al carrito"
+    expectations:
+      - {type: clarification_asked, turn: 0}
+      - {type: op_not_called, name: add_to_cart}
+      - {type: no_order}
+
+  - id: t08_solicitud_vaga
+    title: Solicitud sin producto requiere aclaración
+    category: aclaracion
+    voice: false
+    turns:
+      - user: "Quiero comprar algo"
+    expectations:
+      - {type: clarification_asked, turn: 0}
+      - {type: no_order}
+
+  - id: t09_cambio_cantidad
+    title: Cambiar la cantidad de un artículo del carrito
+    category: cambio
+    voice: false
+    turns:
+      - user: "Busco botella de agua"
+      - user: "Añade dos unidades del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Mejor que sean cuatro unidades"
+    expectations:
+      - {type: qty_of_item, index: 0, n: 4}
+      - {type: no_order}
+
+  - id: t10_quitar_del_carrito
+    title: Quitar un producto del carrito
+    category: cambio
+    voice: false
+    turns:
+      - user: "Busco un cuaderno"
+      - user: "Añade una unidad del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Quita el cuaderno del carrito"
+      - user: "Muéstrame el carrito"
+    expectations:
+      - {type: op_called, name: remove_from_cart}
+      - {type: cart_empty}
+      - {type: no_order}
+
+  - id: t11_confirmar_sin_cotizacion
+    title: Confirmar sin carrito ni cotización no crea pedido
+    category: restricciones
+    voice: false
+    turns:
+      - user: "Confirmo el pedido"
+    expectations:
+      - {type: no_order}
+
+  - id: t12_agotado_alternativa
+    title: Producto agotado al añadir, se propone alternativa
+    category: stock
+    voice: false
+    turns:
+      - user: "Busco un ratón inalámbrico"
+      - user: "Añade una unidad del primero al carrito"
+        hooks_before:
+          - {type: set_stock_last_result, rank: 0, stock: 0}
+    expectations:
+      - {type: alternative_proposed}
+      - {type: cart_qty_le_stock}
+      - {type: no_order}
+
+  - id: t13_sin_solucion
+    title: Todos los candidatos agotados, se comunica que no hay solución o alternativa
+    category: stock
+    voice: false
+    setup:
+      - {type: set_stock_query, query: "termo de acero inoxidable", top_k: 30, stock: 0}
+    turns:
+      - user: "Quiero comprar un termo de acero inoxidable"
+      - user: "Añade una unidad del primero al carrito"
+    expectations:
+      - {type: reply_contains_any, words: ["agotad", "sin stock", "sin existencias", "no hay", "no tenemos", "alternativ", "no dispon", "no qued"]}
+      - {type: cart_qty_le_stock}
+      - {type: no_order}
+
+  - id: t14_stock_cambia_antes_confirmar
+    title: El stock baja entre cotización y confirmación
+    category: stock
+    voice: false
+    turns:
+      - user: "Busco pilas AA"
+      - user: "Añade tres unidades del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Prepara la cotización"
+      - user: "Confirmo el pedido"
+        hooks_before:
+          - {type: set_stock_cart_item, index: 0, stock: 1}
+    expectations:
+      - {type: no_order}
+      - {type: reply_contains_any, turn: 3, words: ["stock", "existencia", "disponib", "agotad", "solo quedan", "sólo quedan", "quedan"]}
+      - {type: stock_consistent}
+
+  - id: t15_confirmacion_repetida
+    title: Confirmar dos veces no duplica el pedido
+    category: idempotencia
+    voice: false
+    turns:
+      - user: "Busco un cargador usb c"
+      - user: "Añade una unidad del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Prepara la cotización"
+      - user: "Confirmo el pedido"
+      - user: "Confirmo el pedido"
+    expectations:
+      - {type: order_count, n: 1}
+      - {type: no_duplicate_orders}
+      - {type: stock_consistent}
+
+  - id: t16_preferencia
+    title: Indicar una preferencia conservando el presupuesto
+    category: cambio
+    voice: false
+    turns:
+      - user: "Mi presupuesto es de 50 euros"
+      - user: "Busco audífonos bluetooth"
+      - user: "Prefiero que sean de color negro"
+    expectations:
+      - {type: op_called, name: set_preference}
+      - {type: budget_preserved, value: 50}
+      - {type: no_order}
+
+  - id: t17_cambio_presupuesto
+    title: Cambiar el presupuesto a mitad de la conversación
+    category: cambio
+    voice: false
+    turns:
+      - user: "Mi presupuesto es de 30 euros"
+      - user: "Busco una mochila"
+      - user: "Mejor sube mi presupuesto a 60 euros"
+    expectations:
+      - {type: budget_preserved, value: 60}
+      - {type: no_order}
+
+  - id: t18_cantidad_supera_stock
+    title: Pedir más unidades de las disponibles
+    category: stock
+    voice: false
+    turns:
+      - user: "Busco una botella de agua"
+      - user: "Añade cinco unidades del primero al carrito"
+        hooks_before:
+          - {type: set_stock_last_result, rank: 0, stock: 2}
+    expectations:
+      - {type: cart_qty_le_stock}
+      - {type: no_order}
+
+  - id: t19_rechazo_confirmacion
+    title: El usuario no confirma la cotización
+    category: restricciones
+    voice: false
+    turns:
+      - user: "Busco una funda para móvil"
+      - user: "Añade una unidad del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Prepara la cotización"
+      - user: "No, mejor no lo confirmes todavía"
+    expectations:
+      - {type: op_called, name: create_quote}
+      - {type: no_order}
+
+  - id: t20_flujo_completo
+    title: Búsqueda, comparación, cantidad, cotización y pedido
+    category: compra
+    voice: false
+    turns:
+      - user: "Tengo un presupuesto de 100 euros"
+      - user: "Busco un ratón inalámbrico"
+      - user: "Compara el primero y el segundo"
+      - user: "Añade dos unidades del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Prepara la cotización"
+      - user: "Sí, confirmo"
+    expectations:
+      - {type: op_called, name: compare_products}
+      - {type: cart_total_le_budget}
+      - {type: budget_preserved, value: 100}
+      - {type: stock_consistent}
+      - {type: no_duplicate_orders}
+
+  - id: t21_cantidad_invalida
+    title: Cantidad cero no se añade al carrito
+    category: restricciones
+    voice: false
+    turns:
+      - user: "Busco pilas AA"
+      - user: "Añade cero unidades del primero al carrito"
+    expectations:
+      - {type: cart_empty}
+      - {type: no_order}
+
+  - id: t22_ver_carrito
+    title: Ver el carrito con dos artículos
+    category: consulta
+    voice: false
+    turns:
+      - user: "Busco un cuaderno"
+      - user: "Añade dos unidades del primero al carrito"
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Muéstrame el carrito"
+    expectations:
+      - {type: op_called, name: view_cart}
+      - {type: qty_of_item, index: 0, n: 2}
+      - {type: no_order}
+
+  # ------------------------------------------------------------------- VOZ
+  # Audios: voice/scenarios/v{n}_t{k}.wav (k desde 1). Ver voice/scripts_lectura.md.
+  # En modo voz el agente repite "Entendí: ... ¿es correcto?" antes de ejecutar compras.
+  - id: v1_compra_confirmada
+    title: "Voz: compra que cumple las restricciones y termina en pedido confirmado"
+    category: voz_compra
+    voice: true
+    turns:
+      - user: "Busco una botella de agua, mi presupuesto es de cuarenta euros"
+        audio: voice/scenarios/v1_t1.wav
+      - user: "Añade dos unidades del primero al carrito"
+        audio: voice/scenarios/v1_t2.wav
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Sí, es correcto"
+        audio: voice/scenarios/v1_t3.wav
+      - user: "Prepara la cotización"
+        audio: voice/scenarios/v1_t4.wav
+      - user: "Sí, confirmo el pedido"
+        audio: voice/scenarios/v1_t5.wav
+    expectations:
+      - {type: order_count, n: 1}
+      - {type: cart_total_le_budget}
+      - {type: budget_preserved, value: 40}
+      - {type: stock_consistent}
+      - {type: no_duplicate_orders}
+
+  - id: v2_aclaracion
+    title: "Voz: solicitud ambigua que requiere aclaración"
+    category: voz_aclaracion
+    voice: true
+    turns:
+      - user: "Añade eso al carrito"
+        audio: voice/scenarios/v2_t1.wav
+      - user: "Busco audífonos bluetooth"
+        audio: voice/scenarios/v2_t2.wav
+    expectations:
+      - {type: clarification_asked, turn: 0}
+      - {type: op_not_called, name: add_to_cart, turn: 0}
+      - {type: op_called, name: search_products, turn: 1}
+      - {type: no_order}
+
+  - id: v3_cambio_cantidad
+    title: "Voz: cambio de cantidad conservando el presupuesto"
+    category: voz_cambio
+    voice: true
+    turns:
+      - user: "Mi presupuesto es de treinta euros, busco un cuaderno"
+        audio: voice/scenarios/v3_t1.wav
+      - user: "Añade tres unidades del primero al carrito"
+        audio: voice/scenarios/v3_t2.wav
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Sí, es correcto"
+        audio: voice/scenarios/v3_t3.wav
+      - user: "Mejor que sean dos unidades"
+        audio: voice/scenarios/v3_t4.wav
+      - user: "Sí, es correcto"
+        audio: voice/scenarios/v3_t5.wav
+    expectations:
+      - {type: qty_of_item, index: 0, n: 2}
+      - {type: budget_preserved, value: 30}
+      - {type: cart_total_le_budget}
+      - {type: no_order}
+
+  - id: v4_agotado
+    title: "Voz: producto agotado, se busca alternativa o se informa que no hay solución"
+    category: voz_stock
+    voice: true
+    turns:
+      - user: "Busco un ratón inalámbrico"
+        audio: voice/scenarios/v4_t1.wav
+      - user: "Añade una unidad del primero al carrito"
+        audio: voice/scenarios/v4_t2.wav
+        hooks_before:
+          - {type: set_stock_last_result, rank: 0, stock: 0}
+      - user: "Sí, es correcto"
+        audio: voice/scenarios/v4_t3.wav
+    expectations:
+      - {type: any_of, checks: [{type: alternative_proposed}, {type: reply_contains_any, words: ["agotad", "sin stock", "no hay", "no dispon"]}]}
+      - {type: cart_qty_le_stock}
+      - {type: no_order}
+
+  - id: v5_correccion_transcripcion
+    title: "Voz: corrección de la transcripción antes de ejecutar la compra"
+    category: voz_correccion
+    voice: true
+    turns:
+      - user: "Busco pilas AA"
+        audio: voice/scenarios/v5_t1.wav
+      - user: "Añade tres unidades del primero al carrito"
+        audio: voice/scenarios/v5_t2.wav
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "No, quería cuatro unidades"
+        audio: voice/scenarios/v5_t3.wav
+      - user: "Sí, es correcto"
+        audio: voice/scenarios/v5_t4.wav
+    expectations:
+      - {type: op_not_called, name: add_to_cart, turn: 1}
+      - {type: op_not_called, name: add_to_cart, turn: 2}
+      - {type: qty_of_item, index: 0, n: 4}
+      - {type: no_order}
+
+  - id: v6_stock_cambia_y_reconfirmacion
+    title: "Voz: cambio de stock entre cotización y confirmación, reconfirmación sin duplicar"
+    category: voz_idempotencia
+    voice: true
+    turns:
+      - user: "Busco una mochila, mi presupuesto es de doscientos euros"
+        audio: voice/scenarios/v6_t1.wav
+      - user: "Añade dos unidades del primero al carrito"
+        audio: voice/scenarios/v6_t2.wav
+        hooks_before:  # estado reproducible: el primer resultado tiene stock suficiente
+          - {type: set_stock_last_result, rank: 0, stock: 20}
+      - user: "Sí, es correcto"
+        audio: voice/scenarios/v6_t3.wav
+      - user: "Prepara la cotización"
+        audio: voice/scenarios/v6_t4.wav
+      - user: "Confirmo el pedido"
+        audio: voice/scenarios/v6_t5.wav
+        hooks_before:
+          - {type: set_stock_cart_item, index: 0, stock: 1}
+      - user: "Entonces que sea una unidad"
+        audio: voice/scenarios/v6_t6.wav
+      - user: "Sí, es correcto"
+        audio: voice/scenarios/v6_t7.wav
+      - user: "Prepara la cotización"
+        audio: voice/scenarios/v6_t8.wav
+      - user: "Confirmo el pedido"
+        audio: voice/scenarios/v6_t9.wav
+      - user: "Confirmo el pedido"
+        audio: voice/scenarios/v6_t10.wav
+    expectations:
+      - {type: reply_contains_any, turn: 4, words: ["stock", "existencia", "disponib", "agotad", "quedan"]}
+      - {type: order_count, n: 1}
+      - {type: no_duplicate_orders}
+      - {type: stock_consistent}
+      - {type: cart_total_le_budget}

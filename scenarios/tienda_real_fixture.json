@@ -1,0 +1,640 @@
+[
+ {
+  "id": "Lc9SsfAb8KFFRxPSAWAh",
+  "name": "Angular",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "angular",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "UAh6gS4kNXup4mLzs4BI",
+  "name": "CSS",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "css",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "1ZvHa0FHEwUgwgZHeyAq",
+  "name": "Firebase",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "firebase",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "bwPGSrSb1l8lZ6kHeOVI",
+  "name": "Golang",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 1,
+  "published": true,
+  "slug": "golang",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "ER0Hh8a2M9Hy1ANuk6Jr",
+  "name": "Hacker Rank",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 1,
+  "published": true,
+  "slug": "hacker-rank",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "Zsmx6SFHZ0uny0XKmXPW",
+  "name": "Java",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "java",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "v6wB1piAkk8AomrWB8HX",
+  "name": "Laravel",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 1,
+  "published": true,
+  "slug": "laravel",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "demo-mousepad-github",
+  "name": "Mousepad Github",
+  "price": 45.0,
+  "type": "mousepad",
+  "colors": [
+   "#0B0F19",
+   "#FFFFFF",
+   "#CBD5E1"
+  ],
+  "sizes": [],
+  "logoPositions": [],
+  "likes": 0,
+  "published": true,
+  "slug": "mousepad-github",
+  "cuts": [],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "demo-mousepad-python",
+  "name": "Mousepad Python",
+  "price": 45.0,
+  "type": "mousepad",
+  "colors": [
+   "#111827",
+   "#F8FAFC",
+   "#FDE68A"
+  ],
+  "sizes": [],
+  "logoPositions": [],
+  "likes": 0,
+  "published": true,
+  "slug": "mousepad-python",
+  "cuts": [],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "A4WTeBfc8H57XJvtro0o",
+  "name": "Polo AWS",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFFFFF",
+   "#000000",
+   "#6B6B7B",
+   "#ACCBDD"
+  ],
+  "sizes": [
+   "M",
+   "L",
+   "XL",
+   "S"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "polo-aws",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "sJLD71WuLLeg0pwwPKKy",
+  "name": "Polo Dev Retro",
+  "price": 90.0,
+  "type": "polo",
+  "colors": [
+   "#242321",
+   "#5E5D59",
+   "#E3DBC6",
+   "#a3c3bd"
+  ],
+  "sizes": [
+   "XS",
+   "S",
+   "M"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 6,
+  "published": true,
+  "slug": "polo-dev-retro",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "suksulRQ9ZILTdxyNKt2",
+  "name": "Polo Docker",
+  "price": 80.0,
+  "type": "polo",
+  "colors": [
+   "#FFFFFF",
+   "#6b6b6b",
+   "#000000",
+   "#ACCBDD"
+  ],
+  "sizes": [
+   "XS",
+   "S",
+   "M",
+   "L",
+   "XL"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 5,
+  "published": true,
+  "slug": "polo-docker",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "L8hcojuKDdgmp7lc5Suk",
+  "name": "Polo Github",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "polo-github",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "2znuPaf3gHoF93PUYmeE",
+  "name": "Polo Node.js",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFFFFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "polo-node-js",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "AhMCOzDIBdjv5wKkoQOX",
+  "name": "Polo Python",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "polo-python",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "ap562w2TKz8rq0eCTIqH",
+  "name": "Polo Vue",
+  "price": 75.0,
+  "type": "polo",
+  "colors": [
+   "#FFFFFF",
+   "#D0FFED",
+   "#4a6170",
+   "#1C262D"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 6,
+  "published": true,
+  "slug": "polo-vue",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "QeZExtRZb9F3Yjzq2Sqz",
+  "name": "React",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "react",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "0utzWxB9wGfCW1G7P9JI",
+  "name": "Redis",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 2,
+  "published": true,
+  "slug": "redis",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "kIjnoYM7iDFqbI9z1exp",
+  "name": "Redux",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "redux",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "2PftDsjX8SfIuBrRXl6m",
+  "name": "Spring Boot",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 1,
+  "published": true,
+  "slug": "spring-boot",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "demo-taza-docker",
+  "name": "Taza Docker",
+  "price": 35.0,
+  "type": "taza",
+  "colors": [
+   "#FFFFFF",
+   "#0F172A",
+   "#93C5FD"
+  ],
+  "sizes": [],
+  "logoPositions": [],
+  "likes": 0,
+  "published": true,
+  "slug": "taza-docker",
+  "cuts": [],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "demo-taza-react",
+  "name": "Taza React",
+  "price": 35.0,
+  "type": "taza",
+  "colors": [
+   "#FFFFFF",
+   "#111827",
+   "#A7F3D0"
+  ],
+  "sizes": [],
+  "logoPositions": [],
+  "likes": 0,
+  "published": true,
+  "slug": "taza-react",
+  "cuts": [],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ },
+ {
+  "id": "NzfZX52aU7ErWxjUle4y",
+  "name": "Ubuntu",
+  "price": 60.0,
+  "type": "polo",
+  "colors": [
+   "#FFF",
+   "#000"
+  ],
+  "sizes": [
+   "S",
+   "M",
+   "L"
+  ],
+  "logoPositions": [
+   "pocket",
+   "chest",
+   "back",
+   "front-back"
+  ],
+  "likes": 0,
+  "published": true,
+  "slug": "ubuntu",
+  "cuts": [
+   "hombre"
+  ],
+  "soldOut": false,
+  "createdAt": "1970-01-01T00:00:00.000Z"
+ }
+]

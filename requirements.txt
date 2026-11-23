@@ -1,0 +1,22 @@
+# core
+pandas>=2.0
+pyarrow>=14.0
+numpy>=1.24
+sentence-transformers>=2.7
+transformers>=4.44
+accelerate>=0.33
+bitsandbytes>=0.43   # opcional: LLM en 4 bits
+torch                # preinstalado en Colab
+pytest>=7.0
+
+# voz y evaluación
+faster-whisper>=1.1,<1.2      # ASR (CTranslate2)
+coqui-tts>=0.26,<0.27         # XTTS-v2 (licencia CPML, uso no comercial); fija su propio rango de transformers
+speechbrain>=1.0,<1.1         # embeddings ECAPA para similitud de voz
+soundfile>=0.12
+torchaudio                    # preinstalado en Colab (remuestreo)
+jiwer>=3.0,<4.0               # WER/CER
+pyyaml>=6.0                   # escenarios
+matplotlib>=3.7
+tabulate>=0.9                 # DataFrame.to_markdown en el reporte
+nbformat>=5.9                 # scripts/build_notebook.py

@@ -1,0 +1,88 @@
+# Demo EXTRA (NO es la evaluación oficial, que sigue siendo ESCI + scenarios.yaml):
+# escenarios del mismo agente sobre la tienda real de merch soyHouston256/store
+# (shopassist.remote_store.RemoteStoreAdapter) en modo DRY-RUN: los pedidos se registran
+# localmente y se guarda el payload de POST /api/orders, pero NO se envía nada.
+#
+# Uso:
+#   from shopassist.remote_store import build_remote_demo
+#   from shopassist.scenarios import load_scenarios, run_all
+#   demo = build_remote_demo(cfg)              # STORE_API_URL o, si no hay, copia offline
+#   df, res = run_all(load_scenarios("scenarios/scenarios_tienda_real.yaml"),
+#                     demo["agent_factory"], demo["store"], out_dir="results/tienda_real")
+#
+# Los hooks solo tocan el stock SIMULADO local (la API no tiene stock numérico), así que
+# funcionan igual contra la API real que contra la copia offline.
+
+scenarios:
+  - id: rt01_polos_redis_talla_color
+    title: Dos polos de Redis talla M negros, confirmación dry-run sin duplicar
+    category: compra
+    voice: false
+    setup:  # estado reproducible: hay stock suficiente del polo
+      - {type: set_stock_query, query: "polo redis", top_k: 1, stock: 20}
+    turns:
+      - user: "Quiero dos polos de Redis talla M negros"
+      - user: "Sí, confirmo el pedido"
+      - user: "Confirmo el pedido"
+    expectations:
+      - {type: op_called, name: search_products}
+      - {type: op_called, name: create_quote, turn: 0}
+      - {type: reply_contains_any, words: ["talla M"], turn: 0}
+      - {type: order_count, n: 1}
+      - {type: qty_of_item, index: 0, n: 2}
+      - {type: reply_contains_any, words: ["dry-run", "simulación"], turn: 1}
+      - {type: no_duplicate_orders}
+      - {type: stock_consistent}
+
+  - id: rt02_polo_ambiguo
+    title: "«Quiero un polo» es ambiguo: elegir diseño, luego talla y color"
+    category: aclaracion
+    voice: false
+    setup:
+      - {type: set_stock_query, query: "polo redis", top_k: 1, stock: 20}
+    turns:
+      - user: "Quiero un polo"
+      - user: "El de Redis"
+      - user: "Talla L, color blanco"
+      - user: "Sí, confirmo el pedido"
+    expectations:
+      - {type: clarification_asked, turn: 0}
+      - {type: op_not_called, name: add_to_cart, turn: 0}
+      - {type: clarification_asked, turn: 1}
+      - {type: reply_contains_any, words: ["talla"], turn: 1}
+      - {type: order_count, n: 1}
+      - {type: no_duplicate_orders}
+      - {type: stock_consistent}
+
+  - id: rt03_polo_agotado
+    title: Polo de Docker agotado (soldOut) -> alternativa del mismo tipo, sin pedido
+    category: stock
+    voice: false
+    setup:  # equivale a soldOut=true en la API (stock simulado 0)
+      - {type: set_stock_query, query: "polo docker", top_k: 1, stock: 0}
+    turns:
+      - user: "Quiero un polo de Docker talla M negro"
+      - user: "No, cancela"
+    expectations:
+      - {type: alternative_proposed, turn: 0}
+      - {type: reply_contains_any, words: ["agotad"], turn: 0}
+      - {type: cart_qty_le_stock}
+      - {type: no_order}
+
+  - id: rt04_taza
+    title: Taza de React; el agente pregunta el color antes de cotizar
+    category: compra
+    voice: false
+    setup:
+      - {type: set_stock_query, query: "taza react", top_k: 1, stock: 10}
+    turns:
+      - user: "Quiero una taza de React"
+      - user: "De color blanco"
+      - user: "Confirmo el pedido"
+    expectations:
+      - {type: clarification_asked, turn: 0}
+      - {type: reply_contains_any, words: ["color"], turn: 0}
+      - {type: op_called, name: create_quote, turn: 1}
+      - {type: order_count, n: 1}
+      - {type: no_duplicate_orders}
+      - {type: stock_consistent}
