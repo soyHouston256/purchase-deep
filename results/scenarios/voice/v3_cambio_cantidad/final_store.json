@@ -1,0 +1,29 @@
+{
+  "seed": 42,
+  "stock_version": 1,
+  "carts": {
+    "c1": [
+      {
+        "product_id": "B00SHL2LHY",
+        "qty": 3
+      },
+      {
+        "product_id": "B011TS7SSI",
+        "qty": 2
+      }
+    ]
+  },
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 23.95,
+      "valid": true
+    }
+  ],
+  "orders": [],
+  "stock": {
+    "B00SHL2LHY": 13,
+    "B011TS7SSI": 33,
+    "B07V7TJ4J7": 20
+  }
+}

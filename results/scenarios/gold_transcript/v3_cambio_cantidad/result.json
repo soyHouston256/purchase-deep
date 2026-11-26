@@ -1,0 +1,964 @@
+{
+  "id": "v3_cambio_cantidad",
+  "title": "Voz: cambio de cantidad conservando el presupuesto",
+  "category": "voz_cambio",
+  "voice": true,
+  "input_mode": "gold_transcript",
+  "passed": false,
+  "checks": [
+    {
+      "check": {
+        "type": "qty_of_item",
+        "index": 0,
+        "n": 2
+      },
+      "ok": false,
+      "detail": "cantidad=1"
+    },
+    {
+      "check": {
+        "type": "budget_preserved",
+        "value": 30
+      },
+      "ok": true,
+      "detail": "presupuesto=30.0"
+    },
+    {
+      "check": {
+        "type": "cart_total_le_budget"
+      },
+      "ok": true,
+      "detail": "max_total=3.99 presupuesto=30.0"
+    },
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [
+    {
+      "hook": {
+        "type": "set_stock_last_result",
+        "rank": 0,
+        "stock": 20
+      },
+      "pids": [
+        "B008V7933O"
+      ],
+      "stock": 20,
+      "applied": true,
+      "turn": 1
+    }
+  ],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Mi presupuesto es de treinta euros, busco un cuaderno",
+      "user_text": "Mi presupuesto es de treinta euros, busco un cuaderno",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v3_t1.wav",
+      "audio_out": null,
+      "reply": "Tu cuaderno de Oxford está listo en tu carrito. El costo es de 3,99 EUR. ¿Confirma el pedido?",
+      "ops": [
+        {
+          "name": "set_budget",
+          "args": {
+            "amount": 30.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "budget": 30.0,
+              "cart_total": 0,
+              "cart_exceeds_budget": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        },
+        {
+          "name": "search_products",
+          "args": {
+            "query": "cuaderno",
+            "max_price": 30
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "cuaderno",
+              "filters": {
+                "max_price": 30.0
+              },
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B008V7933O",
+                  "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+                  "brand": "Oxford",
+                  "color": "15 unidades.",
+                  "price": 3.99,
+                  "stock": 40,
+                  "snippet": "Densidad de la papel de 90 gsm Acabado del papel mate y tacto suave Cuenta con 16 hojas Dimensión A5",
+                  "score": 1.3508
+                },
+                {
+                  "product_id": "B00SHL2LHY",
+                  "title": "Enri, Cuaderno A4 (Folio), cuadrícula 4x4, tapa plástico, 80 hojas, pack de 5 unidades, colores aleatorios",
+                  "brand": "Enri",
+                  "color": "Aleatorios",
+                  "price": 3.99,
+                  "stock": 13,
+                  "snippet": "Espiral simple negra, gira las páginas 360° cómodamente Tapas de plástico translúcido, ligeras pero resistentes Formato F° 80 hojas con cuadrícula 4mm x 4mm co…",
+                  "score": -0.008
+                },
+                {
+                  "product_id": "B08HSFNSNY",
+                  "title": "MP - Cuadernos Cuadriculados, Tapa Plástica, Unido en Espiral, 80 Hojas, Paquete de 8 Libretas 215x155 mm",
+                  "brand": "MP",
+                  "color": "Cuadrícula",
+                  "price": 18.99,
+                  "stock": 27,
+                  "snippet": "Cuaderno con cubierta de plástico traslúcido con anillas de plástico simple negro para girar las páginas cómodamente CARACTERÍSTICAS: 80 hojas cuadriculadas 4x…",
+                  "score": -0.0442
+                },
+                {
+                  "product_id": "B07C18VD5J",
+                  "title": "Oxford, Cuaderno A4 (Folio), cuadrícula 4x4, tapa plástico, color rojo",
+                  "brand": "Oxford",
+                  "color": "Rojo",
+                  "price": 2.99,
+                  "stock": 5,
+                  "snippet": "Espiral simple negra Tapa plástico, resistencia y ligereza en uno. Cantos romos para evitar que las tapas se deterioren Formato Fº 80 hojas con cuadrícula 4mm…",
+                  "score": -0.1476
+                },
+                {
+                  "product_id": "B07R5ZD319",
+                  "title": "Cuaderno Oxford Openflex A5-48h Pauta2,5, 1 unidad, Colores Surtidos",
+                  "brand": "Oxford",
+                  "color": "desconocido",
+                  "price": 2.99,
+                  "stock": 11,
+                  "snippet": "Oxford cuaderno de tamaño a5 con tapas de plástico Con sistema openflex que permite una apertura de 180º 48 hojas con pauta de 2,5 8 colores surtidos",
+                  "score": -0.3
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B008V7933O",
+            "qty": 1
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B008V7933O",
+                "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+                "qty": 1,
+                "unit_price": 3.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B008V7933O",
+                    "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+                    "brand": "Oxford",
+                    "qty": 1,
+                    "unit_price": 3.99,
+                    "line_total": 3.99,
+                    "stock": 40
+                  }
+                ],
+                "total": 3.99,
+                "budget": 30.0,
+                "remaining": 26.01,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00001",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B008V7933O",
+                  "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+                  "qty": 1,
+                  "unit_price": 3.99,
+                  "line_total": 3.99,
+                  "stock_at_quote": 40
+                }
+              ],
+              "subtotal": 3.99,
+              "total": 3.99,
+              "currency": "EUR",
+              "budget": 30.0,
+              "valid": true,
+              "problems": [],
+              "stock_version": 0,
+              "created_at": 1795648143.9905355
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de treinta euros, busco un cuaderno",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu cuaderno de Oxford está listo en tu carrito. El costo es de 3,99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 30.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hoja",
+            "qty": 1,
+            "product_id": "B008V7933O",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "cuaderno": [
+            "B008V7933O",
+            "B00SHL2LHY",
+            "B08HSFNSNY",
+            "B07C18VD5J",
+            "B07R5ZD319"
+          ]
+        },
+        "last_result_list": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "seen_product_ids": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock_at_quote": 40
+            }
+          ],
+          "subtotal": 3.99,
+          "total": 3.99,
+          "currency": "EUR",
+          "budget": 30.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648143.9905355
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "brand": "Oxford",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock": 40
+            }
+          ],
+          "total": 3.99,
+          "budget": 30.0,
+          "remaining": 26.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 10.4252,
+        "retrieval_s": 0.195,
+        "tools_s": 0.0007,
+        "total_s": 10.6223,
+        "agent_s": 10.622746885000197
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Añade tres unidades del primero al carrito",
+      "user_text": "Añade tres unidades del primero al carrito",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v3_t2.wav",
+      "audio_out": null,
+      "reply": "Entendí: añadir 3 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de treinta euros, busco un cuaderno",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu cuaderno de Oxford está listo en tu carrito. El costo es de 3,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade tres unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 3 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": 30.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hoja",
+            "qty": 1,
+            "product_id": "B008V7933O",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "cuaderno": [
+            "B008V7933O",
+            "B00SHL2LHY",
+            "B08HSFNSNY",
+            "B07C18VD5J",
+            "B07R5ZD319"
+          ]
+        },
+        "last_result_list": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "seen_product_ids": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock_at_quote": 40
+            }
+          ],
+          "subtotal": 3.99,
+          "total": 3.99,
+          "currency": "EUR",
+          "budget": 30.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648143.9905355
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "anade 3 unidades del primero al carrito",
+        "turn_index": 2,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "brand": "Oxford",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock": 20
+            }
+          ],
+          "total": 3.99,
+          "budget": 30.0,
+          "remaining": 26.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.000518679000379052
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v3_t3.wav",
+      "audio_out": null,
+      "reply": "¿Podrías proporcionar el ID del producto que deseas añadir?",
+      "ops": [
+        {
+          "name": "update_cart_quantity",
+          "args": {},
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'product_id'"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Podrías proporcionar el ID del producto que deseas añadir?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Podrías proporcionar el ID del producto que deseas añadir?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de treinta euros, busco un cuaderno",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu cuaderno de Oxford está listo en tu carrito. El costo es de 3,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade tres unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 3 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Podrías proporcionar el ID del producto que deseas añadir?"
+          }
+        ],
+        "budget": 30.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hoja",
+            "qty": 1,
+            "product_id": "B008V7933O",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "cuaderno": [
+            "B008V7933O",
+            "B00SHL2LHY",
+            "B08HSFNSNY",
+            "B07C18VD5J",
+            "B07R5ZD319"
+          ]
+        },
+        "last_result_list": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "seen_product_ids": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock_at_quote": 40
+            }
+          ],
+          "subtotal": 3.99,
+          "total": 3.99,
+          "currency": "EUR",
+          "budget": 30.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648143.9905355
+        },
+        "pending_confirmation": true,
+        "pending_clarification": "¿Podrías proporcionar el ID del producto que deseas añadir?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "brand": "Oxford",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock": 20
+            }
+          ],
+          "total": 3.99,
+          "budget": 30.0,
+          "remaining": 26.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 4.9709,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 4.9716,
+        "agent_s": 4.9719612939998115
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 3,
+      "user_gold": "Mejor que sean dos unidades",
+      "user_text": "Mejor que sean dos unidades",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v3_t4.wav",
+      "audio_out": null,
+      "reply": "Entendí: cambiar la cantidad a 2. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de treinta euros, busco un cuaderno",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu cuaderno de Oxford está listo en tu carrito. El costo es de 3,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade tres unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 3 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Podrías proporcionar el ID del producto que deseas añadir?"
+          },
+          {
+            "role": "user",
+            "text": "Mejor que sean dos unidades",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 2. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": 30.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hoja",
+            "qty": 1,
+            "product_id": "B008V7933O",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "cuaderno": [
+            "B008V7933O",
+            "B00SHL2LHY",
+            "B08HSFNSNY",
+            "B07C18VD5J",
+            "B07R5ZD319"
+          ]
+        },
+        "last_result_list": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "seen_product_ids": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock_at_quote": 40
+            }
+          ],
+          "subtotal": 3.99,
+          "total": 3.99,
+          "currency": "EUR",
+          "budget": 30.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648143.9905355
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "mejor que sean 2 unidades",
+        "turn_index": 4,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "brand": "Oxford",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock": 20
+            }
+          ],
+          "total": 3.99,
+          "budget": 30.0,
+          "remaining": 26.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0004,
+        "agent_s": 0.0008034069996938342
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 4,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v3_t5.wav",
+      "audio_out": null,
+      "reply": "Añadiré 2 unidades del producto 1 al carrito. ¿Es correcto? Responde 'sí' o corrígeme (por ejemplo: 'no, dije dos').",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de treinta euros, busco un cuaderno",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu cuaderno de Oxford está listo en tu carrito. El costo es de 3,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade tres unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 3 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Podrías proporcionar el ID del producto que deseas añadir?"
+          },
+          {
+            "role": "user",
+            "text": "Mejor que sean dos unidades",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 2. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Añadiré 2 unidades del producto 1 al carrito. ¿Es correcto? Responde 'sí' o corrígeme (por ejemplo: 'no, dije dos')."
+          }
+        ],
+        "budget": 30.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hoja",
+            "qty": 1,
+            "product_id": "B008V7933O",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "cuaderno": [
+            "B008V7933O",
+            "B00SHL2LHY",
+            "B08HSFNSNY",
+            "B07C18VD5J",
+            "B07R5ZD319"
+          ]
+        },
+        "last_result_list": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "seen_product_ids": [
+          "B008V7933O",
+          "B00SHL2LHY",
+          "B08HSFNSNY",
+          "B07C18VD5J",
+          "B07R5ZD319"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock_at_quote": 40
+            }
+          ],
+          "subtotal": 3.99,
+          "total": 3.99,
+          "currency": "EUR",
+          "budget": 30.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648143.9905355
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 5,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B008V7933O",
+              "title": "Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades)",
+              "brand": "Oxford",
+              "qty": 1,
+              "unit_price": 3.99,
+              "line_total": 3.99,
+              "stock": 20
+            }
+          ],
+          "total": 3.99,
+          "budget": 30.0,
+          "remaining": 26.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 5.9096,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 5.9104,
+        "agent_s": 5.910723051999412
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

@@ -1,0 +1,17 @@
+{
+  "seed": 42,
+  "stock_version": 0,
+  "carts": {
+    "c1": [
+      {
+        "product_id": "B081C31KV4",
+        "qty": 1
+      }
+    ]
+  },
+  "quotes": [],
+  "orders": [],
+  "stock": {
+    "B081C31KV4": 38
+  }
+}

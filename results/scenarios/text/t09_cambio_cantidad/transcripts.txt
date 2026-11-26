@@ -1,0 +1,9 @@
+[t1] gold: Busco botella de agua
+     entrada: Busco botella de agua
+     agente: La botella de agua ha sido añadida al carrito. El costo total es de 4,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade dos unidades del primero al carrito
+     entrada: Añade dos unidades del primero al carrito
+     agente: Cotización Q00002: 2 × Botellas de Agua 500/1000 ml Agitador sin (4,99 euros c/u). Total: 9,98 euros. ¿Confirmas el pedido?
+[t3] gold: Mejor que sean cuatro unidades
+     entrada: Mejor que sean cuatro unidades
+     agente: La cotización ha sido generada. Total: 19,96 EUR. ¿Confirmas el pedido?

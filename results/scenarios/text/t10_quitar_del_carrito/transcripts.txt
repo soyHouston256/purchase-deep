@@ -1,0 +1,12 @@
+[t1] gold: Busco un cuaderno
+     entrada: Busco un cuaderno
+     agente: Tu cuaderno Oxford A5 está en tu carrito. El total es 3,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: Lo siento, no puedo añadir más unidades al carrito debido a los límites de presupuesto.
+[t3] gold: Quita el cuaderno del carrito
+     entrada: Quita el cuaderno del carrito
+     agente: El cuaderno Oxford A5 está en tu carrito. El total es 3,99 EUR. ¿Confirma el pedido?
+[t4] gold: Muéstrame el carrito
+     entrada: Muéstrame el carrito
+     agente: Tu carrito contiene: 1x B008V7933O Oxford - Cuaderno (A5, diseño 5, cuadrícula de 5 mm, 16 hojas, lote de 15 unidades) - Total: 3,99 EUR. ¿Confirma el pedido?

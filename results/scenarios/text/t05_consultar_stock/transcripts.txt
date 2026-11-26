@@ -1,0 +1,6 @@
+[t1] gold: Busco pilas AA
+     entrada: Busco pilas AA
+     agente: Tu compra de 10 pilas AA de POWEROWL cuesta 49.90 EUR. ¿Confirma el pedido?
+[t2] gold: ¿Cuántas unidades quedan del primero?
+     entrada: ¿Cuántas unidades quedan del primero?
+     agente: El producto B087Q5TSBJ tiene 22 unidades disponibles.

@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+  "stock_version": 0,
+  "carts": {
+    "c1": [
+      {
+        "product_id": "B087Q5TSBJ",
+        "qty": 10
+      }
+    ]
+  },
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 49.9,
+      "valid": true
+    }
+  ],
+  "orders": [],
+  "stock": {
+    "B087Q5TSBJ": 22
+  }
+}

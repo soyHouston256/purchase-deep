@@ -1,0 +1,39 @@
+{
+  "seed": 42,
+  "stock_version": 3,
+  "carts": {},
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 115.99,
+      "valid": true
+    },
+    {
+      "quote_id": "Q00002",
+      "total": 0.0,
+      "valid": false
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "O00001",
+      "quote_id": "Q00001",
+      "idempotency_key": "Q00001",
+      "cart_id": "c1",
+      "total": 115.99,
+      "status": "confirmado",
+      "currency": "EUR",
+      "lines": [
+        {
+          "product_id": "B07QKKW3HZ",
+          "qty": 1,
+          "unit_price": 115.99,
+          "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+        }
+      ]
+    }
+  ],
+  "stock": {
+    "B07QKKW3HZ": 0
+  }
+}

@@ -1,0 +1,372 @@
+[
+  {
+    "turn": 0,
+    "ops": [
+      {
+        "name": "set_budget",
+        "args": {
+          "amount": 100.0
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "budget": 100.0,
+            "cart_total": 0,
+            "cart_exceeds_budget": false
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "guard"
+      },
+      {
+        "name": "set_budget",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'amount'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "set_budget",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'amount'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "set_budget",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'amount'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "set_budget",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'amount'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "set_budget",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'amount'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "set_budget",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'amount'"
+        },
+        "ok": false,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 1,
+    "ops": [
+      {
+        "name": "search_products",
+        "args": {
+          "query": "raton inalámbrico",
+          "max_price": 100
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "query": "raton inalámbrico",
+            "filters": {
+              "max_price": 100.0
+            },
+            "relaxed_filters": [],
+            "results": [
+              {
+                "product_id": "B08QVJV76V",
+                "title": "Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajustable(BT5.0 + 2.4G inalámbrico), Compatible con com…",
+                "brand": "TOYAMI",
+                "color": "negro",
+                "price": 11.99,
+                "stock": 30,
+                "snippet": "Mouse inalámbrico recargable：El mouse tiene una batería de polímero de litio incorporada con un cable USB para cargar,y también puede usarlo mientras se carga;…",
+                "score": 9.6505
+              },
+              {
+                "product_id": "B08RHSTQG7",
+                "title": "iAmotus Ratón Inalámbrico, Ratón Bluetooth Recargable Silencioso de Dual Modos (Bluetooth 5.1 + 2.4G Wireless…",
+                "brand": "iAmotus",
+                "color": "Silver",
+                "price": 18.99,
+                "stock": 6,
+                "snippet": "【Dos Modos】iAmotus mouse inalámbrico bluetooth tiene dos modos de conexión: modo inalámbrico 2.4G y modo bluetooth 5.1. Cambio de modo ofrece más comodidad par…",
+                "score": 9.2892
+              },
+              {
+                "product_id": "B01MPY7FEI",
+                "title": "TECKNET Ratón Inalámbrico Mini, 2.4G Mouse Inalámbrico con Diseño Ergonómico Compatible con Laptop, PC, Orden…",
+                "brand": "TECKNET",
+                "color": "Gris",
+                "price": 29.99,
+                "stock": 10,
+                "snippet": "Ratón inalámbrico Mini: elegante perfil ultra delgado que complementa su escritorio. Puede llevar el mini ratón inalámbrico donde lleve su computadora portátil…",
+                "score": 8.7568
+              },
+              {
+                "product_id": "B07YB33K21",
+                "title": "Ratón Bluetooth, ratón inalámbrico Bluetooth Recargable silencioso de Tres Modos (Bluetooth 5.0/3.0 + 2.4G US…",
+                "brand": "INPHIC",
+                "color": "Silver",
+                "price": 33.99,
+                "stock": 6,
+                "snippet": "✔ TRES MODOS, DISPOSITIVO MÚLTIPLE: Ratón inalámbrico Bluetooth 5.0 / 3.0 y 2.4G inphic, tres modos, realiza un control del mouse en tres dispositivos, proporc…",
+                "score": 8.6823
+              },
+              {
+                "product_id": "B07TF6PVVD",
+                "title": "iAmotus Ratón Inalámbrico, 2.4GHz Wireless Ratón Silencioso Optico 3DPI de Ajustable con Nano USB Receptor de…",
+                "brand": "iAmotus",
+                "color": "Black&Gold",
+                "price": 51.99,
+                "stock": 32,
+                "snippet": "【Plug and Play】Tecnología de transmisión bidireccional del mouse óptico inalámbrico de radiofrecuencia de 2.4Ghz es más segura y precisa, y la distancia de tra…",
+                "score": 8.4544
+              }
+            ],
+            "n": 5
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      },
+      {
+        "name": "add_to_cart",
+        "args": {
+          "product_id": "B08QVJV76V",
+          "qty": 1
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "added": {
+              "product_id": "B08QVJV76V",
+              "title": "Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajustable(BT5.0 + 2.4G inalámbrico)…",
+              "qty": 1,
+              "unit_price": 11.99
+            },
+            "cart": {
+              "items": [
+                {
+                  "product_id": "B08QVJV76V",
+                  "title": "Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajustable(BT5.0 + 2.4G inalámbrico), Compatible con computadora portátil / Tableta / MacBook / PC / ,Mini Mouse silencioso para Windows / Linux",
+                  "brand": "TOYAMI",
+                  "qty": 1,
+                  "unit_price": 11.99,
+                  "line_total": 11.99,
+                  "stock": 30
+                }
+              ],
+              "total": 11.99,
+              "budget": 100.0,
+              "remaining": 88.01,
+              "currency": "EUR"
+            }
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      },
+      {
+        "name": "create_quote",
+        "args": {},
+        "result": {
+          "ok": true,
+          "data": {
+            "quote_id": "Q00001",
+            "cart_id": "c1",
+            "items": [
+              {
+                "product_id": "B08QVJV76V",
+                "title": "Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajustable(BT5.0 + 2.4G inalámbrico), Compatible con computadora portátil / Tableta / MacBook / PC / ,Mini Mouse silencioso para Windows / Linux",
+                "qty": 1,
+                "unit_price": 11.99,
+                "line_total": 11.99,
+                "stock_at_quote": 30
+              }
+            ],
+            "subtotal": 11.99,
+            "total": 11.99,
+            "currency": "EUR",
+            "budget": 100.0,
+            "valid": true,
+            "problems": [],
+            "stock_version": 0,
+            "created_at": 1795647430.8000476
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 2,
+    "ops": [
+      {
+        "name": "compare_products",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'product_ids'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Cuáles son los IDs de los productos que deseas comparar?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Cuáles son los IDs de los productos que deseas comparar?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 3,
+    "ops": [
+      {
+        "name": "add_to_cart",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'product_id'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Cuál es el ID del Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajusta que deseas añadir al carrito?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Cuál es el ID del Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajusta que deseas añadir al carrito?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 4,
+    "ops": [
+      {
+        "name": "create_quote",
+        "args": {},
+        "result": {
+          "ok": true,
+          "data": {
+            "quote_id": "Q00002",
+            "cart_id": "c1",
+            "items": [
+              {
+                "product_id": "B08QVJV76V",
+                "title": "Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajustable(BT5.0 + 2.4G inalámbrico), Compatible con computadora portátil / Tableta / MacBook / PC / ,Mini Mouse silencioso para Windows / Linux",
+                "qty": 1,
+                "unit_price": 11.99,
+                "line_total": 11.99,
+                "stock_at_quote": 20
+              }
+            ],
+            "subtotal": 11.99,
+            "total": 11.99,
+            "currency": "EUR",
+            "budget": 100.0,
+            "valid": true,
+            "problems": [],
+            "stock_version": 1,
+            "created_at": 1795647447.5102088
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 5,
+    "ops": [
+      {
+        "name": "confirm_order",
+        "args": {},
+        "result": {
+          "ok": true,
+          "data": {
+            "order": {
+              "order_id": "O00001",
+              "quote_id": "Q00002",
+              "idempotency_key": "Q00002",
+              "cart_id": "c1",
+              "total": 11.99,
+              "status": "confirmado",
+              "currency": "EUR",
+              "lines": [
+                {
+                  "product_id": "B08QVJV76V",
+                  "qty": 1,
+                  "unit_price": 11.99,
+                  "title": "Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajustable(BT5.0 + 2.4G inalámbrico), Compatible con computadora portátil / Tableta / MacBook / PC / ,Mini Mouse silencioso para Windows / Linux"
+                }
+              ]
+            },
+            "duplicate": false
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "guard"
+      }
+    ]
+  }
+]

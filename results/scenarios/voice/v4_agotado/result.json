@@ -1,0 +1,659 @@
+{
+  "id": "v4_agotado",
+  "title": "Voz: producto agotado, se busca alternativa o se informa que no hay solución",
+  "category": "voz_stock",
+  "voice": true,
+  "input_mode": "voice",
+  "passed": false,
+  "checks": [
+    {
+      "check": {
+        "type": "any_of",
+        "checks": [
+          {
+            "type": "alternative_proposed"
+          },
+          {
+            "type": "reply_contains_any",
+            "words": [
+              "agotad",
+              "sin stock",
+              "no hay",
+              "no dispon"
+            ]
+          }
+        ]
+      },
+      "ok": false,
+      "detail": "sin alternativa | no contiene"
+    },
+    {
+      "check": {
+        "type": "cart_qty_le_stock"
+      },
+      "ok": false,
+      "detail": "excesos=[('B08P36BRPM', 1, 0)]"
+    },
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [
+    {
+      "hook": {
+        "type": "set_stock_last_result",
+        "rank": 0,
+        "stock": 0
+      },
+      "pids": [
+        "B08P36BRPM"
+      ],
+      "stock": 0,
+      "applied": true,
+      "turn": 1
+    }
+  ],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Busco un ratón inalámbrico",
+      "user_text": "Busco un ratón y da lámbrico.",
+      "transcript": "Busco un ratón y da lámbrico.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.8,
+        "asr_s": 0.5727019219993963,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v4_t1.wav",
+      "audio_out": "results/scenarios/voice/v4_agotado/t1_reply.wav",
+      "reply": "El total es de 19.99 EUR. ¿Confirma el pedido?",
+      "ops": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "raton da lambrico",
+            "k": 5
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "raton da lambrico",
+              "filters": {},
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B08P36BRPM",
+                  "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Rató…",
+                  "brand": "INPHIC",
+                  "color": "plata",
+                  "price": 19.99,
+                  "stock": 35,
+                  "snippet": "RATÓN BLUETOOTH 5.0: Se conecta directamente a computadoras portátiles o PC con capacidad Bluetooth, no necesita receptor. 1. Encienda la función Bluetooth de…",
+                  "score": 1.5543
+                },
+                {
+                  "product_id": "B089K72ZV3",
+                  "title": "WisFox Ratón Inalambrico, 2.4G Ergonómico Antideslizante Inalámbrico Ratón de Computadora Ratón Laptop Ratón…",
+                  "brand": "WisFox",
+                  "color": "Gris",
+                  "price": 16.99,
+                  "stock": 29,
+                  "snippet": "3 SWITCH AJUSTABLE DE DPI & ENCHUFE Y JUEGA: Nuestro ratón inalámbrico ergonómico para PC tiene configuraciones de 3 niveles de DPI (800/1200/1600). Controle l…",
+                  "score": 1.4242
+                },
+                {
+                  "product_id": "B01MPY7FEI",
+                  "title": "TECKNET Ratón Inalámbrico Mini, 2.4G Mouse Inalámbrico con Diseño Ergonómico Compatible con Laptop, PC, Orden…",
+                  "brand": "TECKNET",
+                  "color": "Gris",
+                  "price": 29.99,
+                  "stock": 10,
+                  "snippet": "Ratón inalámbrico Mini: elegante perfil ultra delgado que complementa su escritorio. Puede llevar el mini ratón inalámbrico donde lleve su computadora portátil…",
+                  "score": 1.4172
+                },
+                {
+                  "product_id": "B07YWC8NLR",
+                  "title": "Alfombrilla De Ratón De Dibujos Animados,Astronauta Niño Y Zorro Sosteniendo Globos De Colores En El Cielo co…",
+                  "brand": "D.T.G Mouse Pad",
+                  "color": "As Picture",
+                  "price": 14.99,
+                  "stock": 4,
+                  "snippet": "🎮 Descripción del diseño:9.8 pulgadas de ancho x 11.8 pulgadas de largo y 3 mm de espesor.Impresión de ancho completo DIY,impresión a una cara. 🎮 Descripción d…",
+                  "score": 1.3589
+                },
+                {
+                  "product_id": "B07PHJT7BD",
+                  "title": "VOXON Omni Mini Ratón Bluetooth Silencioso Mouse Inalámbrico Portátil Mouse Bluetooth Optical, 4 Botones (3 d…",
+                  "brand": "VOXON",
+                  "color": "desconocido",
+                  "price": 37.99,
+                  "stock": 18,
+                  "snippet": "Diseñado para ser de tamaño de bolsillo: puedes llevar el mouse a cualquier lugar; Lleve su computadora portátil con su diseño compacto de bolsillo (102 * 61.8…",
+                  "score": 1.1042
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B08P36BRPM",
+            "qty": 1
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B08P36BRPM",
+                "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 80…",
+                "qty": 1,
+                "unit_price": 19.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B08P36BRPM",
+                    "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+                    "brand": "INPHIC",
+                    "qty": 1,
+                    "unit_price": 19.99,
+                    "line_total": 19.99,
+                    "stock": 35
+                  }
+                ],
+                "total": 19.99,
+                "budget": null,
+                "remaining": null,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00001",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B08P36BRPM",
+                  "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+                  "qty": 1,
+                  "unit_price": 19.99,
+                  "line_total": 19.99,
+                  "stock_at_quote": 35
+                }
+              ],
+              "subtotal": 19.99,
+              "total": 19.99,
+              "currency": "EUR",
+              "budget": null,
+              "valid": true,
+              "problems": [],
+              "stock_version": 0,
+              "created_at": 1795647873.6783504
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco un ratón y da lámbrico.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total es de 19.99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delg",
+            "qty": 1,
+            "product_id": "B08P36BRPM",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "raton da lambrico": [
+            "B08P36BRPM",
+            "B089K72ZV3",
+            "B01MPY7FEI",
+            "B07YWC8NLR",
+            "B07PHJT7BD"
+          ]
+        },
+        "last_result_list": [
+          "B08P36BRPM",
+          "B089K72ZV3",
+          "B01MPY7FEI",
+          "B07YWC8NLR",
+          "B07PHJT7BD"
+        ],
+        "seen_product_ids": [
+          "B08P36BRPM",
+          "B089K72ZV3",
+          "B01MPY7FEI",
+          "B07YWC8NLR",
+          "B07PHJT7BD"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08P36BRPM",
+              "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+              "qty": 1,
+              "unit_price": 19.99,
+              "line_total": 19.99,
+              "stock_at_quote": 35
+            }
+          ],
+          "subtotal": 19.99,
+          "total": 19.99,
+          "currency": "EUR",
+          "budget": null,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647873.6783504
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B08P36BRPM",
+              "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+              "brand": "INPHIC",
+              "qty": 1,
+              "unit_price": 19.99,
+              "line_total": 19.99,
+              "stock": 35
+            }
+          ],
+          "total": 19.99,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5727169150004556,
+        "llm_s": 11.2905,
+        "retrieval_s": 0.325,
+        "tools_s": 0.0007,
+        "total_s": 11.6174,
+        "agent_s": 11.61763753499963,
+        "tts_s": 3.046032219999688
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Añade una unidad del primero al carrito",
+      "user_text": "Añade una humidad del primero al carrito.",
+      "transcript": "Añade una humidad del primero al carrito.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.7303546269995422,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v4_t2.wav",
+      "audio_out": "results/scenarios/voice/v4_agotado/t2_reply.wav",
+      "reply": "Entendí: comprar 1 × «humidad carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco un ratón y da lámbrico.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total es de 19.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade una humidad del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 1 × «humidad carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delg",
+            "qty": 1,
+            "product_id": "B08P36BRPM",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "raton da lambrico": [
+            "B08P36BRPM",
+            "B089K72ZV3",
+            "B01MPY7FEI",
+            "B07YWC8NLR",
+            "B07PHJT7BD"
+          ]
+        },
+        "last_result_list": [
+          "B08P36BRPM",
+          "B089K72ZV3",
+          "B01MPY7FEI",
+          "B07YWC8NLR",
+          "B07PHJT7BD"
+        ],
+        "seen_product_ids": [
+          "B08P36BRPM",
+          "B089K72ZV3",
+          "B01MPY7FEI",
+          "B07YWC8NLR",
+          "B07PHJT7BD"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08P36BRPM",
+              "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+              "qty": 1,
+              "unit_price": 19.99,
+              "line_total": 19.99,
+              "stock_at_quote": 35
+            }
+          ],
+          "subtotal": 19.99,
+          "total": 19.99,
+          "currency": "EUR",
+          "budget": null,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647873.6783504
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "anade 1 humidad del primero al carrito.",
+        "turn_index": 2,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B08P36BRPM",
+              "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+              "brand": "INPHIC",
+              "qty": 1,
+              "unit_price": 19.99,
+              "line_total": 19.99,
+              "stock": 0
+            }
+          ],
+          "total": 19.99,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.730368845999692,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0009,
+        "agent_s": 0.0014193710003382876,
+        "tts_s": 8.61738946999958
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto.",
+      "transcript": "Sí, es correcto.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5559173569999984,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v4_t3.wav",
+      "audio_out": "results/scenarios/voice/v4_agotado/t3_reply.wav",
+      "reply": "¿Cuál es el ID del ratón Bluetooth que quieres añadir al carrito?",
+      "ops": [
+        {
+          "name": "add_to_cart",
+          "args": {},
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'product_id'"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Cuál es el ID del ratón Bluetooth que quieres añadir al carrito?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Cuál es el ID del ratón Bluetooth que quieres añadir al carrito?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco un ratón y da lámbrico.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total es de 19.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade una humidad del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 1 × «humidad carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Cuál es el ID del ratón Bluetooth que quieres añadir al carrito?"
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delg",
+            "qty": 1,
+            "product_id": "B08P36BRPM",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "raton da lambrico": [
+            "B08P36BRPM",
+            "B089K72ZV3",
+            "B01MPY7FEI",
+            "B07YWC8NLR",
+            "B07PHJT7BD"
+          ]
+        },
+        "last_result_list": [
+          "B08P36BRPM",
+          "B089K72ZV3",
+          "B01MPY7FEI",
+          "B07YWC8NLR",
+          "B07PHJT7BD"
+        ],
+        "seen_product_ids": [
+          "B08P36BRPM",
+          "B089K72ZV3",
+          "B01MPY7FEI",
+          "B07YWC8NLR",
+          "B07PHJT7BD"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08P36BRPM",
+              "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+              "qty": 1,
+              "unit_price": 19.99,
+              "line_total": 19.99,
+              "stock_at_quote": 35
+            }
+          ],
+          "subtotal": 19.99,
+          "total": 19.99,
+          "currency": "EUR",
+          "budget": null,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647873.6783504
+        },
+        "pending_confirmation": true,
+        "pending_clarification": "¿Cuál es el ID del ratón Bluetooth que quieres añadir al carrito?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B08P36BRPM",
+              "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+              "brand": "INPHIC",
+              "qty": 1,
+              "unit_price": 19.99,
+              "line_total": 19.99,
+              "stock": 0
+            }
+          ],
+          "total": 19.99,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5559314580004866,
+        "llm_s": 4.1401,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 4.141,
+        "agent_s": 4.141467950999868,
+        "tts_s": 3.115229602999534
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

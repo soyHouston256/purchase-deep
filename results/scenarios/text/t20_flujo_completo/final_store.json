@@ -1,0 +1,39 @@
+{
+  "seed": 42,
+  "stock_version": 2,
+  "carts": {},
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 11.99,
+      "valid": true
+    },
+    {
+      "quote_id": "Q00002",
+      "total": 11.99,
+      "valid": true
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "O00001",
+      "quote_id": "Q00002",
+      "idempotency_key": "Q00002",
+      "cart_id": "c1",
+      "total": 11.99,
+      "status": "confirmado",
+      "currency": "EUR",
+      "lines": [
+        {
+          "product_id": "B08QVJV76V",
+          "qty": 1,
+          "unit_price": 11.99,
+          "title": "Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajustable(BT5.0 + 2.4G inalámbrico), Compatible con computadora portátil / Tableta / MacBook / PC / ,Mini Mouse silencioso para Windows / Linux"
+        }
+      ]
+    }
+  ],
+  "stock": {
+    "B08QVJV76V": 19
+  }
+}

@@ -1,0 +1,9 @@
+[t1] gold: Busco un cuaderno
+     entrada: Busco un cuaderno
+     agente: Tu cuaderno Oxford A5 está en tu carrito. El total es 3,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade dos unidades del primero al carrito
+     entrada: Añade dos unidades del primero al carrito
+     agente: Tu presupuesto actual es de 3.99 EUR. No puedo añadir más de una unidad del cuaderno Oxford A5. ¿Quieres buscar otro producto o cambiar la cantidad?
+[t3] gold: Muéstrame el carrito
+     entrada: Muéstrame el carrito
+     agente: No pude completar la operación: Excede el presupuesto: 2 x 3.99 = 7.98 > disponible 3.99.

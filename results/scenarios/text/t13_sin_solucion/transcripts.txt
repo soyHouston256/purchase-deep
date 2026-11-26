@@ -1,0 +1,6 @@
+[t1] gold: Quiero comprar un termo de acero inoxidable
+     entrada: Quiero comprar un termo de acero inoxidable
+     agente: ¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?
+[t2] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: ¿Deseas buscar una alternativa?

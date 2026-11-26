@@ -1,0 +1,6 @@
+[t1] gold: Busco un ratón inalámbrico
+     entrada: Busco un ratón inalámbrico
+     agente: El total de tu compra es 11,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: El ratón está agotado, ¿te gustaría otra opción?

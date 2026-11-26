@@ -1,0 +1,8 @@
+sistema,kind,descripcion,ndcg@10_train,n_train,ndcg@10_test,n_test,ic95_test,s_por_consulta
+Aleatorio,random,Cota inferior: orden aleatorio,0.5359,100,0.5481,250,"[0.520, 0.577]",0.0001
+BM25 (baseline),bm25,Línea base léxica: BM25 propio sobre título+marca+color+viñetas+descripción,0.687,100,0.7078,250,"[0.679, 0.736]",0.0001
+BM25 solo título,bm25_title,Ablación del texto indexado (solo título),0.6716,100,0.6995,250,"[0.669, 0.729]",0.0001
+Denso e5,dense,"multilingual-e5-small, coseno",0.7373,100,0.7444,250,"[0.717, 0.768]",0.0118
+Híbrido RRF,hybrid,BM25 + denso fusionados (parámetros ajustados en train),0.7254,100,0.7429,250,"[0.717, 0.768]",0.0134
+Híbrido + re-ranker,hybrid_rerank,Sistema completo: híbrido + cross-encoder mMARCO top-50,0.7557,100,0.7762,250,"[0.749, 0.800]",0.1431
+BM25 + re-ranker (sin denso),bm25_rerank,Ablación: sin componente denso,0.7557,100,0.7762,250,"[0.749, 0.800]",0.1282

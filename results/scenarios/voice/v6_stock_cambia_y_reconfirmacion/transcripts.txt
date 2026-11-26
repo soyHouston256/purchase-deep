@@ -1,0 +1,30 @@
+[t1] gold: Busco una mochila, mi presupuesto es de doscientos euros
+     entrada: Busco una mochila. Mi presupuesto es de 200 euros.
+     agente: Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade dos unidades del primero al carrito
+     entrada: Añade dos unidades del primero al carrito.
+     agente: Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: Sí, es correcto
+     entrada: Sí, es correcto.
+     agente: El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?
+[t4] gold: Prepara la cotización
+     entrada: Prepara la cotización.
+     agente: Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?
+[t5] gold: Confirmo el pedido
+     entrada: Quiero el pedido.
+     agente: Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?
+[t6] gold: Entonces que sea una unidad
+     entrada: Entonces, que sea una unidad.
+     agente: Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t7] gold: Sí, es correcto
+     entrada: Sí, es correcto.
+     agente: Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?
+[t8] gold: Prepara la cotización
+     entrada: Se prepara la cotización.
+     agente: Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?
+[t9] gold: Confirmo el pedido
+     entrada: Confirmo el pedido.
+     agente: ¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?
+[t10] gold: Confirmo el pedido
+     entrada: Confirmo el pedido.
+     agente: El pedido O00001 ya estaba registrado por 115,99 euros; no se ha duplicado.

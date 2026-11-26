@@ -1,0 +1,33 @@
+{
+  "seed": 42,
+  "stock_version": 1,
+  "carts": {
+    "c1": [
+      {
+        "product_id": "B08KH65GW5",
+        "qty": 4
+      }
+    ]
+  },
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 4.99,
+      "valid": true
+    },
+    {
+      "quote_id": "Q00002",
+      "total": 9.98,
+      "valid": true
+    },
+    {
+      "quote_id": "Q00003",
+      "total": 19.96,
+      "valid": true
+    }
+  ],
+  "orders": [],
+  "stock": {
+    "B08KH65GW5": 20
+  }
+}

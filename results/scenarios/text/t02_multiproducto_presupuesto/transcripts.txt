@@ -1,0 +1,21 @@
+[t1] gold: Mi presupuesto máximo es de 80 euros
+     entrada: Mi presupuesto máximo es de 80 euros
+     agente: Lo siento, necesito que me proporciones un monto específico como el presupuesto.
+[t2] gold: Busco audífonos bluetooth
+     entrada: Busco audífonos bluetooth
+     agente: Tu pedido incluye 1 unidad de Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres con Caja de Carga Portátil para Airpods Android/iPhone (Rosa1). El costo total es de 51.99 EUR. ¿Confirma el pedido?
+[t3] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: El producto ya está en tu carrito.
+[t4] gold: Ahora busco un cargador usb c
+     entrada: Ahora busco un cargador usb c
+     agente: No pude completar la operación: Falta el argumento obligatorio 'product_id'.
+[t5] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: Encontré: 1) AVIWIS Cable USB Tipo C [4Pack 0.5M 1M 2M (marca AVIWIS, color Negro) a 11,99 euros (20 en stock); 2) 2,4GHz Ratón Inalámbrico para Juegos con Receptor USB y (marca Zienstar, color Black Red) a 13,99 euros (34 en stock); 3) Leolee Ratón Inalámbrico Recargable, 2.4G Silencioso Mini Ultra Delga… (marca Leolee, color Oro Rosa) a 17,99 euros (agotado). ¿Cuál prefieres?
+[t6] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: No pude completar la operación: Falta el argumento obligatorio 'product_id'.
+[t7] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: Cotización Q00002: 1 × Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear (51,99 euros c/u); 1 × AVIWIS Cable USB Tipo C [4Pack 0.5M (11,99 euros c/u). Total: 63,98 euros (presupuesto 80,00 euros). ¿Confirmas el pedido?

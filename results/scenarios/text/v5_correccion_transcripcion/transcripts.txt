@@ -1,0 +1,12 @@
+[t1] gold: Busco pilas AA
+     entrada: Busco pilas AA
+     agente: La cotización es de 49.90 EUR. ¿Confirma el pedido?
+[t2] gold: Añade tres unidades del primero al carrito
+     entrada: Añade tres unidades del primero al carrito
+     agente: Entendí: añadir 3 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: No, quería cuatro unidades
+     entrada: No, quería cuatro unidades
+     agente: Corregido. Entendí: añadir 4 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t4] gold: Sí, es correcto
+     entrada: Sí, es correcto
+     agente: Lo siento, no hay stock disponible para este producto. ¿Te gustaría otra opción?

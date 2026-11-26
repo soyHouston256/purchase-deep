@@ -1,0 +1,553 @@
+{
+  "id": "t03_presupuesto_insuficiente",
+  "title": "Presupuesto muy bajo, no debe superarse",
+  "category": "restricciones",
+  "voice": false,
+  "input_mode": "text",
+  "passed": true,
+  "checks": [
+    {
+      "check": {
+        "type": "cart_total_le_budget"
+      },
+      "ok": true,
+      "detail": "max_total=0.00 presupuesto=2.0"
+    },
+    {
+      "check": {
+        "type": "budget_preserved",
+        "value": 2
+      },
+      "ok": true,
+      "detail": "presupuesto=2.0"
+    },
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Tengo un presupuesto de 2 euros",
+      "user_text": "Tengo un presupuesto de 2 euros",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "Hubo un error al fijar tu presupuesto. Por favor, inténtalo de nuevo.",
+      "ops": [
+        {
+          "name": "set_budget",
+          "args": {
+            "amount": 2.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "budget": 2.0,
+              "cart_total": 0,
+              "cart_exceeds_budget": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        },
+        {
+          "name": "set_budget",
+          "args": {},
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'amount'"
+          },
+          "ok": false,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Tengo un presupuesto de 2 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Hubo un error al fijar tu presupuesto. Por favor, inténtalo de nuevo."
+          }
+        ],
+        "budget": 2.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 2.0,
+          "remaining": 2.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 4.0198,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 4.0207,
+        "agent_s": 4.020891656999993
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Busco una mochila",
+      "user_text": "Busco una mochila",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "Lo siento, no encontré ninguna mochila dentro del presupuesto de 2 euros.",
+      "ops": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "mochila",
+            "max_price": 2
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "mochila",
+              "filters": {
+                "max_price": 2.0
+              },
+              "relaxed_filters": [],
+              "results": [],
+              "n": 0
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Tengo un presupuesto de 2 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Hubo un error al fijar tu presupuesto. Por favor, inténtalo de nuevo."
+          },
+          {
+            "role": "user",
+            "text": "Busco una mochila",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, no encontré ninguna mochila dentro del presupuesto de 2 euros."
+          }
+        ],
+        "budget": 2.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {
+          "mochila": []
+        },
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 2,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 2.0,
+          "remaining": 2.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 5.1034,
+        "retrieval_s": 0.4527,
+        "tools_s": 0.0001,
+        "total_s": 5.5571,
+        "agent_s": 5.557283117999759
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "Añade tres unidades del primero al carrito",
+      "user_text": "Añade tres unidades del primero al carrito",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?",
+      "ops": [
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "primer_resultado",
+            "qty": 3
+          },
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "El producto 'primer_resultado' no existe en el catálogo"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Tengo un presupuesto de 2 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Hubo un error al fijar tu presupuesto. Por favor, inténtalo de nuevo."
+          },
+          {
+            "role": "user",
+            "text": "Busco una mochila",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, no encontré ninguna mochila dentro del presupuesto de 2 euros."
+          },
+          {
+            "role": "user",
+            "text": "Añade tres unidades del primero al carrito",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?"
+          }
+        ],
+        "budget": 2.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {
+          "mochila": []
+        },
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 2.0,
+          "remaining": 2.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 7.9293,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 7.9302,
+        "agent_s": 7.930454727999859
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 3,
+      "user_gold": "Prepara la cotización",
+      "user_text": "Prepara la cotización",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "No hay productos en tu carrito. Primero debes añadir algo.",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Tengo un presupuesto de 2 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Hubo un error al fijar tu presupuesto. Por favor, inténtalo de nuevo."
+          },
+          {
+            "role": "user",
+            "text": "Busco una mochila",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, no encontré ninguna mochila dentro del presupuesto de 2 euros."
+          },
+          {
+            "role": "user",
+            "text": "Añade tres unidades del primero al carrito",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "No hay productos en tu carrito. Primero debes añadir algo."
+          }
+        ],
+        "budget": 2.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {
+          "mochila": []
+        },
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 4,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 2.0,
+          "remaining": 2.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 2.5646,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 2.5653,
+        "agent_s": 2.5656441779997294
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 4,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Confirmo el pedido",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+      "ops": [],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Tengo un presupuesto de 2 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Hubo un error al fijar tu presupuesto. Por favor, inténtalo de nuevo."
+          },
+          {
+            "role": "user",
+            "text": "Busco una mochila",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, no encontré ninguna mochila dentro del presupuesto de 2 euros."
+          },
+          {
+            "role": "user",
+            "text": "Añade tres unidades del primero al carrito",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "No hay productos en tu carrito. Primero debes añadir algo."
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso."
+          }
+        ],
+        "budget": 2.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {
+          "mochila": []
+        },
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 5,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 2.0,
+          "remaining": 2.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.0006791129999328405
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

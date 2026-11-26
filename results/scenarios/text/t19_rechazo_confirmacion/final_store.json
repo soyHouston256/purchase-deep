@@ -1,0 +1,24 @@
+{
+  "seed": 42,
+  "stock_version": 1,
+  "carts": {
+    "c1": [
+      {
+        "product_id": "B08R7QF49P",
+        "qty": 1
+      }
+    ]
+  },
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 8.99,
+      "valid": true
+    }
+  ],
+  "orders": [],
+  "stock": {
+    "B07W545TBG": 20,
+    "B08R7QF49P": 38
+  }
+}

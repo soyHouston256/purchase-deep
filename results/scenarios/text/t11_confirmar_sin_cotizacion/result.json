@@ -1,0 +1,94 @@
+{
+  "id": "t11_confirmar_sin_cotizacion",
+  "title": "Confirmar sin carrito ni cotización no crea pedido",
+  "category": "restricciones",
+  "voice": false,
+  "input_mode": "text",
+  "passed": true,
+  "checks": [
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Confirmo el pedido",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+      "ops": [],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso."
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.00046833000033075223
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

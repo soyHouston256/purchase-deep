@@ -1,0 +1,15 @@
+[t1] gold: Busco una botella de agua, mi presupuesto es de cuarenta euros
+     entrada: Busco una botella de agua, mi presupuesto es de cuarenta euros
+     agente: He añadido una botella de agua a tu carrito. El total es de 4,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade dos unidades del primero al carrito
+     entrada: Añade dos unidades del primero al carrito
+     agente: Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: Sí, es correcto
+     entrada: Sí, es correcto
+     agente: Añade 2 unidades del primer producto al carrito
+[t4] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: ¿En qué más puedo ayudarte?
+[t5] gold: Sí, confirmo el pedido
+     entrada: Sí, confirmo el pedido
+     agente: ¡Listo! Pedido O00001 registrado por 4,99 euros. Inventario actualizado. ¿Necesitas algo más?

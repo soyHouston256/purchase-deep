@@ -1,0 +1,63 @@
+[
+  {
+    "turn": 0,
+    "ops": []
+  },
+  {
+    "turn": 1,
+    "ops": [
+      {
+        "name": "add_to_cart",
+        "args": {
+          "product_id": "primer_producto_id_propiles_doblea",
+          "qty": 3
+        },
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "El producto 'primer_producto_id_propiles_doblea' no existe en el catálogo"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 2,
+    "ops": [
+      {
+        "name": "add_to_cart",
+        "args": {
+          "product_id": "desconocido",
+          "qty": 4
+        },
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "El producto 'desconocido' no existe en el catálogo"
+        },
+        "ok": false,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 3,
+    "ops": []
+  }
+]

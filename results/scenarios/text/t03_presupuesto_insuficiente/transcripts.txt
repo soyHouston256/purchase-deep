@@ -1,0 +1,15 @@
+[t1] gold: Tengo un presupuesto de 2 euros
+     entrada: Tengo un presupuesto de 2 euros
+     agente: Hubo un error al fijar tu presupuesto. Por favor, inténtalo de nuevo.
+[t2] gold: Busco una mochila
+     entrada: Busco una mochila
+     agente: Lo siento, no encontré ninguna mochila dentro del presupuesto de 2 euros.
+[t3] gold: Añade tres unidades del primero al carrito
+     entrada: Añade tres unidades del primero al carrito
+     agente: La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?
+[t4] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: No hay productos en tu carrito. Primero debes añadir algo.
+[t5] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: ¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.

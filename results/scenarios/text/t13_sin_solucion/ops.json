@@ -1,0 +1,137 @@
+[
+  {
+    "turn": 0,
+    "ops": [
+      {
+        "name": "search_products",
+        "args": {
+          "query": "termo acero inoxidable",
+          "max_price": null,
+          "brand": null,
+          "color": "desconocido",
+          "k": 5
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "query": "termo acero inoxidable",
+            "filters": {
+              "color": "desconocido"
+            },
+            "relaxed_filters": [],
+            "results": [
+              {
+                "product_id": "B08MWVY9WN",
+                "title": "Desconocido Aperture Test Subject Portal Water Bottle CO170 Botella de Agua Stainless Steel Funny Insulated 5…",
+                "brand": "Desconocido",
+                "color": "620",
+                "price": 6.99,
+                "stock": 0,
+                "snippet": "✓ AISLAMIENTO AL VACÍO: La botella de agua tiene doble pared y aislamiento al vacío, lo que mantiene su bebida favorita fría durante 24 horas o caliente durant…",
+                "score": 0.5213
+              },
+              {
+                "product_id": "B00KL4OMUE",
+                "title": "Desconocido Generic 2 Pares práctico Ajustable Longitud Hombres Zapatos árbol Camilla para Soporte",
+                "brand": "Desconocido",
+                "color": "Verde",
+                "price": 33.99,
+                "stock": 15,
+                "snippet": "Material: Plástico. Boot Shapers mantener tu vestido Botas, botas de invierno Botas y otros ligero Cuero, ante y piel sintética en forma perfecta cuando no est…",
+                "score": -999999.9986
+              },
+              {
+                "product_id": "B07NNRC5PQ",
+                "title": "Desconocido Avengers: Endgame Movie Póster Foto Cine Marvel 2019 Iron Man Thanos Película Cartel Oficial 017…",
+                "brand": "Générique",
+                "color": "multicolor",
+                "price": 12.99,
+                "stock": 37,
+                "snippet": "Fotografía de calidad profesional impresa en papel fotográfico satinado de alta calidad Vendido por Prints4u Liberación A3 – Grande – 12 pulgadas x 17 pulgadas…",
+                "score": -999999.9994
+              },
+              {
+                "product_id": "B07BVDHMFN",
+                "title": "Living Nature AN455 - Peluche de Pastor alemán",
+                "brand": "Living Nature",
+                "color": "Desconocido",
+                "price": 4.99,
+                "stock": 4,
+                "snippet": "Juguete premium suave Detallado realista Etiqueta para colgar educativa Regalo perfecto para los amantes de los animales",
+                "score": -999999.9995
+              },
+              {
+                "product_id": "B074CK4JKY",
+                "title": "Desconocido Regalos y Recuerditos para Invitados a Boda",
+                "brand": "Desconocido",
+                "color": "desconocido",
+                "price": 47.99,
+                "stock": 0,
+                "snippet": "Son unos regalos y recuerditos de boda de unos espejos de chapa con un diseño muy especial para los invitados a tu enlace matrimonial. No te puedes perder esto…",
+                "score": -999999.9996
+              }
+            ],
+            "n": 5
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 1,
+    "ops": [
+      {
+        "name": "add_to_cart",
+        "args": {
+          "product_id": "B08MWVY9WN",
+          "qty": 1
+        },
+        "result": {
+          "ok": false,
+          "data": {
+            "reason": "stock",
+            "product_id": "B08MWVY9WN",
+            "available": 0,
+            "requested": 1
+          },
+          "error": "Stock insuficiente: disponible 0, solicitado 1"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Deseas buscar una alternativa?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Deseas buscar una alternativa?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  }
+]

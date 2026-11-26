@@ -1,0 +1,135 @@
+[
+  {
+    "turn": 0,
+    "ops": [
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Qué producto te gustaría añadir al carrito?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Qué producto te gustaría añadir al carrito?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 1,
+    "ops": [
+      {
+        "name": "search_products",
+        "args": {
+          "query": "audífonos bluetooth"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "query": "audífonos bluetooth",
+            "filters": {},
+            "relaxed_filters": [],
+            "results": [
+              {
+                "product_id": "B081C31KV4",
+                "title": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres…",
+                "brand": "Mgrett",
+                "color": "Rosa1",
+                "price": 51.99,
+                "stock": 38,
+                "snippet": "Compatibilidad universal: Mini auriculares estéreo inalámbricos blanco Bluetooth 5.0 Micrófono universal Compatible con la mayoría de los dispositivos Auricula…",
+                "score": 5.1576
+              },
+              {
+                "product_id": "B0813BYJL4",
+                "title": "Auriculares Bluetooth Auriculares inalámbricos 5.0 Auriculares Bluetooth en Oreja Auricular Estéreo inalámbri…",
+                "brand": "cengxiup",
+                "color": "desconocido",
+                "price": 44.99,
+                "stock": 19,
+                "snippet": "",
+                "score": 3.0134
+              },
+              {
+                "product_id": "B07VDY6DT9",
+                "title": "Auriculares Bluetooth 5.0, HOMSCAM Impermeable Auriculares Inalámbricos Bluetooth QCY HiFi Mini Twins Estéreo…",
+                "brand": "HOMSCAM",
+                "color": "Negro",
+                "price": 41.99,
+                "stock": 28,
+                "snippet": "[Sonido superior y cancelación de sonido] Adopta el chip profesional de Realtek y un diafragma biológico para mejorar el sonido, nuestros auriculares inalámbri…",
+                "score": 2.7571
+              },
+              {
+                "product_id": "B0811T76R8",
+                "title": "Auriculares Inalámbricos Bluetooth 5.0 con Caja de Carga Rápida, HIFI Estéreo Auriculares con HD Mic, Auricul…",
+                "brand": "EETZ",
+                "color": "white",
+                "price": 24.99,
+                "stock": 35,
+                "snippet": "【Última Bluetooth 5.0 y excelente batería】Nuestros auriculares inalámbricos adoptan tecnología Bluetooth 5.0 avanzada y tecnología de antena, consumo de energí…",
+                "score": 2.6162
+              },
+              {
+                "product_id": "B081N9X9LR",
+                "title": "fghdjjfdh Auriculares Bluetooth, Auriculares Bluetooth Inalámbricos Mini Estéreo In-Ear Bluetooth 5.0 con Mic…",
+                "brand": "sduasoduaosi",
+                "color": "desconocido",
+                "price": 55.99,
+                "stock": 40,
+                "snippet": "🎼【BLUETOOTH 5.0 y función táctil】 Los auriculares Bluetooth que vende hacen uso de la última tecnología Bluetooth 5.0 y de los componentes más avanzados. Son c…",
+                "score": 2.4802
+              }
+            ],
+            "n": 5
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      },
+      {
+        "name": "add_to_cart",
+        "args": {
+          "product_id": "B081C31KV4",
+          "qty": 1
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "added": {
+              "product_id": "B081C31KV4",
+              "title": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en…",
+              "qty": 1,
+              "unit_price": 51.99
+            },
+            "cart": {
+              "items": [
+                {
+                  "product_id": "B081C31KV4",
+                  "title": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres con Caja de Carga Portátil para Airpods Android/iPhone (Rosa1)",
+                  "brand": "Mgrett",
+                  "qty": 1,
+                  "unit_price": 51.99,
+                  "line_total": 51.99,
+                  "stock": 38
+                }
+              ],
+              "total": 51.99,
+              "budget": null,
+              "remaining": null,
+              "currency": "EUR"
+            }
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  }
+]

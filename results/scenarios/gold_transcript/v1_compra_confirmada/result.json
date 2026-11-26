@@ -1,0 +1,1115 @@
+{
+  "id": "v1_compra_confirmada",
+  "title": "Voz: compra que cumple las restricciones y termina en pedido confirmado",
+  "category": "voz_compra",
+  "voice": true,
+  "input_mode": "gold_transcript",
+  "passed": true,
+  "checks": [
+    {
+      "check": {
+        "type": "order_count",
+        "n": 1
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=1"
+    },
+    {
+      "check": {
+        "type": "cart_total_le_budget"
+      },
+      "ok": true,
+      "detail": "max_total=14.97 presupuesto=40.0"
+    },
+    {
+      "check": {
+        "type": "budget_preserved",
+        "value": 40
+      },
+      "ok": true,
+      "detail": "presupuesto=40.0"
+    },
+    {
+      "check": {
+        "type": "stock_consistent"
+      },
+      "ok": true,
+      "detail": "inconsistencias=0 negativos=0"
+    },
+    {
+      "check": {
+        "type": "no_duplicate_orders"
+      },
+      "ok": true,
+      "detail": "duplicados=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [
+    {
+      "hook": {
+        "type": "set_stock_last_result",
+        "rank": 0,
+        "stock": 20
+      },
+      "pids": [
+        "B08KH65GW5"
+      ],
+      "stock": 20,
+      "applied": true,
+      "turn": 1
+    }
+  ],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Busco una botella de agua, mi presupuesto es de cuarenta euros",
+      "user_text": "Busco una botella de agua, mi presupuesto es de cuarenta euros",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v1_t1.wav",
+      "audio_out": null,
+      "reply": "He añadido una botella de agua a tu carrito. El precio es de 4,99 EUR. ¿Confirmas el pedido?",
+      "ops": [
+        {
+          "name": "set_budget",
+          "args": {
+            "amount": 40.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "budget": 40.0,
+              "cart_total": 0,
+              "cart_exceeds_budget": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        },
+        {
+          "name": "search_products",
+          "args": {
+            "query": "botella agua",
+            "max_price": 40
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "botella agua",
+              "filters": {
+                "max_price": 40.0
+              },
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B08KH65GW5",
+                  "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueb…",
+                  "brand": "MYSdd",
+                  "color": "Gray-a98",
+                  "price": 4.99,
+                  "stock": 20,
+                  "snippet": "The sports bottle is made of durable BPA-free PE, PS and food-safe silicone, plastic, drop-proof, scratch-proof, leak-proof, environmentally friendly, easy to…",
+                  "score": 4.7835
+                },
+                {
+                  "product_id": "B08MWVY9WN",
+                  "title": "Desconocido Aperture Test Subject Portal Water Bottle CO170 Botella de Agua Stainless Steel Funny Insulated 5…",
+                  "brand": "Desconocido",
+                  "color": "620",
+                  "price": 6.99,
+                  "stock": 39,
+                  "snippet": "✓ AISLAMIENTO AL VACÍO: La botella de agua tiene doble pared y aislamiento al vacío, lo que mantiene su bebida favorita fría durante 24 horas o caliente durant…",
+                  "score": 4.4048
+                },
+                {
+                  "product_id": "B08NDNBT84",
+                  "title": "Botella de Agua para Deportes Calientes 500ML 1000ML Coctelera de proteínas Viajes al Aire Libre Portátil Vas…",
+                  "brand": "MYSdd",
+                  "color": "Green-a530",
+                  "price": 8.99,
+                  "stock": 8,
+                  "snippet": "The sports bottle is made of durable BPA-free PE, PS and food-safe silicone, plastic, drop-proof, scratch-proof, leak-proof, environmentally friendly, easy to…",
+                  "score": 4.1874
+                },
+                {
+                  "product_id": "B08MQB6JTJ",
+                  "title": "Botella de Agua Infusor para Frutas y Verduras, Botella Reutilizable 650/800 ml con Filtro para Disfrutar del…",
+                  "brand": "WeightWorld",
+                  "color": "desconocido",
+                  "price": 10.99,
+                  "stock": 17,
+                  "snippet": "✔ BOTELLA DE AGUA INFUSORA DE FRUTAS - Nuestra botella de agua es perfecta para hacer deliciosas agua de frutas que sean ricas en vitaminas y minerales de esta…",
+                  "score": 4.1046
+                },
+                {
+                  "product_id": "B09DFTCQQM",
+                  "title": "BAIAA Botellas Agua para Deportes, 35 Oz / 1 Litro, Botella Agua con Marcador Tiempo, Filtro Infusor Frutas S…",
+                  "brand": "BAIAA",
+                  "color": "Purple Pink",
+                  "price": 7.99,
+                  "stock": 24,
+                  "snippet": "DISEÑO MOTIVACIONAL ÚNICO: la botella de agua está hecha especialmente con citas inspiradoras y marcadores de tiempo para recordarle que aumente su ingesta dia…",
+                  "score": 3.5754
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B08KH65GW5",
+            "qty": 1
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B08KH65GW5",
+                "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Beb…",
+                "qty": 1,
+                "unit_price": 4.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B08KH65GW5",
+                    "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+                    "brand": "MYSdd",
+                    "qty": 1,
+                    "unit_price": 4.99,
+                    "line_total": 4.99,
+                    "stock": 20
+                  }
+                ],
+                "total": 4.99,
+                "budget": 40.0,
+                "remaining": 35.01,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00001",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B08KH65GW5",
+                  "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+                  "qty": 1,
+                  "unit_price": 4.99,
+                  "line_total": 4.99,
+                  "stock_at_quote": 20
+                }
+              ],
+              "subtotal": 4.99,
+              "total": 4.99,
+              "currency": "EUR",
+              "budget": 40.0,
+              "valid": true,
+              "problems": [],
+              "stock_version": 0,
+              "created_at": 1795648099.416641
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una botella de agua, mi presupuesto es de cuarenta euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "He añadido una botella de agua a tu carrito. El precio es de 4,99 EUR. ¿Confirmas el pedido?"
+          }
+        ],
+        "budget": 40.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre ",
+            "qty": 1,
+            "product_id": "B08KH65GW5",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "botella agua": [
+            "B08KH65GW5",
+            "B08MWVY9WN",
+            "B08NDNBT84",
+            "B08MQB6JTJ",
+            "B09DFTCQQM"
+          ]
+        },
+        "last_result_list": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "seen_product_ids": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "qty": 1,
+              "unit_price": 4.99,
+              "line_total": 4.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 4.99,
+          "total": 4.99,
+          "currency": "EUR",
+          "budget": 40.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648099.416641
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "brand": "MYSdd",
+              "qty": 1,
+              "unit_price": 4.99,
+              "line_total": 4.99,
+              "stock": 20
+            }
+          ],
+          "total": 4.99,
+          "budget": 40.0,
+          "remaining": 35.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 10.7393,
+        "retrieval_s": 0.2693,
+        "tools_s": 0.0007,
+        "total_s": 11.0107,
+        "agent_s": 11.010931260999314
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Añade dos unidades del primero al carrito",
+      "user_text": "Añade dos unidades del primero al carrito",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v1_t2.wav",
+      "audio_out": null,
+      "reply": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una botella de agua, mi presupuesto es de cuarenta euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "He añadido una botella de agua a tu carrito. El precio es de 4,99 EUR. ¿Confirmas el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": 40.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre ",
+            "qty": 1,
+            "product_id": "B08KH65GW5",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "botella agua": [
+            "B08KH65GW5",
+            "B08MWVY9WN",
+            "B08NDNBT84",
+            "B08MQB6JTJ",
+            "B09DFTCQQM"
+          ]
+        },
+        "last_result_list": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "seen_product_ids": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "qty": 1,
+              "unit_price": 4.99,
+              "line_total": 4.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 4.99,
+          "total": 4.99,
+          "currency": "EUR",
+          "budget": 40.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648099.416641
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "anade 2 unidades del primero al carrito",
+        "turn_index": 2,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "brand": "MYSdd",
+              "qty": 1,
+              "unit_price": 4.99,
+              "line_total": 4.99,
+              "stock": 20
+            }
+          ],
+          "total": 4.99,
+          "budget": 40.0,
+          "remaining": 35.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.0005496200001289253
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v1_t3.wav",
+      "audio_out": null,
+      "reply": "¿En qué más puedo ayudarte?",
+      "ops": [
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B08KH65GW5",
+            "qty": 2
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B08KH65GW5",
+                "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Beb…",
+                "qty": 2,
+                "unit_price": 4.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B08KH65GW5",
+                    "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+                    "brand": "MYSdd",
+                    "qty": 3,
+                    "unit_price": 4.99,
+                    "line_total": 14.97,
+                    "stock": 20
+                  }
+                ],
+                "total": 14.97,
+                "budget": 40.0,
+                "remaining": 25.03,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "update_cart_quantity",
+          "args": {
+            "product_id": "B08KH65GW5",
+            "qty": 3
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "product_id": "B08KH65GW5",
+              "old_qty": 3,
+              "qty": 3,
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B08KH65GW5",
+                    "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+                    "brand": "MYSdd",
+                    "qty": 3,
+                    "unit_price": 4.99,
+                    "line_total": 14.97,
+                    "stock": 20
+                  }
+                ],
+                "total": 14.97,
+                "budget": 40.0,
+                "remaining": 25.03,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una botella de agua, mi presupuesto es de cuarenta euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "He añadido una botella de agua a tu carrito. El precio es de 4,99 EUR. ¿Confirmas el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿En qué más puedo ayudarte?"
+          }
+        ],
+        "budget": 40.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre ",
+            "qty": 3,
+            "product_id": "B08KH65GW5",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "botella agua": [
+            "B08KH65GW5",
+            "B08MWVY9WN",
+            "B08NDNBT84",
+            "B08MQB6JTJ",
+            "B09DFTCQQM"
+          ]
+        },
+        "last_result_list": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "seen_product_ids": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "qty": 1,
+              "unit_price": 4.99,
+              "line_total": 4.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 4.99,
+          "total": 4.99,
+          "currency": "EUR",
+          "budget": 40.0,
+          "valid": false,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795648099.416641,
+          "invalidated": "cantidad modificada"
+        },
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "brand": "MYSdd",
+              "qty": 3,
+              "unit_price": 4.99,
+              "line_total": 14.97,
+              "stock": 20
+            }
+          ],
+          "total": 14.97,
+          "budget": 40.0,
+          "remaining": 25.03,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 9.0663,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0005,
+        "total_s": 9.0677,
+        "agent_s": 9.067980767000336
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 3,
+      "user_gold": "Prepara la cotización",
+      "user_text": "Prepara la cotización",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v1_t4.wav",
+      "audio_out": null,
+      "reply": "Tu carrito tiene un total de 14,97 EUR. ¿Confirma el pedido?",
+      "ops": [
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00002",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B08KH65GW5",
+                  "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+                  "qty": 3,
+                  "unit_price": 4.99,
+                  "line_total": 14.97,
+                  "stock_at_quote": 20
+                }
+              ],
+              "subtotal": 14.97,
+              "total": 14.97,
+              "currency": "EUR",
+              "budget": 40.0,
+              "valid": true,
+              "problems": [],
+              "stock_version": 1,
+              "created_at": 1795648114.1235287
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una botella de agua, mi presupuesto es de cuarenta euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "He añadido una botella de agua a tu carrito. El precio es de 4,99 EUR. ¿Confirmas el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿En qué más puedo ayudarte?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene un total de 14,97 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 40.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre ",
+            "qty": 3,
+            "product_id": "B08KH65GW5",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "botella agua": [
+            "B08KH65GW5",
+            "B08MWVY9WN",
+            "B08NDNBT84",
+            "B08MQB6JTJ",
+            "B09DFTCQQM"
+          ]
+        },
+        "last_result_list": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "seen_product_ids": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "qty": 3,
+              "unit_price": 4.99,
+              "line_total": 14.97,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 14.97,
+          "total": 14.97,
+          "currency": "EUR",
+          "budget": 40.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795648114.1235287
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 4,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "brand": "MYSdd",
+              "qty": 3,
+              "unit_price": 4.99,
+              "line_total": 14.97,
+              "stock": 20
+            }
+          ],
+          "total": 14.97,
+          "budget": 40.0,
+          "remaining": 25.03,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 5.7715,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0004,
+        "total_s": 5.7729,
+        "agent_s": 5.773201678000078
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 4,
+      "user_gold": "Sí, confirmo el pedido",
+      "user_text": "Sí, confirmo el pedido",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v1_t5.wav",
+      "audio_out": null,
+      "reply": "¡Listo! Pedido O00001 registrado por 14,97 euros. Inventario actualizado. ¿Necesitas algo más?",
+      "ops": [
+        {
+          "name": "confirm_order",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "order": {
+                "order_id": "O00001",
+                "quote_id": "Q00002",
+                "idempotency_key": "Q00002",
+                "cart_id": "c1",
+                "total": 14.97,
+                "status": "confirmado",
+                "currency": "EUR",
+                "lines": [
+                  {
+                    "product_id": "B08KH65GW5",
+                    "qty": 3,
+                    "unit_price": 4.99,
+                    "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris"
+                  }
+                ]
+              },
+              "duplicate": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una botella de agua, mi presupuesto es de cuarenta euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "He añadido una botella de agua a tu carrito. El precio es de 4,99 EUR. ¿Confirmas el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿En qué más puedo ayudarte?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene un total de 14,97 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Sí, confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 14,97 euros. Inventario actualizado. ¿Necesitas algo más?"
+          }
+        ],
+        "budget": 40.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre ",
+            "qty": 3,
+            "product_id": "B08KH65GW5",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "botella agua": [
+            "B08KH65GW5",
+            "B08MWVY9WN",
+            "B08NDNBT84",
+            "B08MQB6JTJ",
+            "B09DFTCQQM"
+          ]
+        },
+        "last_result_list": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "seen_product_ids": [
+          "B08KH65GW5",
+          "B08MWVY9WN",
+          "B08NDNBT84",
+          "B08MQB6JTJ",
+          "B09DFTCQQM"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B08KH65GW5",
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris",
+              "qty": 3,
+              "unit_price": 4.99,
+              "line_total": 14.97,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 14.97,
+          "total": 14.97,
+          "currency": "EUR",
+          "budget": 40.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795648114.1235287
+        },
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00002",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 5,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 40.0,
+          "remaining": 40.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 0.0005,
+        "agent_s": 0.0007180530001278385
+      },
+      "stock_changes": {
+        "B08KH65GW5": [
+          20,
+          17
+        ]
+      },
+      "new_orders": [
+        {
+          "order_id": "O00001",
+          "quote_id": "Q00002",
+          "idempotency_key": "Q00002",
+          "cart_id": "c1",
+          "total": 14.97,
+          "status": "confirmado",
+          "currency": "EUR",
+          "lines": [
+            {
+              "product_id": "B08KH65GW5",
+              "qty": 3,
+              "unit_price": 4.99,
+              "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "new_orders": [
+    {
+      "order_id": "O00001",
+      "quote_id": "Q00002",
+      "idempotency_key": "Q00002",
+      "cart_id": "c1",
+      "total": 14.97,
+      "status": "confirmado",
+      "currency": "EUR",
+      "lines": [
+        {
+          "product_id": "B08KH65GW5",
+          "qty": 3,
+          "unit_price": 4.99,
+          "title": "Botellas de Agua 500/1000 ml Agitador sin BPA al Aire Libre Tour Deportivo Botella de Bebida portátil a Prueba de Fugas Botella de té de Frutas de plástico ecológico - 1500 ml Gris"
+        }
+      ]
+    }
+  ]
+}

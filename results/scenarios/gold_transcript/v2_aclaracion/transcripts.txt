@@ -1,0 +1,6 @@
+[t1] gold: Añade eso al carrito
+     entrada: Añade eso al carrito
+     agente: ¿Qué producto te gustaría añadir al carrito?
+[t2] gold: Busco audífonos bluetooth
+     entrada: Busco audífonos bluetooth
+     agente: Tu carrito ahora contiene 1 artículo: Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres con Caja de Carga Portátil para Airpods Android/iPhone (Rosa1). Total: 51.99 EUR. ¿Cuánto más quieres comprar?

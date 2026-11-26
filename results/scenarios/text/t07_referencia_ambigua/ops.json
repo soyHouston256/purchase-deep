@@ -1,0 +1,22 @@
+[
+  {
+    "turn": 0,
+    "ops": [
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Qué producto te gustaría añadir al carrito?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Qué producto te gustaría añadir al carrito?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  }
+]

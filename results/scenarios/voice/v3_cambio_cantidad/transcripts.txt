@@ -1,0 +1,15 @@
+[t1] gold: Mi presupuesto es de treinta euros, busco un cuaderno
+     entrada: Mi presupuesto es de 30 euros. Busco un cuadrado.
+     agente: ¿Estás seguro de que quieres un cuadro? ¿Te gustaría otro tipo de producto?
+[t2] gold: Añade tres unidades del primero al carrito
+     entrada: Añade tres unidades del primero al carrito.
+     agente: Entendí: comprar 3 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: Sí, es correcto
+     entrada: Sí, es correcto.
+     agente: Encontré: 1) Wallfillers Cuadros en Lienzo Grande Floral Blanco y Negro (marca Wallfillers) a 9,99 euros (agotado); 2) MP - Cuadernos Cuadriculados, Tapa Plástica, Unido en Espiral, (marca MP, color Cuadrícula) a 18,99 euros (27 en stock); 3) SUMGAR Cuadros en Lienzo Mandalas Decoración Salón Dormitorios Baño (marca SUMGAR, color Verde Azulado, 30x30x4pcs) a 14,99 euros (14 en stock). ¿Cuál prefieres?
+[t4] gold: Mejor que sean dos unidades
+     entrada: Mejor que sean dos unidades.
+     agente: Entendí: cambiar la cantidad a 2. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t5] gold: Sí, es correcto
+     entrada: Sí, es correcto.
+     agente: La cotización ha sido generada. Total: 23.95 EUR. ¿Confirma el pedido?

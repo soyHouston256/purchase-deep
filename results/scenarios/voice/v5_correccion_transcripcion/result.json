@@ -1,0 +1,458 @@
+{
+  "id": "v5_correccion_transcripcion",
+  "title": "Voz: corrección de la transcripción antes de ejecutar la compra",
+  "category": "voz_correccion",
+  "voice": true,
+  "input_mode": "voice",
+  "passed": false,
+  "checks": [
+    {
+      "check": {
+        "type": "op_not_called",
+        "name": "add_to_cart",
+        "turn": 1
+      },
+      "ok": true,
+      "detail": "add_to_cart no llamada"
+    },
+    {
+      "check": {
+        "type": "op_not_called",
+        "name": "add_to_cart",
+        "turn": 2
+      },
+      "ok": true,
+      "detail": "add_to_cart no llamada"
+    },
+    {
+      "check": {
+        "type": "qty_of_item",
+        "index": 0,
+        "n": 4
+      },
+      "ok": false,
+      "detail": "cantidad=None"
+    },
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [
+    {
+      "hook": {
+        "type": "set_stock_last_result",
+        "rank": 0,
+        "stock": 20
+      },
+      "pids": [],
+      "stock": 20,
+      "applied": false,
+      "turn": 1
+    }
+  ],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Busco pilas AA",
+      "user_text": "Dos propiles doblea.",
+      "transcript": "Dos propiles doblea.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5836182579996603,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v5_t1.wav",
+      "audio_out": "results/scenarios/voice/v5_correccion_transcripcion/t1_reply.wav",
+      "reply": "Entendí: comprar 2 × «propiles doblea». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Dos propiles doblea.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «propiles doblea». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "2 propiles doblea.",
+        "turn_index": 1,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5836308030002328,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.0004531980002866476,
+        "tts_s": 11.195869129999664
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Añade tres unidades del primero al carrito",
+      "user_text": "Tres unidades del primero al carrito.",
+      "transcript": "Tres unidades del primero al carrito.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.7207896769996296,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v5_t2.wav",
+      "audio_out": "results/scenarios/voice/v5_correccion_transcripcion/t2_reply.wav",
+      "reply": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?",
+      "ops": [
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "primer_producto_id_propiles_doblea",
+            "qty": 3
+          },
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "El producto 'primer_producto_id_propiles_doblea' no existe en el catálogo"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Dos propiles doblea.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «propiles doblea». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Tres unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?"
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 2,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.720804006000435,
+        "llm_s": 7.2271,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 7.228,
+        "agent_s": 7.228249343000243,
+        "tts_s": 5.255693776000044
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "No, quería cuatro unidades",
+      "user_text": "No, quería cuatro unidades.",
+      "transcript": "No, quería cuatro unidades.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.7360469719997127,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v5_t3.wav",
+      "audio_out": "results/scenarios/voice/v5_correccion_transcripcion/t3_reply.wav",
+      "reply": "Lo siento, pero no encontré ese producto en nuestro catálogo.",
+      "ops": [
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "desconocido",
+            "qty": 4
+          },
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "El producto 'desconocido' no existe en el catálogo"
+          },
+          "ok": false,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Dos propiles doblea.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «propiles doblea». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Tres unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "No, quería cuatro unidades.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, pero no encontré ese producto en nuestro catálogo."
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.73606591799944,
+        "llm_s": 6.1968,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 6.1978,
+        "agent_s": 6.1980335910002395,
+        "tts_s": 1.8693591920000472
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 3,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto.",
+      "transcript": "Sí, es correcto.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5514907100005075,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v5_t4.wav",
+      "audio_out": "results/scenarios/voice/v5_correccion_transcripcion/t4_reply.wav",
+      "reply": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+      "ops": [],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Dos propiles doblea.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «propiles doblea». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Tres unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "No encontré el producto 'propiles doblea'. ¿Podrías proporcionarme el nombre exacto o una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "No, quería cuatro unidades.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, pero no encontré ese producto en nuestro catálogo."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso."
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 4,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.551502475000234,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.00047606400039512664,
+        "tts_s": 2.24563117300022
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

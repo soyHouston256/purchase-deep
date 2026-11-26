@@ -1,0 +1,2174 @@
+{
+  "id": "v6_stock_cambia_y_reconfirmacion",
+  "title": "Voz: cambio de stock entre cotización y confirmación, reconfirmación sin duplicar",
+  "category": "voz_idempotencia",
+  "voice": true,
+  "input_mode": "voice",
+  "passed": false,
+  "checks": [
+    {
+      "check": {
+        "type": "reply_contains_any",
+        "turn": 4,
+        "words": [
+          "stock",
+          "existencia",
+          "disponib",
+          "agotad",
+          "quedan"
+        ]
+      },
+      "ok": false,
+      "detail": "no contiene"
+    },
+    {
+      "check": {
+        "type": "order_count",
+        "n": 1
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=1"
+    },
+    {
+      "check": {
+        "type": "no_duplicate_orders"
+      },
+      "ok": true,
+      "detail": "duplicados=0"
+    },
+    {
+      "check": {
+        "type": "stock_consistent"
+      },
+      "ok": true,
+      "detail": "inconsistencias=0 negativos=0"
+    },
+    {
+      "check": {
+        "type": "cart_total_le_budget"
+      },
+      "ok": true,
+      "detail": "max_total=115.99 presupuesto=200.0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [
+    {
+      "hook": {
+        "type": "set_stock_last_result",
+        "rank": 0,
+        "stock": 20
+      },
+      "pids": [
+        "B07QKKW3HZ"
+      ],
+      "stock": 20,
+      "applied": true,
+      "turn": 1
+    },
+    {
+      "hook": {
+        "type": "set_stock_cart_item",
+        "index": 0,
+        "stock": 1
+      },
+      "pids": [
+        "B07QKKW3HZ"
+      ],
+      "stock": 1,
+      "applied": true,
+      "turn": 4
+    }
+  ],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Busco una mochila, mi presupuesto es de doscientos euros",
+      "user_text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+      "transcript": "Busco una mochila. Mi presupuesto es de 200 euros.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.8115176480005175,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t1.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t1_reply.wav",
+      "reply": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?",
+      "ops": [
+        {
+          "name": "set_budget",
+          "args": {
+            "amount": 200.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "budget": 200.0,
+              "cart_total": 0,
+              "cart_exceeds_budget": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        },
+        {
+          "name": "search_products",
+          "args": {
+            "max_price": 200.0
+          },
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'query'"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "search_products",
+          "args": {
+            "query": "mochila",
+            "max_price": 200.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "mochila",
+              "filters": {
+                "max_price": 200.0
+              },
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B07QKKW3HZ",
+                  "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                  "brand": "Vans",
+                  "color": "Negro (Black White)",
+                  "price": 115.99,
+                  "stock": 2,
+                  "snippet": "The old school II backpack 100% Polyester Marca: Vans",
+                  "score": 0.81
+                },
+                {
+                  "product_id": "B07M5GJ39N",
+                  "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable…",
+                  "brand": "Han-Danny",
+                  "color": "Azul",
+                  "price": 14.99,
+                  "stock": 32,
+                  "snippet": "La buena mochila escolar impermeable está hecha de lona resistente y liviana, peso neto: 480 g, con un peso de vacío muy bajo, la mochila garantiza la máxima c…",
+                  "score": 0.6215
+                },
+                {
+                  "product_id": "B07WRHDRNK",
+                  "title": "YONKINY Mochila Portátil Escolares Juveniles Chica Chico Antirrobo USB Mochila de Seguridad 15.6 Pulgadas Ord…",
+                  "brand": "YONKINY",
+                  "color": "Amarillo",
+                  "price": 28.99,
+                  "stock": 34,
+                  "snippet": "Fabricado en tejido de poliéster de alta calidad, impermeable, ligero y transpirable. Tamaño: 47 x 30 x 14 cm. Con un puerto USB externo cargado y un cable int…",
+                  "score": 0.5131
+                },
+                {
+                  "product_id": "B0814KYSDL",
+                  "title": "besrey Mochilas Portabebés Ergonómico con Asiento Puro algodón Ligero y Transpirable Ajustable para bebés de…",
+                  "brand": "besrey",
+                  "color": "Gris",
+                  "price": 20.99,
+                  "stock": 2,
+                  "snippet": "😊【Múltiposición de Transporte】 Nuestra mochila portabebé ofrece 6 formas de llevar el bebé, acompaña el crecimiento del bebé desde la semana 4 hasta los 36 mes…",
+                  "score": 0.4519
+                },
+                {
+                  "product_id": "B01MR6WKBB",
+                  "title": "Vbiger - Mochila Infantil Para Niña, Con Bolsa Para Almuerzo y Bolsito Para El Móvil, Azul Oscuro",
+                  "brand": "VBIGER",
+                  "color": "Azul Oscuro",
+                  "price": 16.99,
+                  "stock": 23,
+                  "snippet": "Bolso de escuela de Nylon impermeable de alta calidad con hilo de coser delicados, proporcionan mayor durabilidad dispositivo 3 en 1, con el diseño con bolsa m…",
+                  "score": 0.4133
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "get_product_details",
+          "args": {
+            "product_id": "B07QKKW3HZ"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "color": "Negro (Black White)",
+              "price": 115.99,
+              "stock": 2,
+              "snippet": "The old school II backpack 100% Polyester Marca: Vans",
+              "attributes": {
+                "marca": "Vans",
+                "color": "Negro (Black White)",
+                "capacidad": "desconocido",
+                "bateria": "desconocido",
+                "potencia": "desconocido",
+                "peso": "desconocido",
+                "tamano": "desconocido",
+                "dimensiones": "desconocido",
+                "longitud": "desconocido",
+                "conectividad": "desconocido",
+                "material": "desconocido",
+                "garantia": "desconocido",
+                "voltaje": "desconocido"
+              },
+              "description": ""
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B07QKKW3HZ",
+            "qty": 1
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B07QKKW3HZ",
+                "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                "qty": 1,
+                "unit_price": 115.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B07QKKW3HZ",
+                    "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                    "brand": "Vans",
+                    "qty": 1,
+                    "unit_price": 115.99,
+                    "line_total": 115.99,
+                    "stock": 2
+                  }
+                ],
+                "total": 115.99,
+                "budget": 200.0,
+                "remaining": 84.01,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00001",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B07QKKW3HZ",
+                  "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                  "qty": 1,
+                  "unit_price": 115.99,
+                  "line_total": 115.99,
+                  "stock_at_quote": 2
+                }
+              ],
+              "subtotal": 115.99,
+              "total": 115.99,
+              "currency": "EUR",
+              "budget": 200.0,
+              "valid": true,
+              "problems": [],
+              "stock_version": 0,
+              "created_at": 1795647950.2983282
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647950.2983282
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 2
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.8115396930006682,
+        "llm_s": 16.7674,
+        "retrieval_s": 0.259,
+        "tools_s": 0.0039,
+        "total_s": 17.0322,
+        "agent_s": 17.03247649700006,
+        "tts_s": 13.995715984000526
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Añade dos unidades del primero al carrito",
+      "user_text": "Añade dos unidades del primero al carrito.",
+      "transcript": "Añade dos unidades del primero al carrito.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5786550579996401,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t2.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t2_reply.wav",
+      "reply": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647950.2983282
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "anade 2 unidades del primero al carrito.",
+        "turn_index": 2,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 20
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5786685109997052,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.0005978119997962494,
+        "tts_s": 5.443960118999712
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto.",
+      "transcript": "Sí, es correcto.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.8,
+        "asr_s": 0.5640644539998902,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t3.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t3_reply.wav",
+      "reply": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?",
+      "ops": [
+        {
+          "name": "update_cart_quantity",
+          "args": {
+            "product_id": "B07QKKW3HZ",
+            "qty": 2
+          },
+          "result": {
+            "ok": false,
+            "data": {
+              "reason": "budget",
+              "product_id": "B07QKKW3HZ",
+              "kept_qty": 1,
+              "max_qty_affordable": 1,
+              "remaining": 200.0
+            },
+            "error": "Con 2 unidades el total excede el presupuesto (231.98 > 200.00 disponible)"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647950.2983282
+        },
+        "pending_confirmation": true,
+        "pending_clarification": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 20
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5640769050005474,
+        "llm_s": 7.1677,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 7.1689,
+        "agent_s": 7.169288494999819,
+        "tts_s": 3.910516529999768
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 3,
+      "user_gold": "Prepara la cotización",
+      "user_text": "Prepara la cotización.",
+      "transcript": "Prepara la cotización.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5572521940002844,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t4.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t4_reply.wav",
+      "reply": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?",
+      "ops": [
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00002",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B07QKKW3HZ",
+                  "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                  "qty": 1,
+                  "unit_price": 115.99,
+                  "line_total": 115.99,
+                  "stock_at_quote": 20
+                }
+              ],
+              "subtotal": 115.99,
+              "total": 115.99,
+              "currency": "EUR",
+              "budget": 200.0,
+              "valid": true,
+              "problems": [],
+              "stock_version": 1,
+              "created_at": 1795647989.3456228
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795647989.3456228
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 4,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 20
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.557265206000011,
+        "llm_s": 8.9682,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 8.9694,
+        "agent_s": 8.969655982999939,
+        "tts_s": 13.819410472000527
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 4,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Quiero el pedido.",
+      "transcript": "Quiero el pedido.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5927017859994521,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t5.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t5_reply.wav",
+      "reply": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Quiero el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795647989.3456228
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 5,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 1
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.592714750999221,
+        "llm_s": 6.2702,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 6.2711,
+        "agent_s": 6.271604681000099,
+        "tts_s": 10.81908840199958
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 5,
+      "user_gold": "Entonces que sea una unidad",
+      "user_text": "Entonces, que sea una unidad.",
+      "transcript": "Entonces, que sea una unidad.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5852249250001478,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t6.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t6_reply.wav",
+      "reply": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Quiero el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces, que sea una unidad.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795647989.3456228
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "entonces, que sea 1 unidad.",
+        "turn_index": 6,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 1
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5852408580003612,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.0007114679992810125,
+        "tts_s": 8.070690499000193
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 6,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto.",
+      "transcript": "Sí, es correcto.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.98,
+        "asr_s": 0.5488995579999028,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t7.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t7_reply.wav",
+      "reply": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Quiero el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces, que sea una unidad.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795647989.3456228
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 7,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 1
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.548911474000306,
+        "llm_s": 6.1724,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 6.1733,
+        "agent_s": 6.173626131000674,
+        "tts_s": 13.919485191000604
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 7,
+      "user_gold": "Prepara la cotización",
+      "user_text": "Se prepara la cotización.",
+      "transcript": "Se prepara la cotización.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.92,
+        "asr_s": 0.6023926309999297,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t8.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t8_reply.wav",
+      "reply": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Quiero el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces, que sea una unidad.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Se prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795647989.3456228
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 8,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 1
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.6024065299998256,
+        "llm_s": 6.9325,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 6.9332,
+        "agent_s": 6.9336285790004695,
+        "tts_s": 13.836526328000218
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 8,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Confirmo el pedido.",
+      "transcript": "Confirmo el pedido.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.92,
+        "asr_s": 0.5675593429996297,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t9.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t9_reply.wav",
+      "reply": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?",
+      "ops": [
+        {
+          "name": "confirm_order",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "order": {
+                "order_id": "O00001",
+                "quote_id": "Q00002",
+                "idempotency_key": "Q00002",
+                "cart_id": "c1",
+                "total": 115.99,
+                "status": "confirmado",
+                "currency": "EUR",
+                "lines": [
+                  {
+                    "product_id": "B07QKKW3HZ",
+                    "qty": 1,
+                    "unit_price": 115.99,
+                    "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+                  }
+                ]
+              },
+              "duplicate": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Quiero el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces, que sea una unidad.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Se prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795647989.3456228
+        },
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00002",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 9,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5675719729997581,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0003,
+        "total_s": 0.0005,
+        "agent_s": 0.0008834169993860996,
+        "tts_s": 5.406608563000191
+      },
+      "stock_changes": {
+        "B07QKKW3HZ": [
+          1,
+          0
+        ]
+      },
+      "new_orders": [
+        {
+          "order_id": "O00001",
+          "quote_id": "Q00002",
+          "idempotency_key": "Q00002",
+          "cart_id": "c1",
+          "total": 115.99,
+          "status": "confirmado",
+          "currency": "EUR",
+          "lines": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "qty": 1,
+              "unit_price": 115.99,
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "turn": 9,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Confirmo el pedido.",
+      "transcript": "Confirmo el pedido.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.98,
+        "asr_s": 0.5644496970007822,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v6_t10.wav",
+      "audio_out": "results/scenarios/voice/v6_stock_cambia_y_reconfirmacion/t10_reply.wav",
+      "reply": "El pedido O00001 ya estaba registrado por 115,99 euros; no se ha duplicado.",
+      "ops": [
+        {
+          "name": "confirm_order",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "order": {
+                "order_id": "O00001",
+                "quote_id": "Q00002",
+                "idempotency_key": "Q00002",
+                "cart_id": "c1",
+                "total": 115.99,
+                "status": "confirmado",
+                "currency": "EUR",
+                "lines": [
+                  {
+                    "product_id": "B07QKKW3HZ",
+                    "qty": 1,
+                    "unit_price": 115.99,
+                    "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+                  }
+                ]
+              },
+              "duplicate": true
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila. Mi presupuesto es de 200 euros.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu mochila Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro ha sido añadida al carrito. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto actual. ¿Deseas agregar más productos o cambiar alguna cantidad?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Quiero el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces, que sea una unidad.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Se prepara la cotización.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito tiene 1 x Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro por 115,99 EUR. Total: 115,99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El pedido O00001 ya estaba registrado por 115,99 euros; no se ha duplicado."
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 20
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 1,
+          "created_at": 1795647989.3456228
+        },
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00002",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 10,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5644638529993244,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 0.0003,
+        "agent_s": 0.0006692389997624559,
+        "tts_s": 5.734248230000048
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": [
+    {
+      "order_id": "O00001",
+      "quote_id": "Q00002",
+      "idempotency_key": "Q00002",
+      "cart_id": "c1",
+      "total": 115.99,
+      "status": "confirmado",
+      "currency": "EUR",
+      "lines": [
+        {
+          "product_id": "B07QKKW3HZ",
+          "qty": 1,
+          "unit_price": 115.99,
+          "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+[t1] gold: Busco un cuaderno
+     entrada: Busco un cuaderno
+     agente: Tu cuaderno Oxford A5 está en tu carrito. El total es 3,99 EUR. ¿Confirma el pedido?
+[t2] gold: ¿El primero es resistente al agua?
+     entrada: ¿El primero es resistente al agua?
+     agente: ¿Qué cuaderno específico quieres que sea resistente al agua?

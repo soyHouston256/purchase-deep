@@ -1,0 +1,9 @@
+[t1] gold: Mi presupuesto es de 30 euros
+     entrada: Mi presupuesto es de 30 euros
+     agente: Lo siento, necesito que me proporciones un monto válido para tu presupuesto.
+[t2] gold: Busco una mochila
+     entrada: Busco una mochila
+     agente: Cotización Q00001: 1 × Danny®lona mochila Vintage colorida banda escuela para (14,99 euros c/u). Total: 14,99 euros (presupuesto 30,00 euros). ¿Confirmas el pedido?
+[t3] gold: Mejor sube mi presupuesto a 60 euros
+     entrada: Mejor sube mi presupuesto a 60 euros
+     agente: ¿Puedes darme más detalles?

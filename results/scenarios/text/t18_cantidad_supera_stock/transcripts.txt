@@ -1,0 +1,6 @@
+[t1] gold: Busco una botella de agua
+     entrada: Busco una botella de agua
+     agente: La botella de agua ha sido añadida al carrito. El costo total es de 4,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade cinco unidades del primero al carrito
+     entrada: Añade cinco unidades del primero al carrito
+     agente: El carrito ahora contiene 5 unidades del producto B08KNWLHN8 y 1 unidad del producto B08KH65GW5. El costo total es de 29,94 EUR. ¿Confirma el pedido?

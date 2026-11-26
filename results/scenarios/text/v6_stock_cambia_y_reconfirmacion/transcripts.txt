@@ -1,0 +1,30 @@
+[t1] gold: Busco una mochila, mi presupuesto es de doscientos euros
+     entrada: Busco una mochila, mi presupuesto es de doscientos euros
+     agente: El total de tu compra es 115.99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade dos unidades del primero al carrito
+     entrada: Añade dos unidades del primero al carrito
+     agente: Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: Sí, es correcto
+     entrada: Sí, es correcto
+     agente: El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?
+[t4] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: ¿Qué producto quieres actualizar a 2 unidades?
+[t5] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: ¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?
+[t6] gold: Entonces que sea una unidad
+     entrada: Entonces que sea una unidad
+     agente: Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t7] gold: Sí, es correcto
+     entrada: Sí, es correcto
+     agente: Entendido, la cantidad será 1 unidad. ¿Es correcto continuar?
+[t8] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: ¿Cuál producto te gustaría buscar?
+[t9] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: ¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.
+[t10] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: ¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.

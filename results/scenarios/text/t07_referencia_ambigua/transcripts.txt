@@ -1,0 +1,3 @@
+[t1] gold: Añade eso al carrito
+     entrada: Añade eso al carrito
+     agente: ¿Qué producto te gustaría añadir al carrito?

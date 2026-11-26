@@ -1,0 +1,3 @@
+[t1] gold: Quiero comprar algo
+     entrada: Quiero comprar algo
+     agente: ¿Qué producto te gustaría comprar?

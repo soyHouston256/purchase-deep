@@ -1,0 +1,371 @@
+{
+  "id": "v2_aclaracion",
+  "title": "Voz: solicitud ambigua que requiere aclaración",
+  "category": "voz_aclaracion",
+  "voice": true,
+  "input_mode": "voice",
+  "passed": true,
+  "checks": [
+    {
+      "check": {
+        "type": "clarification_asked",
+        "turn": 0
+      },
+      "ok": true,
+      "detail": "aclaración"
+    },
+    {
+      "check": {
+        "type": "op_not_called",
+        "name": "add_to_cart",
+        "turn": 0
+      },
+      "ok": true,
+      "detail": "add_to_cart no llamada"
+    },
+    {
+      "check": {
+        "type": "op_called",
+        "name": "search_products",
+        "turn": 1
+      },
+      "ok": true,
+      "detail": "search_products llamada"
+    },
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Añade eso al carrito",
+      "user_text": "Añade eso al carrito.",
+      "transcript": "Añade eso al carrito.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.7382761959997879,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v2_t1.wav",
+      "audio_out": "results/scenarios/voice/v2_aclaracion/t1_reply.wav",
+      "reply": "¿Qué producto te gustaría añadir al carrito?",
+      "ops": [
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Qué producto te gustaría añadir al carrito?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Qué producto te gustaría añadir al carrito?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Añade eso al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto te gustaría añadir al carrito?"
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "¿Qué producto te gustaría añadir al carrito?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.7382913009996628,
+        "llm_s": 1.8644,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 1.8652,
+        "agent_s": 1.865491122000094,
+        "tts_s": 1.2999678239993955
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Busco audífonos bluetooth",
+      "user_text": "Busco abdífonos Bluetooth.",
+      "transcript": "Busco abdífonos Bluetooth.",
+      "asr_info": {
+        "language": "es",
+        "language_probability": 1,
+        "duration_s": 4.74,
+        "asr_s": 0.5624018529997556,
+        "model": "small"
+      },
+      "audio_in": "voice/scenarios/v2_t2.wav",
+      "audio_out": "results/scenarios/voice/v2_aclaracion/t2_reply.wav",
+      "reply": "Tu carrito ahora contiene 1 artículo: Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres con Caja de Carga Portátil para Airpods Android/iPhone (Rosa1). Total: 51.99 EUR. ¿Quieres añadir algo más?",
+      "ops": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "abdifonos bluetooth"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "abdifonos bluetooth",
+              "filters": {},
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B081C31KV4",
+                  "title": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres…",
+                  "brand": "Mgrett",
+                  "color": "Rosa1",
+                  "price": 51.99,
+                  "stock": 38,
+                  "snippet": "Compatibilidad universal: Mini auriculares estéreo inalámbricos blanco Bluetooth 5.0 Micrófono universal Compatible con la mayoría de los dispositivos Auricula…",
+                  "score": 2.2487
+                },
+                {
+                  "product_id": "B08M9NQ54G",
+                  "title": "APROTII Amplificador de voz, 25 W 2000 mAh con auriculares de micrófono,Pa sistema Bluetooth Recargable Ampli…",
+                  "brand": "APROTII",
+                  "color": "Inalámbrico",
+                  "price": 90.99,
+                  "stock": 27,
+                  "snippet": "La salida de sonido de 25 W amplía tu voz y te salva la garganta. El sonido es claro, sin ruido y ninguna distorsión es lo suficientemente fuerte como para cub…",
+                  "score": 0.9718
+                },
+                {
+                  "product_id": "B081N9X9LR",
+                  "title": "fghdjjfdh Auriculares Bluetooth, Auriculares Bluetooth Inalámbricos Mini Estéreo In-Ear Bluetooth 5.0 con Mic…",
+                  "brand": "sduasoduaosi",
+                  "color": "desconocido",
+                  "price": 55.99,
+                  "stock": 40,
+                  "snippet": "🎼【BLUETOOTH 5.0 y función táctil】 Los auriculares Bluetooth que vende hacen uso de la última tecnología Bluetooth 5.0 y de los componentes más avanzados. Son c…",
+                  "score": 0.2823
+                },
+                {
+                  "product_id": "B07VDY6DT9",
+                  "title": "Auriculares Bluetooth 5.0, HOMSCAM Impermeable Auriculares Inalámbricos Bluetooth QCY HiFi Mini Twins Estéreo…",
+                  "brand": "HOMSCAM",
+                  "color": "Negro",
+                  "price": 41.99,
+                  "stock": 28,
+                  "snippet": "[Sonido superior y cancelación de sonido] Adopta el chip profesional de Realtek y un diafragma biológico para mejorar el sonido, nuestros auriculares inalámbri…",
+                  "score": 0.2762
+                },
+                {
+                  "product_id": "B07C1ZPN8D",
+                  "title": "Nobsound Preamplificador de audio estéreo HiFi 6J2 con Bluetooth (negro)",
+                  "brand": "Nobsound",
+                  "color": "negro",
+                  "price": 36.99,
+                  "stock": 33,
+                  "snippet": "Preamplificador de tubo con Bluetooth, práctico para mejorar tu calidad de sonido La entrada de señal de audio puede ser ordenador, CD, teléfono y reproductor…",
+                  "score": 0.257
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B081C31KV4",
+            "qty": 1
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B081C31KV4",
+                "title": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en…",
+                "qty": 1,
+                "unit_price": 51.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B081C31KV4",
+                    "title": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres con Caja de Carga Portátil para Airpods Android/iPhone (Rosa1)",
+                    "brand": "Mgrett",
+                    "qty": 1,
+                    "unit_price": 51.99,
+                    "line_total": 51.99,
+                    "stock": 38
+                  }
+                ],
+                "total": 51.99,
+                "budget": null,
+                "remaining": null,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Añade eso al carrito.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto te gustaría añadir al carrito?"
+          },
+          {
+            "role": "user",
+            "text": "Busco abdífonos Bluetooth.",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Tu carrito ahora contiene 1 artículo: Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres con Caja de Carga Portátil para Airpods Android/iPhone (Rosa1). Total: 51.99 EUR. ¿Quieres añadir algo más?"
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inal",
+            "qty": 1,
+            "product_id": "B081C31KV4",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "abdifonos bluetooth": [
+            "B081C31KV4",
+            "B08M9NQ54G",
+            "B081N9X9LR",
+            "B07VDY6DT9",
+            "B07C1ZPN8D"
+          ]
+        },
+        "last_result_list": [
+          "B081C31KV4",
+          "B08M9NQ54G",
+          "B081N9X9LR",
+          "B07VDY6DT9",
+          "B07C1ZPN8D"
+        ],
+        "seen_product_ids": [
+          "B081C31KV4",
+          "B08M9NQ54G",
+          "B081N9X9LR",
+          "B07VDY6DT9",
+          "B07C1ZPN8D"
+        ],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 2,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B081C31KV4",
+              "title": "Auriculares Bluetooth, 5.0 Auriculares Bluetooth In Ear Inalámbricos Auricular Estéreo en Oreja Manos Libres con Caja de Carga Portátil para Airpods Android/iPhone (Rosa1)",
+              "brand": "Mgrett",
+              "qty": 1,
+              "unit_price": 51.99,
+              "line_total": 51.99,
+              "stock": 38
+            }
+          ],
+          "total": 51.99,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.5624131710001166,
+        "llm_s": 13.6252,
+        "retrieval_s": 0.2659,
+        "tools_s": 0.0004,
+        "total_s": 13.8929,
+        "agent_s": 13.89318730299965,
+        "tts_s": 16.08701241200015
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

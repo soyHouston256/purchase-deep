@@ -1,0 +1,12 @@
+[t1] gold: Busco una funda para móvil
+     entrada: Busco una funda para móvil
+     agente: Encontré: 1) LeYi Funda Huawei P30 Lite con 2-Unidades Cristal Vidrio (marca LeYi, color Huawei P30 lite Antigolpes Transparent) a 17,99 euros (27 en stock); 2) JASBON iPhone X Móvil, iPhone X Silicona Funda Carcasa (marca JASBON, color Rosa) a 97,99 euros (13 en stock); 3) JASBON iPhone X Móvil, iPhone X Silicona Funda Carcasa (marca JASBON, color rojo) a 60,99 euros (24 en stock). ¿Cuál prefieres?
+[t2] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: No pude completar la operación: Falta el argumento obligatorio 'product_id'.
+[t3] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: No pude completar la operación: Falta el argumento obligatorio 'product_id'. ¿Confirmas el pedido?
+[t4] gold: No, mejor no lo confirmes todavía
+     entrada: No, mejor no lo confirmes todavía
+     agente: Entendido, prepararé la cotización. ¿Hay otro producto que buscas o quieres añadir algo al carrito?

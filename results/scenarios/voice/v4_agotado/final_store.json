@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+  "stock_version": 1,
+  "carts": {
+    "c1": [
+      {
+        "product_id": "B08P36BRPM",
+        "qty": 1
+      }
+    ]
+  },
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 19.99,
+      "valid": true
+    }
+  ],
+  "orders": [],
+  "stock": {
+    "B08P36BRPM": 0
+  }
+}

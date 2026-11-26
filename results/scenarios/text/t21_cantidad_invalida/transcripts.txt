@@ -1,0 +1,6 @@
+[t1] gold: Busco pilas AA
+     entrada: Busco pilas AA
+     agente: Tu compra de 10 pilas AA de POWEROWL cuesta 49.90 EUR. ¿Confirma el pedido?
+[t2] gold: Añade cero unidades del primero al carrito
+     entrada: Añade cero unidades del primero al carrito
+     agente: Tu pedido de 10x B087Q5TSBJ POWEROWL Combo de Pilas Alcalinas AA 4.99 ha sido confirmado. El total es 49.90 EUR.

@@ -11,7 +11,7 @@ pytest>=7.0
 
 # voz y evaluación
 faster-whisper>=1.1,<1.2      # ASR (CTranslate2)
-coqui-tts>=0.26,<0.27         # XTTS-v2 (licencia CPML, uso no comercial); fija su propio rango de transformers
+coqui-tts>=0.27.2,<0.29       # XTTS-v2 (licencia CPML, uso no comercial); 0.27+ soporta Python 3.13 (Colab)
 speechbrain>=1.0,<1.1         # embeddings ECAPA para similitud de voz
 soundfile>=0.12
 torchaudio                    # preinstalado en Colab (remuestreo)

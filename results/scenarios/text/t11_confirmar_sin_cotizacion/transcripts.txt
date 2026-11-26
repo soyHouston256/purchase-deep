@@ -1,0 +1,3 @@
+[t1] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: ¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.

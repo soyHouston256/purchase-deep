@@ -1,0 +1,35 @@
+{
+  "seed": 42,
+  "stock_version": 2,
+  "carts": {},
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 8.99,
+      "valid": true
+    }
+  ],
+  "orders": [
+    {
+      "order_id": "O00001",
+      "quote_id": "Q00001",
+      "idempotency_key": "Q00001",
+      "cart_id": "c1",
+      "total": 8.99,
+      "status": "confirmado",
+      "currency": "EUR",
+      "lines": [
+        {
+          "product_id": "B08R7QF49P",
+          "qty": 1,
+          "unit_price": 8.99,
+          "title": "Moozy Lifestyle. Funda para Samsung S20 FE, Verde Oscuro - Cover Carcasa de Silicona Líquida con Acabado Mate y Forro de Microfibra Suave"
+        }
+      ]
+    }
+  ],
+  "stock": {
+    "B07W545TBG": 20,
+    "B08R7QF49P": 37
+  }
+}

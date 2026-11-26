@@ -1,0 +1,18 @@
+[t1] gold: Tengo un presupuesto de 100 euros
+     entrada: Tengo un presupuesto de 100 euros
+     agente: No pude completar la operación: Falta el argumento obligatorio 'amount'.
+[t2] gold: Busco un ratón inalámbrico
+     entrada: Busco un ratón inalámbrico
+     agente: El ratón inalámbrico TOYAMI está en tu carrito. El costo es 11,99 EUR. ¿Confirma el pedido?
+[t3] gold: Compara el primero y el segundo
+     entrada: Compara el primero y el segundo
+     agente: ¿Cuáles son los IDs de los productos que deseas comparar?
+[t4] gold: Añade dos unidades del primero al carrito
+     entrada: Añade dos unidades del primero al carrito
+     agente: ¿Cuál es el ID del Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajusta que deseas añadir al carrito?
+[t5] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: El carrito contiene 1x Ratón Inalámbrico Recargable, Ratón Bluetooth 5.0 dpi Ajusta. Total: 11.99 EUR. ¿Confirma el pedido?
+[t6] gold: Sí, confirmo
+     entrada: Sí, confirmo
+     agente: ¡Listo! Pedido O00001 registrado por 11,99 euros. Inventario actualizado. ¿Necesitas algo más?

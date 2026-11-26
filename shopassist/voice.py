@@ -51,6 +51,23 @@ def _has_cuda() -> bool:
 # ---------------------------------------------------------------------------
 # ASR
 # ---------------------------------------------------------------------------
+def _patch_av_open() -> None:
+    """faster-whisper 1.1 llama ``av.open(..., metadata_errors=...)``, opción que PyAV >= 14 quitó."""
+    try:
+        import av
+    except ImportError:
+        return
+    if getattr(av.open, "_compat", False):
+        return
+    _orig = av.open
+
+    def _open(*args, metadata_errors=None, **kwargs):
+        return _orig(*args, **kwargs)
+
+    _open._compat = True
+    av.open = _open
+
+
 class ASR:
     """Reconocimiento de voz en español con faster-whisper.
 
@@ -86,6 +103,7 @@ class ASR:
         if self._model is None:
             from faster_whisper import WhisperModel  # import perezoso
 
+            _patch_av_open()
             t0 = time.perf_counter()
             self._model = WhisperModel(
                 self.model_size, device=self.device, compute_type=self.compute_type

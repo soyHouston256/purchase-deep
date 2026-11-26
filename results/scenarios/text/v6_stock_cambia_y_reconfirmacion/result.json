@@ -1,0 +1,2059 @@
+{
+  "id": "v6_stock_cambia_y_reconfirmacion",
+  "title": "Voz: cambio de stock entre cotización y confirmación, reconfirmación sin duplicar",
+  "category": "voz_idempotencia",
+  "voice": true,
+  "input_mode": "text",
+  "passed": false,
+  "checks": [
+    {
+      "check": {
+        "type": "reply_contains_any",
+        "turn": 4,
+        "words": [
+          "stock",
+          "existencia",
+          "disponib",
+          "agotad",
+          "quedan"
+        ]
+      },
+      "ok": false,
+      "detail": "no contiene"
+    },
+    {
+      "check": {
+        "type": "order_count",
+        "n": 1
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=1"
+    },
+    {
+      "check": {
+        "type": "no_duplicate_orders"
+      },
+      "ok": true,
+      "detail": "duplicados=0"
+    },
+    {
+      "check": {
+        "type": "stock_consistent"
+      },
+      "ok": true,
+      "detail": "inconsistencias=0 negativos=0"
+    },
+    {
+      "check": {
+        "type": "cart_total_le_budget"
+      },
+      "ok": true,
+      "detail": "max_total=115.99 presupuesto=200.0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [
+    {
+      "hook": {
+        "type": "set_stock_last_result",
+        "rank": 0,
+        "stock": 20
+      },
+      "pids": [
+        "B07QKKW3HZ"
+      ],
+      "stock": 20,
+      "applied": true,
+      "turn": 1
+    },
+    {
+      "hook": {
+        "type": "set_stock_cart_item",
+        "index": 0,
+        "stock": 1
+      },
+      "pids": [
+        "B07QKKW3HZ"
+      ],
+      "stock": 1,
+      "applied": true,
+      "turn": 4
+    }
+  ],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Busco una mochila, mi presupuesto es de doscientos euros",
+      "user_text": "Busco una mochila, mi presupuesto es de doscientos euros",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t1.wav",
+      "audio_out": null,
+      "reply": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?",
+      "ops": [
+        {
+          "name": "set_budget",
+          "args": {
+            "amount": 200.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "budget": 200.0,
+              "cart_total": 0,
+              "cart_exceeds_budget": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        },
+        {
+          "name": "search_products",
+          "args": {
+            "query": "mochila",
+            "max_price": 200
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "mochila",
+              "filters": {
+                "max_price": 200.0
+              },
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B07QKKW3HZ",
+                  "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                  "brand": "Vans",
+                  "color": "Negro (Black White)",
+                  "price": 115.99,
+                  "stock": 2,
+                  "snippet": "The old school II backpack 100% Polyester Marca: Vans",
+                  "score": 0.81
+                },
+                {
+                  "product_id": "B07M5GJ39N",
+                  "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable…",
+                  "brand": "Han-Danny",
+                  "color": "Azul",
+                  "price": 14.99,
+                  "stock": 32,
+                  "snippet": "La buena mochila escolar impermeable está hecha de lona resistente y liviana, peso neto: 480 g, con un peso de vacío muy bajo, la mochila garantiza la máxima c…",
+                  "score": 0.6215
+                },
+                {
+                  "product_id": "B07WRHDRNK",
+                  "title": "YONKINY Mochila Portátil Escolares Juveniles Chica Chico Antirrobo USB Mochila de Seguridad 15.6 Pulgadas Ord…",
+                  "brand": "YONKINY",
+                  "color": "Amarillo",
+                  "price": 28.99,
+                  "stock": 34,
+                  "snippet": "Fabricado en tejido de poliéster de alta calidad, impermeable, ligero y transpirable. Tamaño: 47 x 30 x 14 cm. Con un puerto USB externo cargado y un cable int…",
+                  "score": 0.5131
+                },
+                {
+                  "product_id": "B0814KYSDL",
+                  "title": "besrey Mochilas Portabebés Ergonómico con Asiento Puro algodón Ligero y Transpirable Ajustable para bebés de…",
+                  "brand": "besrey",
+                  "color": "Gris",
+                  "price": 20.99,
+                  "stock": 2,
+                  "snippet": "😊【Múltiposición de Transporte】 Nuestra mochila portabebé ofrece 6 formas de llevar el bebé, acompaña el crecimiento del bebé desde la semana 4 hasta los 36 mes…",
+                  "score": 0.4519
+                },
+                {
+                  "product_id": "B01MR6WKBB",
+                  "title": "Vbiger - Mochila Infantil Para Niña, Con Bolsa Para Almuerzo y Bolsito Para El Móvil, Azul Oscuro",
+                  "brand": "VBIGER",
+                  "color": "Azul Oscuro",
+                  "price": 16.99,
+                  "stock": 23,
+                  "snippet": "Bolso de escuela de Nylon impermeable de alta calidad con hilo de coser delicados, proporcionan mayor durabilidad dispositivo 3 en 1, con el diseño con bolsa m…",
+                  "score": 0.4133
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B07QKKW3HZ",
+            "qty": 1,
+            "need": "budget"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B07QKKW3HZ",
+                "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                "qty": 1,
+                "unit_price": 115.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B07QKKW3HZ",
+                    "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                    "brand": "Vans",
+                    "qty": 1,
+                    "unit_price": 115.99,
+                    "line_total": 115.99,
+                    "stock": 2
+                  }
+                ],
+                "total": 115.99,
+                "budget": 200.0,
+                "remaining": 84.01,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00001",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B07QKKW3HZ",
+                  "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                  "qty": 1,
+                  "unit_price": 115.99,
+                  "line_total": 115.99,
+                  "stock_at_quote": 2
+                }
+              ],
+              "subtotal": 115.99,
+              "total": 115.99,
+              "currency": "EUR",
+              "budget": 200.0,
+              "valid": true,
+              "problems": [],
+              "stock_version": 0,
+              "created_at": 1795647624.7448683
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "view_cart",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "items": [
+                {
+                  "product_id": "B07QKKW3HZ",
+                  "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+                  "brand": "Vans",
+                  "qty": 1,
+                  "unit_price": 115.99,
+                  "line_total": 115.99,
+                  "stock": 2
+                }
+              ],
+              "total": 115.99,
+              "budget": 200.0,
+              "remaining": 84.01,
+              "currency": "EUR"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647624.7448683
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 2
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 12.74,
+        "retrieval_s": 0.2455,
+        "tools_s": 0.0008,
+        "total_s": 12.9878,
+        "agent_s": 12.988063628000418
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Añade dos unidades del primero al carrito",
+      "user_text": "Añade dos unidades del primero al carrito",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t2.wav",
+      "audio_out": null,
+      "reply": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647624.7448683
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": true,
+        "pending_utterance": "anade 2 unidades del primero al carrito",
+        "turn_index": 2,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 20
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.0005275920002532075
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t3.wav",
+      "audio_out": null,
+      "reply": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?",
+      "ops": [
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B07QKKW3HZ",
+            "qty": 2
+          },
+          "result": {
+            "ok": false,
+            "data": {
+              "reason": "budget",
+              "product_id": "B07QKKW3HZ",
+              "line_total": 347.97,
+              "remaining": 200.0,
+              "max_qty_affordable": 1
+            },
+            "error": "Excede el presupuesto: 3 x 115.99 = 347.97 > disponible 200.00"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647624.7448683
+        },
+        "pending_confirmation": true,
+        "pending_clarification": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 20
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 6.7415,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 6.743,
+        "agent_s": 6.743432831999598
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 3,
+      "user_gold": "Prepara la cotización",
+      "user_text": "Prepara la cotización",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t4.wav",
+      "audio_out": null,
+      "reply": "¿Qué producto quieres actualizar a 2 unidades?",
+      "ops": [
+        {
+          "name": "update_cart_quantity",
+          "args": {},
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'product_id'"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Qué producto quieres actualizar a 2 unidades?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Qué producto quieres actualizar a 2 unidades?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto quieres actualizar a 2 unidades?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647624.7448683
+        },
+        "pending_confirmation": true,
+        "pending_clarification": "¿Qué producto quieres actualizar a 2 unidades?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 4,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "brand": "Vans",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock": 20
+            }
+          ],
+          "total": 115.99,
+          "budget": 200.0,
+          "remaining": 84.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 4.0587,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 4.0597,
+        "agent_s": 4.0600144370000635
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 4,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Confirmo el pedido",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t5.wav",
+      "audio_out": null,
+      "reply": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?",
+      "ops": [
+        {
+          "name": "confirm_order",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "order": {
+                "order_id": "O00001",
+                "quote_id": "Q00001",
+                "idempotency_key": "Q00001",
+                "cart_id": "c1",
+                "total": 115.99,
+                "status": "confirmado",
+                "currency": "EUR",
+                "lines": [
+                  {
+                    "product_id": "B07QKKW3HZ",
+                    "qty": 1,
+                    "unit_price": 115.99,
+                    "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+                  }
+                ]
+              },
+              "duplicate": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto quieres actualizar a 2 unidades?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647624.7448683
+        },
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00001",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 5,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 0.0004,
+        "agent_s": 0.0007490890002372907
+      },
+      "stock_changes": {
+        "B07QKKW3HZ": [
+          1,
+          0
+        ]
+      },
+      "new_orders": [
+        {
+          "order_id": "O00001",
+          "quote_id": "Q00001",
+          "idempotency_key": "Q00001",
+          "cart_id": "c1",
+          "total": 115.99,
+          "status": "confirmado",
+          "currency": "EUR",
+          "lines": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "qty": 1,
+              "unit_price": 115.99,
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "turn": 5,
+      "user_gold": "Entonces que sea una unidad",
+      "user_text": "Entonces que sea una unidad",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t6.wav",
+      "audio_out": null,
+      "reply": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto quieres actualizar a 2 unidades?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces que sea una unidad",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647624.7448683
+        },
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00001",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": true,
+        "pending_utterance": "entonces que sea 1 unidad",
+        "turn_index": 6,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0002,
+        "agent_s": 0.0005222070003583212
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 6,
+      "user_gold": "Sí, es correcto",
+      "user_text": "Sí, es correcto",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t7.wav",
+      "audio_out": null,
+      "reply": "Entendido, la cantidad será 1 unidad. ¿Es correcto continuar?",
+      "ops": [],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto quieres actualizar a 2 unidades?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces que sea una unidad",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendido, la cantidad será 1 unidad. ¿Es correcto continuar?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07QKKW3HZ",
+              "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro",
+              "qty": 1,
+              "unit_price": 115.99,
+              "line_total": 115.99,
+              "stock_at_quote": 2
+            }
+          ],
+          "subtotal": 115.99,
+          "total": 115.99,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647624.7448683
+        },
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00001",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 7,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 3.2802,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 3.281,
+        "agent_s": 3.2814996039996913
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 7,
+      "user_gold": "Prepara la cotización",
+      "user_text": "Prepara la cotización",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t8.wav",
+      "audio_out": null,
+      "reply": "¿Cuál producto te gustaría buscar?",
+      "ops": [
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": false,
+            "data": {
+              "quote_id": "Q00002",
+              "cart_id": "c1",
+              "items": [],
+              "subtotal": 0,
+              "total": 0,
+              "currency": "EUR",
+              "budget": 200.0,
+              "valid": false,
+              "problems": [
+                {
+                  "type": "empty_cart",
+                  "detail": "El carrito está vacío"
+                }
+              ],
+              "stock_version": 3,
+              "created_at": 1795647646.0242357
+            },
+            "error": "La cotización tiene problemas: El carrito está vacío"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "search_products",
+          "args": {
+            "max_price": 200,
+            "k": 1
+          },
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'query'"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Cuál producto te gustaría buscar?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Cuál producto te gustaría buscar?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto quieres actualizar a 2 unidades?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces que sea una unidad",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendido, la cantidad será 1 unidad. ¿Es correcto continuar?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Cuál producto te gustaría buscar?"
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [],
+          "subtotal": 0,
+          "total": 0,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": false,
+          "problems": [
+            {
+              "type": "empty_cart",
+              "detail": "El carrito está vacío"
+            }
+          ],
+          "stock_version": 3,
+          "created_at": 1795647646.0242357
+        },
+        "pending_confirmation": false,
+        "pending_clarification": "¿Cuál producto te gustaría buscar?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00001",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 8,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 5.9164,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 5.9175,
+        "agent_s": 5.918046436000623
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 8,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Confirmo el pedido",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t9.wav",
+      "audio_out": null,
+      "reply": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+      "ops": [],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto quieres actualizar a 2 unidades?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces que sea una unidad",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendido, la cantidad será 1 unidad. ¿Es correcto continuar?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Cuál producto te gustaría buscar?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso."
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [],
+          "subtotal": 0,
+          "total": 0,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": false,
+          "problems": [
+            {
+              "type": "empty_cart",
+              "detail": "El carrito está vacío"
+            }
+          ],
+          "stock_version": 3,
+          "created_at": 1795647646.0242357
+        },
+        "pending_confirmation": false,
+        "pending_clarification": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00001",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 9,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.0008839909996822826
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 9,
+      "user_gold": "Confirmo el pedido",
+      "user_text": "Confirmo el pedido",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": "voice/scenarios/v6_t10.wav",
+      "audio_out": null,
+      "reply": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+      "ops": [],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Busco una mochila, mi presupuesto es de doscientos euros",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El total de tu compra es 115.99 EUR. ¿Confirma el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Añade dos unidades del primero al carrito",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: añadir 2 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "El producto está fuera del presupuesto. ¿Deseas buscar una alternativa?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué producto quieres actualizar a 2 unidades?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¡Listo! Pedido O00001 registrado por 115,99 euros. Inventario actualizado. ¿Necesitas algo más?"
+          },
+          {
+            "role": "user",
+            "text": "Entonces que sea una unidad",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendí: cambiar la cantidad a 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»)."
+          },
+          {
+            "role": "user",
+            "text": "Sí, es correcto",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "Entendido, la cantidad será 1 unidad. ¿Es correcto continuar?"
+          },
+          {
+            "role": "user",
+            "text": "Prepara la cotización",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Cuál producto te gustaría buscar?"
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso."
+          },
+          {
+            "role": "user",
+            "text": "Confirmo el pedido",
+            "source": "voice"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso."
+          }
+        ],
+        "budget": 200.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "budget",
+            "qty": 1,
+            "product_id": "B07QKKW3HZ",
+            "status": "pedido"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07QKKW3HZ",
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB"
+          ]
+        },
+        "last_result_list": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "seen_product_ids": [
+          "B07QKKW3HZ",
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB"
+        ],
+        "last_quote": {
+          "quote_id": "Q00002",
+          "cart_id": "c1",
+          "items": [],
+          "subtotal": 0,
+          "total": 0,
+          "currency": "EUR",
+          "budget": 200.0,
+          "valid": false,
+          "problems": [
+            {
+              "type": "empty_cart",
+              "detail": "El carrito está vacío"
+            }
+          ],
+          "stock_version": 3,
+          "created_at": 1795647646.0242357
+        },
+        "pending_confirmation": false,
+        "pending_clarification": "¿Qué deseas confirmar? Todavía no hay ninguna compra en curso.",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": "O00001",
+        "last_order_quote_id": "Q00001",
+        "confirmed_order_ids": [
+          "O00001"
+        ],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 10,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 200.0,
+          "remaining": 200.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 0.0,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0,
+        "total_s": 0.0003,
+        "agent_s": 0.002950604000034218
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": [
+    {
+      "order_id": "O00001",
+      "quote_id": "Q00001",
+      "idempotency_key": "Q00001",
+      "cart_id": "c1",
+      "total": 115.99,
+      "status": "confirmado",
+      "currency": "EUR",
+      "lines": [
+        {
+          "product_id": "B07QKKW3HZ",
+          "qty": 1,
+          "unit_price": 115.99,
+          "title": "Vans Mochila OLD SKOOL III VN0A3I6RY281 Negro"
+        }
+      ]
+    }
+  ]
+}

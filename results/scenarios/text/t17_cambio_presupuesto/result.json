@@ -1,0 +1,652 @@
+{
+  "id": "t17_cambio_presupuesto",
+  "title": "Cambiar el presupuesto a mitad de la conversación",
+  "category": "cambio",
+  "voice": false,
+  "input_mode": "text",
+  "passed": true,
+  "checks": [
+    {
+      "check": {
+        "type": "budget_preserved",
+        "value": 60
+      },
+      "ok": true,
+      "detail": "presupuesto=60.0"
+    },
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Mi presupuesto es de 30 euros",
+      "user_text": "Mi presupuesto es de 30 euros",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "Lo siento, necesito que me proporciones un monto válido para tu presupuesto.",
+      "ops": [
+        {
+          "name": "set_budget",
+          "args": {
+            "amount": 30.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "budget": 30.0,
+              "cart_total": 0,
+              "cart_exceeds_budget": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        },
+        {
+          "name": "set_budget",
+          "args": {},
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'amount'"
+          },
+          "ok": false,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de 30 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, necesito que me proporciones un monto válido para tu presupuesto."
+          }
+        ],
+        "budget": 30.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {},
+        "last_result_list": [],
+        "seen_product_ids": [],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": 30.0,
+          "remaining": 30.0,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 4.5489,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0001,
+        "total_s": 4.5502,
+        "agent_s": 4.55048608099969
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Busco una mochila",
+      "user_text": "Busco una mochila",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "Cotización Q00001: 1 × Danny®lona mochila Vintage colorida banda escuela para (14,99 euros c/u). Total: 14,99 euros (presupuesto 30,00 euros). ¿Confirmas el pedido?",
+      "ops": [
+        {
+          "name": "search_products",
+          "args": {
+            "max_price": 30.0
+          },
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'query'"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "search_products",
+          "args": {
+            "query": "mochila",
+            "max_price": 30.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "mochila",
+              "filters": {
+                "max_price": 30.0
+              },
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B07M5GJ39N",
+                  "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable…",
+                  "brand": "Han-Danny",
+                  "color": "Azul",
+                  "price": 14.99,
+                  "stock": 32,
+                  "snippet": "La buena mochila escolar impermeable está hecha de lona resistente y liviana, peso neto: 480 g, con un peso de vacío muy bajo, la mochila garantiza la máxima c…",
+                  "score": 0.6215
+                },
+                {
+                  "product_id": "B07WRHDRNK",
+                  "title": "YONKINY Mochila Portátil Escolares Juveniles Chica Chico Antirrobo USB Mochila de Seguridad 15.6 Pulgadas Ord…",
+                  "brand": "YONKINY",
+                  "color": "Amarillo",
+                  "price": 28.99,
+                  "stock": 34,
+                  "snippet": "Fabricado en tejido de poliéster de alta calidad, impermeable, ligero y transpirable. Tamaño: 47 x 30 x 14 cm. Con un puerto USB externo cargado y un cable int…",
+                  "score": 0.5131
+                },
+                {
+                  "product_id": "B0814KYSDL",
+                  "title": "besrey Mochilas Portabebés Ergonómico con Asiento Puro algodón Ligero y Transpirable Ajustable para bebés de…",
+                  "brand": "besrey",
+                  "color": "Gris",
+                  "price": 20.99,
+                  "stock": 2,
+                  "snippet": "😊【Múltiposición de Transporte】 Nuestra mochila portabebé ofrece 6 formas de llevar el bebé, acompaña el crecimiento del bebé desde la semana 4 hasta los 36 mes…",
+                  "score": 0.4519
+                },
+                {
+                  "product_id": "B01MR6WKBB",
+                  "title": "Vbiger - Mochila Infantil Para Niña, Con Bolsa Para Almuerzo y Bolsito Para El Móvil, Azul Oscuro",
+                  "brand": "VBIGER",
+                  "color": "Azul Oscuro",
+                  "price": 16.99,
+                  "stock": 23,
+                  "snippet": "Bolso de escuela de Nylon impermeable de alta calidad con hilo de coser delicados, proporcionan mayor durabilidad dispositivo 3 en 1, con el diseño con bolsa m…",
+                  "score": 0.4133
+                },
+                {
+                  "product_id": "B07QT7935H",
+                  "title": "Mochilas Escolares, COOFIT Mochila Escolares para niñas Mochila Colegio Mochilas de Estudiantes Bolsos de Esc…",
+                  "brand": "COOFIT",
+                  "color": "Rosa",
+                  "price": 14.99,
+                  "stock": 29,
+                  "snippet": "Diseño original de COOFIT : nuestra mochila escolar está diseñada por el diseñador jefe de nuestra marca, que es único en el Amazonas. El material adopta nylon…",
+                  "score": 0.3879
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "view_cart",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "items": [],
+              "total": 0,
+              "budget": 30.0,
+              "remaining": 30.0,
+              "currency": "EUR"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B07M5GJ39N",
+            "qty": 1
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "added": {
+                "product_id": "B07M5GJ39N",
+                "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas liger…",
+                "qty": 1,
+                "unit_price": 14.99
+              },
+              "cart": {
+                "items": [
+                  {
+                    "product_id": "B07M5GJ39N",
+                    "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable Casual mochila tiene 14 pulgadas Laptop escuela bolso mochila Azul",
+                    "brand": "Han-Danny",
+                    "qty": 1,
+                    "unit_price": 14.99,
+                    "line_total": 14.99,
+                    "stock": 32
+                  }
+                ],
+                "total": 14.99,
+                "budget": 30.0,
+                "remaining": 15.01,
+                "currency": "EUR"
+              }
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "view_cart",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "items": [
+                {
+                  "product_id": "B07M5GJ39N",
+                  "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable Casual mochila tiene 14 pulgadas Laptop escuela bolso mochila Azul",
+                  "brand": "Han-Danny",
+                  "qty": 1,
+                  "unit_price": 14.99,
+                  "line_total": 14.99,
+                  "stock": 32
+                }
+              ],
+              "total": 14.99,
+              "budget": 30.0,
+              "remaining": 15.01,
+              "currency": "EUR"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "create_quote",
+          "args": {},
+          "result": {
+            "ok": true,
+            "data": {
+              "quote_id": "Q00001",
+              "cart_id": "c1",
+              "items": [
+                {
+                  "product_id": "B07M5GJ39N",
+                  "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable Casual mochila tiene 14 pulgadas Laptop escuela bolso mochila Azul",
+                  "qty": 1,
+                  "unit_price": 14.99,
+                  "line_total": 14.99,
+                  "stock_at_quote": 32
+                }
+              ],
+              "subtotal": 14.99,
+              "total": 14.99,
+              "currency": "EUR",
+              "budget": 30.0,
+              "valid": true,
+              "problems": [],
+              "stock_version": 0,
+              "created_at": 1795647320.775371
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": false,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de 30 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, necesito que me proporciones un monto válido para tu presupuesto."
+          },
+          {
+            "role": "user",
+            "text": "Busco una mochila",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Cotización Q00001: 1 × Danny®lona mochila Vintage colorida banda escuela para (14,99 euros c/u). Total: 14,99 euros (presupuesto 30,00 euros). ¿Confirmas el pedido?"
+          }
+        ],
+        "budget": 30.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Danny®lona mochila Vintage colorida banda escuela para jóven",
+            "qty": 1,
+            "product_id": "B07M5GJ39N",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB",
+            "B07QT7935H"
+          ]
+        },
+        "last_result_list": [
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB",
+          "B07QT7935H"
+        ],
+        "seen_product_ids": [
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB",
+          "B07QT7935H"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07M5GJ39N",
+              "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable Casual mochila tiene 14 pulgadas Laptop escuela bolso mochila Azul",
+              "qty": 1,
+              "unit_price": 14.99,
+              "line_total": 14.99,
+              "stock_at_quote": 32
+            }
+          ],
+          "subtotal": 14.99,
+          "total": 14.99,
+          "currency": "EUR",
+          "budget": 30.0,
+          "valid": true,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647320.775371
+        },
+        "pending_confirmation": true,
+        "pending_clarification": null,
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 2,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07M5GJ39N",
+              "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable Casual mochila tiene 14 pulgadas Laptop escuela bolso mochila Azul",
+              "brand": "Han-Danny",
+              "qty": 1,
+              "unit_price": 14.99,
+              "line_total": 14.99,
+              "stock": 32
+            }
+          ],
+          "total": 14.99,
+          "budget": 30.0,
+          "remaining": 15.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 11.6073,
+        "retrieval_s": 0.2649,
+        "tools_s": 0.0008,
+        "total_s": 11.8748,
+        "agent_s": 11.875182949000191
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 2,
+      "user_gold": "Mejor sube mi presupuesto a 60 euros",
+      "user_text": "Mejor sube mi presupuesto a 60 euros",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "¿Puedes darme más detalles?",
+      "ops": [
+        {
+          "name": "set_budget",
+          "args": {
+            "amount": 60.0
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "budget": 60.0,
+              "cart_total": 14.99,
+              "cart_exceeds_budget": false
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "guard"
+        },
+        {
+          "name": "set_budget",
+          "args": {},
+          "result": {
+            "ok": false,
+            "data": null,
+            "error": "Falta el argumento obligatorio 'amount'"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Puedes darme más detalles?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Puedes darme más detalles?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Mi presupuesto es de 30 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Lo siento, necesito que me proporciones un monto válido para tu presupuesto."
+          },
+          {
+            "role": "user",
+            "text": "Busco una mochila",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "Cotización Q00001: 1 × Danny®lona mochila Vintage colorida banda escuela para (14,99 euros c/u). Total: 14,99 euros (presupuesto 30,00 euros). ¿Confirmas el pedido?"
+          },
+          {
+            "role": "user",
+            "text": "Mejor sube mi presupuesto a 60 euros",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Puedes darme más detalles?"
+          }
+        ],
+        "budget": 60.0,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [
+          {
+            "need": "Danny®lona mochila Vintage colorida banda escuela para jóven",
+            "qty": 1,
+            "product_id": "B07M5GJ39N",
+            "status": "en_carrito"
+          }
+        ],
+        "last_results": {
+          "mochila": [
+            "B07M5GJ39N",
+            "B07WRHDRNK",
+            "B0814KYSDL",
+            "B01MR6WKBB",
+            "B07QT7935H"
+          ]
+        },
+        "last_result_list": [
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB",
+          "B07QT7935H"
+        ],
+        "seen_product_ids": [
+          "B07M5GJ39N",
+          "B07WRHDRNK",
+          "B0814KYSDL",
+          "B01MR6WKBB",
+          "B07QT7935H"
+        ],
+        "last_quote": {
+          "quote_id": "Q00001",
+          "cart_id": "c1",
+          "items": [
+            {
+              "product_id": "B07M5GJ39N",
+              "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable Casual mochila tiene 14 pulgadas Laptop escuela bolso mochila Azul",
+              "qty": 1,
+              "unit_price": 14.99,
+              "line_total": 14.99,
+              "stock_at_quote": 32
+            }
+          ],
+          "subtotal": 14.99,
+          "total": 14.99,
+          "currency": "EUR",
+          "budget": 30.0,
+          "valid": false,
+          "problems": [],
+          "stock_version": 0,
+          "created_at": 1795647320.775371,
+          "invalidated": "presupuesto modificado"
+        },
+        "pending_confirmation": false,
+        "pending_clarification": "¿Puedes darme más detalles?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 3,
+        "cart": {
+          "items": [
+            {
+              "product_id": "B07M5GJ39N",
+              "title": "Danny®lona mochila Vintage colorida banda escuela para jóvenes adolescentes y niñas ligero lindo impermeable Casual mochila tiene 14 pulgadas Laptop escuela bolso mochila Azul",
+              "brand": "Han-Danny",
+              "qty": 1,
+              "unit_price": 14.99,
+              "line_total": 14.99,
+              "stock": 32
+            }
+          ],
+          "total": 14.99,
+          "budget": 60.0,
+          "remaining": 45.01,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 8.4058,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 8.4069,
+        "agent_s": 8.407236957999885
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "turn": 0,
+    "ops": [
+      {
+        "name": "set_budget",
+        "args": {
+          "amount": 2.0
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "budget": 2.0,
+            "cart_total": 0,
+            "cart_exceeds_budget": false
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "guard"
+      },
+      {
+        "name": "set_budget",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'amount'"
+        },
+        "ok": false,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 1,
+    "ops": [
+      {
+        "name": "search_products",
+        "args": {
+          "query": "mochila",
+          "max_price": 2
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "query": "mochila",
+            "filters": {
+              "max_price": 2.0
+            },
+            "relaxed_filters": [],
+            "results": [],
+            "n": 0
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 2,
+    "ops": [
+      {
+        "name": "add_to_cart",
+        "args": {
+          "product_id": "primer_resultado",
+          "qty": 3
+        },
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "El producto 'primer_resultado' no existe en el catálogo"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "La mochila no existe en el catálogo. ¿Podrías buscar otra opción dentro del presupuesto?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 3,
+    "ops": []
+  },
+  {
+    "turn": 4,
+    "ops": []
+  }
+]

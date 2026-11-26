@@ -244,6 +244,36 @@ def summarize_asr_errors(df) -> dict:
 # ---------------------------------------------------------------------------
 # Semejanza de hablante (ECAPA)
 # ---------------------------------------------------------------------------
+def _patch_hf_hub_download() -> None:
+    """speechbrain 1.0 pasa ``use_auth_token`` a ``hf_hub_download``; huggingface_hub >= 1.0 ya no lo acepta."""
+    import huggingface_hub
+    if getattr(huggingface_hub.hf_hub_download, "_compat", False):
+        return
+    try:  # la original vive en file_download; así no se envuelve dos veces
+        from huggingface_hub.file_download import hf_hub_download as _orig
+    except ImportError:
+        _orig = huggingface_hub.hf_hub_download
+
+    def _dl(*args, use_auth_token=None, **kwargs):
+        if use_auth_token not in (None, False) and "token" not in kwargs:
+            kwargs["token"] = use_auth_token
+        try:
+            return _orig(*args, **kwargs)
+        except Exception as e:  # el hub nuevo lanza RemoteEntryNotFoundError; speechbrain espera ValueError
+            if "EntryNotFound" in type(e).__name__:
+                raise ValueError("File not found on HF hub") from e
+            raise
+
+    _dl._compat = True
+    huggingface_hub.hf_hub_download = _dl
+    try:
+        import speechbrain.utils.fetching as sbf
+        if hasattr(sbf, "hf_hub_download"):
+            sbf.hf_hub_download = _dl
+    except Exception:
+        pass
+
+
 class SpeakerEncoder:
     """Embeddings de hablante con SpeechBrain ECAPA-TDNN (VoxCeleb, 192-d)."""
 
@@ -256,7 +286,12 @@ class SpeakerEncoder:
     def load(self):
         if self._clf is None:
             import torch
+            import torchaudio
 
+            # torchaudio >= 2.9 quitó list_audio_backends, que speechbrain 1.0 llama al importarse
+            if not hasattr(torchaudio, "list_audio_backends"):
+                torchaudio.list_audio_backends = lambda: ["soundfile"]
+            _patch_hf_hub_download()
             try:
                 from speechbrain.inference.speaker import EncoderClassifier
             except ImportError:  # speechbrain < 1.0

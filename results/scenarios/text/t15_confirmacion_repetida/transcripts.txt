@@ -1,0 +1,15 @@
+[t1] gold: Busco un cargador usb c
+     entrada: Busco un cargador usb c
+     agente: Tu carrito vale 11.99 EUR. ¿Quieres confirmar el pedido?
+[t2] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: Tu carrito vale 23.98 EUR. ¿Quieres confirmar el pedido?
+[t3] gold: Prepara la cotización
+     entrada: Prepara la cotización
+     agente: Tu carrito vale 23.98 EUR. ¿Quieres confirmar el pedido?
+[t4] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: ¡Listo! Pedido O00001 registrado por 23,98 euros. Inventario actualizado. ¿Necesitas algo más?
+[t5] gold: Confirmo el pedido
+     entrada: Confirmo el pedido
+     agente: El pedido O00001 ya estaba registrado por 23,98 euros; no se ha duplicado.

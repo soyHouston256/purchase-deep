@@ -1,0 +1,23 @@
+{
+  "seed": 42,
+  "stock_version": 0,
+  "carts": {
+    "c1": [
+      {
+        "product_id": "B07VDY6DT9",
+        "qty": 1
+      }
+    ]
+  },
+  "quotes": [
+    {
+      "quote_id": "Q00001",
+      "total": 41.99,
+      "valid": true
+    }
+  ],
+  "orders": [],
+  "stock": {
+    "B07VDY6DT9": 28
+  }
+}

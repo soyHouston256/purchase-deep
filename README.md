@@ -7,6 +7,21 @@ Todo corre dentro de Google Colab, sin APIs externas de inferencia.
 
 Notebook principal: **`Laboratorio4_Asistente_Compras_Voz.ipynb`** (generado por `scripts/build_notebook.py`, igual que `Demo_Tienda_Real.ipynb`).
 
+## Entrega
+
+| Qué | Dónde |
+|---|---|
+| Notebook **ejecutado en Colab (T4)**, con todas las salidas | `Laboratorio4_Asistente_Compras_Voz_ejecutado.ipynb` |
+| Notebook limpio para volver a ejecutar | `Laboratorio4_Asistente_Compras_Voz.ipynb` |
+| Resultados, 5 aciertos, 5 fallos y limitaciones | **`RESULTADOS.md`** |
+| Tablas generadas por el notebook | `results/REPORTE_auto.md`, `results/*.csv`, `results/*.png` |
+| Escenarios: audios, transcripciones, operaciones y estado final de la tienda | `results/scenarios/<modo>/<id>/` |
+| Calidad de voz, latencia y demo por voz | `results/voice_quality/`, `results/latency/`, `results/voice_demo/` |
+| Voz de referencia (voz propia de un integrante) | `voice/referencia.wav` + `voice/referencia.txt` |
+| Video explicativo (19:41) | Formulario de entrega |
+
+Los datos ESCI (`data/`) no se versionan: el notebook los descarga en A1.
+
 ## 1. Ejecución en Colab paso a paso
 
 1. Comprime la carpeta del proyecto como `purchase.zip` y súbela a `MyDrive/` (o publica el repo y pon su URL en `REPO_URL`).
@@ -16,7 +31,7 @@ Notebook principal: **`Laboratorio4_Asistente_Compras_Voz.ipynb`** (generado por
 5. **Parte C · Medirlo**: C1 nDCG@10 · C2 los 28 escenarios · C3 métricas y errores del ASR · C4 calidad de voz · C5 tiempos · C6 aciertos y fallos · C7 escribe `results/REPORTE_auto.md`.
 6. Las funciones auxiliares del notebook están en `shopassist/notebook_utils.py`.
 7. La demo opcional con la tienda real está en un notebook aparte: `Demo_Tienda_Real.ipynb`.
-8. Completa la plantilla de la §8 (o `REPORTE.md`) con los números de `results/REPORTE_auto.md` y el análisis cualitativo.
+8. Los números de la ejecución entregada y el análisis cualitativo están en `RESULTADOS.md`.
 
 Sin GPU (o para depurar) puede usarse `USE_LLM = False` en A4: el agente usa su política basada en reglas.
 
@@ -25,7 +40,8 @@ Pruebas locales (sin modelos pesados): `python -m pytest -q`.
 ## 2. Versiones
 
 Ver `requirements.txt` (secciones `# core` y `# voz y evaluación`). Probado con Python 3.11/3.12 (Colab),
-`torch` preinstalado en Colab (CUDA 12), `faster-whisper 1.1.x`, `coqui-tts 0.26.x`, `speechbrain 1.0.x`, `jiwer 3.x`.
+`torch` preinstalado en Colab (CUDA 12), `faster-whisper 1.1.x`, `coqui-tts 0.27+` (0.26 no instala en Python 3.13, que es el que trae Colab hoy), `speechbrain 1.0.x`, `jiwer 3.x`.
+`shopassist/voice.py` y `shopassist/voice_eval.py` incluyen ajustes de compatibilidad para PyAV ≥ 14, torchaudio ≥ 2.9 y huggingface_hub ≥ 1.0.
 
 ## 3. Modelos y justificación
 

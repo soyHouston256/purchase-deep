@@ -1,0 +1,183 @@
+[
+  {
+    "turn": 0,
+    "ops": [
+      {
+        "name": "search_products",
+        "args": {
+          "query": "raton da lambrico",
+          "k": 5
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "query": "raton da lambrico",
+            "filters": {},
+            "relaxed_filters": [],
+            "results": [
+              {
+                "product_id": "B08P36BRPM",
+                "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Rató…",
+                "brand": "INPHIC",
+                "color": "plata",
+                "price": 19.99,
+                "stock": 35,
+                "snippet": "RATÓN BLUETOOTH 5.0: Se conecta directamente a computadoras portátiles o PC con capacidad Bluetooth, no necesita receptor. 1. Encienda la función Bluetooth de…",
+                "score": 1.5543
+              },
+              {
+                "product_id": "B089K72ZV3",
+                "title": "WisFox Ratón Inalambrico, 2.4G Ergonómico Antideslizante Inalámbrico Ratón de Computadora Ratón Laptop Ratón…",
+                "brand": "WisFox",
+                "color": "Gris",
+                "price": 16.99,
+                "stock": 29,
+                "snippet": "3 SWITCH AJUSTABLE DE DPI & ENCHUFE Y JUEGA: Nuestro ratón inalámbrico ergonómico para PC tiene configuraciones de 3 niveles de DPI (800/1200/1600). Controle l…",
+                "score": 1.4242
+              },
+              {
+                "product_id": "B01MPY7FEI",
+                "title": "TECKNET Ratón Inalámbrico Mini, 2.4G Mouse Inalámbrico con Diseño Ergonómico Compatible con Laptop, PC, Orden…",
+                "brand": "TECKNET",
+                "color": "Gris",
+                "price": 29.99,
+                "stock": 10,
+                "snippet": "Ratón inalámbrico Mini: elegante perfil ultra delgado que complementa su escritorio. Puede llevar el mini ratón inalámbrico donde lleve su computadora portátil…",
+                "score": 1.4172
+              },
+              {
+                "product_id": "B07YWC8NLR",
+                "title": "Alfombrilla De Ratón De Dibujos Animados,Astronauta Niño Y Zorro Sosteniendo Globos De Colores En El Cielo co…",
+                "brand": "D.T.G Mouse Pad",
+                "color": "As Picture",
+                "price": 14.99,
+                "stock": 4,
+                "snippet": "🎮 Descripción del diseño:9.8 pulgadas de ancho x 11.8 pulgadas de largo y 3 mm de espesor.Impresión de ancho completo DIY,impresión a una cara. 🎮 Descripción d…",
+                "score": 1.3589
+              },
+              {
+                "product_id": "B07PHJT7BD",
+                "title": "VOXON Omni Mini Ratón Bluetooth Silencioso Mouse Inalámbrico Portátil Mouse Bluetooth Optical, 4 Botones (3 d…",
+                "brand": "VOXON",
+                "color": "desconocido",
+                "price": 37.99,
+                "stock": 18,
+                "snippet": "Diseñado para ser de tamaño de bolsillo: puedes llevar el mouse a cualquier lugar; Lleve su computadora portátil con su diseño compacto de bolsillo (102 * 61.8…",
+                "score": 1.1042
+              }
+            ],
+            "n": 5
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      },
+      {
+        "name": "add_to_cart",
+        "args": {
+          "product_id": "B08P36BRPM",
+          "qty": 1
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "added": {
+              "product_id": "B08P36BRPM",
+              "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 80…",
+              "qty": 1,
+              "unit_price": 19.99
+            },
+            "cart": {
+              "items": [
+                {
+                  "product_id": "B08P36BRPM",
+                  "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+                  "brand": "INPHIC",
+                  "qty": 1,
+                  "unit_price": 19.99,
+                  "line_total": 19.99,
+                  "stock": 35
+                }
+              ],
+              "total": 19.99,
+              "budget": null,
+              "remaining": null,
+              "currency": "EUR"
+            }
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      },
+      {
+        "name": "create_quote",
+        "args": {},
+        "result": {
+          "ok": true,
+          "data": {
+            "quote_id": "Q00001",
+            "cart_id": "c1",
+            "items": [
+              {
+                "product_id": "B08P36BRPM",
+                "title": "INPHIC Ratón Bluetooth, Ratón Inalámbrico Bluetooth 5.0 Delgado Silencioso Recargable, 800/1200/1600 dpi Ratón Inalámbrico para Computadora Portátil para Laptop PC Mac, iPadOS, Plateado",
+                "qty": 1,
+                "unit_price": 19.99,
+                "line_total": 19.99,
+                "stock_at_quote": 35
+              }
+            ],
+            "subtotal": 19.99,
+            "total": 19.99,
+            "currency": "EUR",
+            "budget": null,
+            "valid": true,
+            "problems": [],
+            "stock_version": 0,
+            "created_at": 1795647873.6783504
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  },
+  {
+    "turn": 1,
+    "ops": []
+  },
+  {
+    "turn": 2,
+    "ops": [
+      {
+        "name": "add_to_cart",
+        "args": {},
+        "result": {
+          "ok": false,
+          "data": null,
+          "error": "Falta el argumento obligatorio 'product_id'"
+        },
+        "ok": false,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Cuál es el ID del ratón Bluetooth que quieres añadir al carrito?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Cuál es el ID del ratón Bluetooth que quieres añadir al carrito?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  }
+]

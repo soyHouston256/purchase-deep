@@ -1,0 +1,9 @@
+[t1] gold: Mi presupuesto es de 50 euros
+     entrada: Mi presupuesto es de 50 euros
+     agente: No pude completar la operación: Falta el argumento obligatorio 'amount'.
+[t2] gold: Busco audífonos bluetooth
+     entrada: Busco audífonos bluetooth
+     agente: Tu pedido incluye 1 unidad de Auriculares Bluetooth 5.0, HOMSCAM Impermeable Auriculares Inalámbricos Bluetooth QCY HiFi Mini Twins Estéreo In-Ear Bluetooth con Caja de Carga Portátil para iPhone y Android con Micrófonos. El total es 41.99 EUR. ¿Confirma el pedido?
+[t3] gold: Prefiero que sean de color negro
+     entrada: Prefiero que sean de color negro
+     agente: ¿Qué prefieres que sea el color del audífono bluetooth?

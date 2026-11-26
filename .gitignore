@@ -1,0 +1,19 @@
+# Datos ESCI: se descargan solos en A1 (~1 GB)
+data/
+# Modelos descargados por speechbrain / Hugging Face
+pretrained_models/
+# Video final y grabaciones crudas: se entregan por el formulario (pesan cientos de MB)
+video/
+*.mp4
+*.mov
+# Grabaciones originales sin convertir (la referencia usada es voice/referencia.wav)
+voice/*.m4a
+# Archivos comprimidos (zip para subir a Drive, resultados descargados de Colab)
+*.zip
+# Python y pruebas
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+# macOS
+.DS_Store

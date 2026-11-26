@@ -1,0 +1,403 @@
+{
+  "id": "t13_sin_solucion",
+  "title": "Todos los candidatos agotados, se comunica que no hay solución o alternativa",
+  "category": "stock",
+  "voice": false,
+  "input_mode": "text",
+  "passed": true,
+  "checks": [
+    {
+      "check": {
+        "type": "reply_contains_any",
+        "words": [
+          "agotad",
+          "sin stock",
+          "sin existencias",
+          "no hay",
+          "no tenemos",
+          "alternativ",
+          "no dispon",
+          "no qued"
+        ]
+      },
+      "ok": true,
+      "detail": "contiene"
+    },
+    {
+      "check": {
+        "type": "cart_qty_le_stock"
+      },
+      "ok": true,
+      "detail": "excesos=[]"
+    },
+    {
+      "check": {
+        "type": "no_order"
+      },
+      "ok": true,
+      "detail": "pedidos nuevos=0"
+    }
+  ],
+  "violations": {
+    "budget_exceeded": 0,
+    "stock_negative": 0,
+    "order_without_confirmation": 0,
+    "duplicate_orders": 0,
+    "stock_inconsistent": 0
+  },
+  "hooks": [
+    {
+      "hook": {
+        "type": "set_stock_query",
+        "query": "termo de acero inoxidable",
+        "top_k": 30,
+        "stock": 0
+      },
+      "pids": [
+        "B08L1KX5XK",
+        "B0936BZKJ5",
+        "B08MWVY9WN",
+        "B0877FH67C",
+        "B07L3F7L4M",
+        "B098QRKQCQ",
+        "B096XJH6BM",
+        "B06ZZX3PNR",
+        "B094F67FHM",
+        "B01JJADFD0",
+        "B08QJG1D2Q",
+        "B0915W2Z1J",
+        "B07FL5LCZJ",
+        "B08FBCZZJ5",
+        "B07X98SCVH",
+        "B01G9TQIM4",
+        "B098M32ZHL",
+        "B08V3FWVF3",
+        "B07Y9LRYCG",
+        "B081RX5SY6",
+        "B01IHADAHO",
+        "B0091HXKEQ",
+        "B07DV9MR84",
+        "B01M4ITQC1",
+        "B00Z7VLGL4",
+        "B07Z7X9W61",
+        "B09C8BBJ3G",
+        "B074CW6LKM",
+        "B08ZN3WX6M",
+        "B07DY9KDK5"
+      ],
+      "stock": 0,
+      "applied": true
+    }
+  ],
+  "turns": [
+    {
+      "turn": 0,
+      "user_gold": "Quiero comprar un termo de acero inoxidable",
+      "user_text": "Quiero comprar un termo de acero inoxidable",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?",
+      "ops": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "termo acero inoxidable",
+            "max_price": null,
+            "brand": null,
+            "color": "desconocido",
+            "k": 5
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "query": "termo acero inoxidable",
+              "filters": {
+                "color": "desconocido"
+              },
+              "relaxed_filters": [],
+              "results": [
+                {
+                  "product_id": "B08MWVY9WN",
+                  "title": "Desconocido Aperture Test Subject Portal Water Bottle CO170 Botella de Agua Stainless Steel Funny Insulated 5…",
+                  "brand": "Desconocido",
+                  "color": "620",
+                  "price": 6.99,
+                  "stock": 0,
+                  "snippet": "✓ AISLAMIENTO AL VACÍO: La botella de agua tiene doble pared y aislamiento al vacío, lo que mantiene su bebida favorita fría durante 24 horas o caliente durant…",
+                  "score": 0.5213
+                },
+                {
+                  "product_id": "B00KL4OMUE",
+                  "title": "Desconocido Generic 2 Pares práctico Ajustable Longitud Hombres Zapatos árbol Camilla para Soporte",
+                  "brand": "Desconocido",
+                  "color": "Verde",
+                  "price": 33.99,
+                  "stock": 15,
+                  "snippet": "Material: Plástico. Boot Shapers mantener tu vestido Botas, botas de invierno Botas y otros ligero Cuero, ante y piel sintética en forma perfecta cuando no est…",
+                  "score": -999999.9986
+                },
+                {
+                  "product_id": "B07NNRC5PQ",
+                  "title": "Desconocido Avengers: Endgame Movie Póster Foto Cine Marvel 2019 Iron Man Thanos Película Cartel Oficial 017…",
+                  "brand": "Générique",
+                  "color": "multicolor",
+                  "price": 12.99,
+                  "stock": 37,
+                  "snippet": "Fotografía de calidad profesional impresa en papel fotográfico satinado de alta calidad Vendido por Prints4u Liberación A3 – Grande – 12 pulgadas x 17 pulgadas…",
+                  "score": -999999.9994
+                },
+                {
+                  "product_id": "B07BVDHMFN",
+                  "title": "Living Nature AN455 - Peluche de Pastor alemán",
+                  "brand": "Living Nature",
+                  "color": "Desconocido",
+                  "price": 4.99,
+                  "stock": 4,
+                  "snippet": "Juguete premium suave Detallado realista Etiqueta para colgar educativa Regalo perfecto para los amantes de los animales",
+                  "score": -999999.9995
+                },
+                {
+                  "product_id": "B074CK4JKY",
+                  "title": "Desconocido Regalos y Recuerditos para Invitados a Boda",
+                  "brand": "Desconocido",
+                  "color": "desconocido",
+                  "price": 47.99,
+                  "stock": 0,
+                  "snippet": "Son unos regalos y recuerditos de boda de unos espejos de chapa con un diseño muy especial para los invitados a tu enlace matrimonial. No te puedes perder esto…",
+                  "score": -999999.9996
+                }
+              ],
+              "n": 5
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Quiero comprar un termo de acero inoxidable",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?"
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {
+          "termo acero inoxidable": [
+            "B08MWVY9WN",
+            "B00KL4OMUE",
+            "B07NNRC5PQ",
+            "B07BVDHMFN",
+            "B074CK4JKY"
+          ]
+        },
+        "last_result_list": [
+          "B08MWVY9WN",
+          "B00KL4OMUE",
+          "B07NNRC5PQ",
+          "B07BVDHMFN",
+          "B074CK4JKY"
+        ],
+        "seen_product_ids": [
+          "B08MWVY9WN",
+          "B00KL4OMUE",
+          "B07NNRC5PQ",
+          "B07BVDHMFN",
+          "B074CK4JKY"
+        ],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 1,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 6.8336,
+        "retrieval_s": 0.6241,
+        "tools_s": 0.0003,
+        "total_s": 7.4595,
+        "agent_s": 7.459695293000095
+      },
+      "stock_changes": {},
+      "new_orders": []
+    },
+    {
+      "turn": 1,
+      "user_gold": "Añade una unidad del primero al carrito",
+      "user_text": "Añade una unidad del primero al carrito",
+      "transcript": null,
+      "asr_info": {},
+      "audio_in": null,
+      "audio_out": null,
+      "reply": "¿Deseas buscar una alternativa?",
+      "ops": [
+        {
+          "name": "add_to_cart",
+          "args": {
+            "product_id": "B08MWVY9WN",
+            "qty": 1
+          },
+          "result": {
+            "ok": false,
+            "data": {
+              "reason": "stock",
+              "product_id": "B08MWVY9WN",
+              "available": 0,
+              "requested": 1
+            },
+            "error": "Stock insuficiente: disponible 0, solicitado 1"
+          },
+          "ok": false,
+          "by": "llm"
+        },
+        {
+          "name": "ask_clarification",
+          "args": {
+            "question": "¿Deseas buscar una alternativa?"
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "question": "¿Deseas buscar una alternativa?"
+            },
+            "error": null
+          },
+          "ok": true,
+          "by": "llm"
+        }
+      ],
+      "needs_clarification": true,
+      "state": {
+        "cart_id": "c1",
+        "currency": "EUR",
+        "history": [
+          {
+            "role": "user",
+            "text": "Quiero comprar un termo de acero inoxidable",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Estás seguro de que quieres un termo de acero inoxidable? ¿Hay algún otro detalle que desees incluir?"
+          },
+          {
+            "role": "user",
+            "text": "Añade una unidad del primero al carrito",
+            "source": "text"
+          },
+          {
+            "role": "assistant",
+            "text": "¿Deseas buscar una alternativa?"
+          }
+        ],
+        "budget": null,
+        "preferences": {
+          "brand": null,
+          "color": null,
+          "max_unit_price": null,
+          "other": []
+        },
+        "requested_items": [],
+        "last_results": {
+          "termo acero inoxidable": [
+            "B08MWVY9WN",
+            "B00KL4OMUE",
+            "B07NNRC5PQ",
+            "B07BVDHMFN",
+            "B074CK4JKY"
+          ]
+        },
+        "last_result_list": [
+          "B08MWVY9WN",
+          "B00KL4OMUE",
+          "B07NNRC5PQ",
+          "B07BVDHMFN",
+          "B074CK4JKY"
+        ],
+        "seen_product_ids": [
+          "B08MWVY9WN",
+          "B00KL4OMUE",
+          "B07NNRC5PQ",
+          "B07BVDHMFN",
+          "B074CK4JKY"
+        ],
+        "last_quote": null,
+        "pending_confirmation": false,
+        "pending_clarification": "¿Deseas buscar una alternativa?",
+        "pending_alternative": null,
+        "pending_action": null,
+        "last_order_id": null,
+        "last_order_quote_id": null,
+        "confirmed_order_ids": [],
+        "transcript_pending": false,
+        "pending_utterance": null,
+        "turn_index": 2,
+        "cart": {
+          "items": [],
+          "total": 0,
+          "budget": null,
+          "remaining": null,
+          "currency": "EUR"
+        }
+      },
+      "timings": {
+        "asr_s": 0.0,
+        "llm_s": 5.3165,
+        "retrieval_s": 0.0,
+        "tools_s": 0.0002,
+        "total_s": 5.3174,
+        "agent_s": 5.317703597000218
+      },
+      "stock_changes": {},
+      "new_orders": []
+    }
+  ],
+  "new_orders": []
+}

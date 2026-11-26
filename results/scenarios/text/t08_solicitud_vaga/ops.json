@@ -1,0 +1,92 @@
+[
+  {
+    "turn": 0,
+    "ops": [
+      {
+        "name": "search_products",
+        "args": {
+          "query": "algo"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "query": "algo",
+            "filters": {},
+            "relaxed_filters": [],
+            "results": [
+              {
+                "product_id": "0194562360",
+                "title": "All About Us 2. Class Book Pack",
+                "brand": "desconocido",
+                "color": "desconocido",
+                "price": 39.99,
+                "stock": 39,
+                "snippet": "All about us classbook editado por Oxford",
+                "score": -0.6446
+              },
+              {
+                "product_id": "B019K87E9M",
+                "title": "Alma (Biblioteca Carlos Sisí)",
+                "brand": "desconocido",
+                "color": "desconocido",
+                "price": 29.99,
+                "stock": 0,
+                "snippet": "Dos ingenieros que desarrollan un sistema de reconocimiento de voz capaz de detectar sonidos de otra realidad. Una investigadora de lo paranormal que puede ver…",
+                "score": -1.4505
+              },
+              {
+                "product_id": "0194116123",
+                "title": "All About Us 2. Class Book Pack. Andalusian Edition",
+                "brand": "Oxford University Press España, S.A.",
+                "color": "desconocido",
+                "price": 28.99,
+                "stock": 34,
+                "snippet": "All About Us 2º Prim Class Book Libro Del Alumno Oxford University Press España",
+                "score": -1.5444
+              },
+              {
+                "product_id": "1594205582",
+                "title": "Scale: The Universal Laws of Growth, Innovation, Sustainability, and the Pace of Life in Organisms, Cities, E…",
+                "brand": "Libros Tobal",
+                "color": "desconocido",
+                "price": 25.99,
+                "stock": 31,
+                "snippet": "penguin Press",
+                "score": -1.5773
+              },
+              {
+                "product_id": "0194562190",
+                "title": "All About Us 2. Activity Book",
+                "brand": "Oxford University Press España, S.A.",
+                "color": "desconocido",
+                "price": 38.99,
+                "stock": 33,
+                "snippet": "All About Us 2º Prim Activity Book Cuaderno De Actividades Oxford University Press España",
+                "score": -1.8432
+              }
+            ],
+            "n": 5
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      },
+      {
+        "name": "ask_clarification",
+        "args": {
+          "question": "¿Qué producto te gustaría comprar?"
+        },
+        "result": {
+          "ok": true,
+          "data": {
+            "question": "¿Qué producto te gustaría comprar?"
+          },
+          "error": null
+        },
+        "ok": true,
+        "by": "llm"
+      }
+    ]
+  }
+]

@@ -1,0 +1,9 @@
+[t1] gold: Busco un ratón inalámbrico
+     entrada: Busco un ratón inalámbrico
+     agente: El total de tu compra es 11,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade una unidad del primero al carrito
+     entrada: Añade una unidad del primero al carrito
+     agente: Entendí: añadir 1 unidad de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: Sí, es correcto
+     entrada: Sí, es correcto
+     agente: ¿Te gustaría una alternativa?

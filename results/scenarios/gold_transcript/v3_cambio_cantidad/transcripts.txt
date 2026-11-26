@@ -1,0 +1,15 @@
+[t1] gold: Mi presupuesto es de treinta euros, busco un cuaderno
+     entrada: Mi presupuesto es de treinta euros, busco un cuaderno
+     agente: Tu cuaderno de Oxford está listo en tu carrito. El costo es de 3,99 EUR. ¿Confirma el pedido?
+[t2] gold: Añade tres unidades del primero al carrito
+     entrada: Añade tres unidades del primero al carrito
+     agente: Entendí: añadir 3 unidades de la opción 1. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: Sí, es correcto
+     entrada: Sí, es correcto
+     agente: ¿Podrías proporcionar el ID del producto que deseas añadir?
+[t4] gold: Mejor que sean dos unidades
+     entrada: Mejor que sean dos unidades
+     agente: Entendí: cambiar la cantidad a 2. ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t5] gold: Sí, es correcto
+     entrada: Sí, es correcto
+     agente: Añadiré 2 unidades del producto 1 al carrito. ¿Es correcto? Responde 'sí' o corrígeme (por ejemplo: 'no, dije dos').

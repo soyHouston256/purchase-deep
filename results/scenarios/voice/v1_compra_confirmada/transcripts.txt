@@ -1,0 +1,15 @@
+[t1] gold: Busco una botella de agua, mi presupuesto es de cuarenta euros
+     entrada: Busco una botella de agua. Mi presupuesto es de 40 euros.
+     agente: He añadido una botella de agua a tu carrito. El precio es 4,99 EUR. ¿Confirmas el pedido?
+[t2] gold: Añade dos unidades del primero al carrito
+     entrada: Añade dos unidades del primero al carrito.
+     agente: Entendí: comprar 2 × «carrito». ¿Es correcto? Responde «sí» o corrígeme (por ejemplo: «no, dije dos»).
+[t3] gold: Sí, es correcto
+     entrada: Sí, es correcto.
+     agente: No pude completar la operación: Falta el argumento obligatorio 'product_id'.
+[t4] gold: Prepara la cotización
+     entrada: Prepara la cotización.
+     agente: Tu carrito tiene un total de 4,99 EUR. ¿Confirmas el pedido?
+[t5] gold: Sí, confirmo el pedido
+     entrada: Sí, confiero en el pedido.
+     agente: ¡Listo! Pedido O00001 registrado por 4,99 euros. Inventario actualizado. ¿Necesitas algo más?
