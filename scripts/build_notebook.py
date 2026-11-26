@@ -95,7 +95,7 @@ Todo corre dentro de Colab, sin APIs externas.
 | Parte | Para qué sirve | Secciones |
 |---|---|---|
 | **A · Preparar** | Dejar todo listo: código, datos, tienda, tu voz y los modelos | A0 – A4 |
-| **B · Verlo funcionar** | Ver el asistente en acción: buscar, conversar por texto y por voz | B1 – B3 |
+| **B · Verlo funcionar** | Ver el asistente en acción: buscar, conversar por texto y por voz | B1 – B4 |
 | **C · Medirlo** | Las métricas que pide el laboratorio y el reporte final | C1 – C7 |
 
 La lógica vive en el paquete `shopassist/`. Las celdas solo lo llaman y muestran el resultado.
@@ -290,6 +290,26 @@ rec = pipe.run_turn(DEMO, turn_id="demo1")
 print("Transcripción:", rec["transcript"]); print("Respuesta:", rec["reply"])
 display(pd.Series(rec["timings"]).round(2))
 display(Audio(rec["audio_out"]))
+""")
+
+nb.step("B4. Demo interactiva por voz (Gradio)",
+        "abre una interfaz web (enlace público `share=True`) con micrófono. Cada turno pasa por el mismo `VoicePipeline` de B3: Whisper → agente (recuperación + LLM + herramientas) → XTTS con la voz clonada. Cada pestaña del navegador es una sesión con su propio agente y carrito; «Reiniciar sesión» borra la conversación y, si se marca, restaura la tienda con `restore(SEED)`.",
+        "la transcripción y la respuesta en el chat, el audio de respuesta que se reproduce solo, la espera real del turno (contador de Gradio y tiempos medidos por etapa) y el carrito, los pedidos y el stock leídos de la tienda tras cada turno. Guion sugerido para el video: README, sección «Demo interactiva».")
+nb.code(r"""
+# Demo interactiva: micrófono -> ASR -> agente -> TTS, con la espera real de cada turno
+import importlib.util, subprocess, sys
+if importlib.util.find_spec("gradio") is None:
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "gradio>=5.0"], check=True)
+from shopassist.demo_ui import build_demo
+assert tts is not None, "Falta la voz: graba la referencia en A3 y vuelve a ejecutar A4"
+try:
+    demo.close()                      # si se vuelve a ejecutar la celda
+except NameError:
+    pass
+store.restore(cfg.SEED)
+demo = build_demo(lambda cart_id: ShoppingAgent(store, retriever, llm=llm, cart_id=cart_id, cfg=cfg),
+                  asr, tts, store, seed=cfg.SEED, out_dir="results/gradio_demo")
+demo.queue(default_concurrency_limit=1).launch(share=True, debug=False)   # demo.close() para detenerla
 """)
 
 # ------------------------------------------------------------------ C

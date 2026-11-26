@@ -27,7 +27,7 @@ Los datos ESCI (`data/`) no se versionan: el notebook los descarga en A1.
 1. Comprime la carpeta del proyecto como `purchase.zip` y súbela a `MyDrive/` (o publica el repo y pon su URL en `REPO_URL`).
 2. Abre el notebook en Colab → *Entorno de ejecución → Cambiar tipo → GPU T4*.
 3. **Parte A · Preparar**: A0 configuración (GPU, código, dependencias, semillas) · A1 datos ESCI (~1 min) · A2 tienda y `restore(SEED)` · A3 graba `voice/referencia.wav` leyendo `voice/referencia.txt` (15–25 s, **tu voz o una voz autorizada**) y los 29 audios de los escenarios (guion en `voice/scripts_lectura.md`); copia `voice/` a `MyDrive/purchase/voice` para conservarlos · A4 carga buscador, LLM, ASR y TTS.
-4. **Parte B · Verlo funcionar**: B1 búsqueda · B2 conversación por texto · B3 un turno por voz con su espera real.
+4. **Parte B · Verlo funcionar**: B1 búsqueda · B2 conversación por texto · B3 un turno por voz con su espera real · B4 demo interactiva por voz en Gradio (§11).
 5. **Parte C · Medirlo**: C1 nDCG@10 · C2 los 28 escenarios · C3 métricas y errores del ASR · C4 calidad de voz · C5 tiempos · C6 aciertos y fallos · C7 escribe `results/REPORTE_auto.md`.
 6. Las funciones auxiliares del notebook están en `shopassist/notebook_utils.py`.
 7. La demo opcional con la tienda real está en un notebook aparte: `Demo_Tienda_Real.ipynb`.
@@ -237,6 +237,42 @@ agotado, taza). Pruebas sin red: `tests/test_remote_store.py` (API falsa `FakeTr
 
 **Implementación (4 min)** – Recuperación (BM25 propio, e5, RRF, re-ranker; ajuste solo en train). Agente: selección de herramientas, memoria de conversación, aclaraciones, atributos desconocidos. Tienda: SQLite, transacciones atómicas, `restore(SEED)`. Gestión de memoria: tabla de VRAM (notebook A4), carga perezosa, `memory_report`.
 
-**Demostración (8 min)** – En vivo con voz: (1) compra completa con presupuesto que termina en pedido confirmado (mostrar **una interacción completa con su espera real**, cronómetro de la sección B3); (2) caso de aclaración o recuperación: producto agotado o cambio de stock entre cotización y confirmación + reconfirmación sin duplicar. Mostrar carrito, pedido y stock final.
+**Demostración (8 min)** – En vivo con voz desde la demo Gradio de B4 (guion detallado en la §11): (1) compra completa con presupuesto que termina en pedido confirmado (mostrar **una interacción completa con su espera real**, cronómetro de la sección B3); (2) caso de aclaración o recuperación: producto agotado o cambio de stock entre cotización y confirmación + reconfirmación sin duplicar. Mostrar carrito, pedido y stock final.
 
 **Resultados (4 min)** – Tabla nDCG@10 BM25 vs. sistema y ablaciones (C1); % escenarios, incumplimientos, errores ASR en cantidades/importes/productos (voz vs. transcripción correcta, C2–C3); inteligibilidad y similitud de voz (C4); latencia por etapa fría vs. caliente (C5); 5 aciertos/5 fallos y limitaciones (C6).
+
+## 11. Demo interactiva (Gradio)
+
+Celda **B4** del notebook. Usa los modelos ya cargados en A4 y el mismo `VoicePipeline` cronometrado de B3
+(`shopassist/latency.py`); la interfaz está en `shopassist/demo_ui.py` (`build_demo`).
+
+**Cómo lanzarla**
+
+1. Ejecuta A0–A4 en Colab con GPU (y B2/B3 si quieres; B4 solo necesita `store`, `retriever`, `llm`, `asr`, `tts`, `cfg` y `ShoppingAgent`).
+2. Ejecuta B4: instala `gradio` si falta, hace `store.restore(SEED)` y lanza `demo.launch(share=True)`.
+   Abre el enlace `https://….gradio.live` (el micrófono del navegador necesita HTTPS; el enlace público lo es).
+3. Graba con el micrófono: al **detener la grabación** el turno se envía solo (o pulsa *Enviar*).
+   El cuadro de texto es un respaldo que omite el ASR.
+4. Para detenerla: `demo.close()`. La tienda es la de A2 (SQLite en memoria), así que *Reiniciar sesión* con
+   «restaurar la tienda» solo vuelve al estado de `restore(SEED)`; no toca ningún archivo.
+
+Qué muestra cada turno: transcripción y respuesta en el chat, audio de respuesta con reproducción automática,
+**espera real** (el contador de Gradio sobre las salidas mientras se procesa y, al terminar, el tiempo medido por
+etapa: ASR, recuperación, LLM, herramientas, TTS y total, desde el fin de la grabación hasta el wav listo), la tabla de
+latencia de todos los turnos, el carrito, los pedidos de la sesión y el stock de los productos relevantes, leídos de la tienda.
+Las grabaciones y respuestas quedan en `results/gradio_demo/<sesión>/`. Las peticiones se atienden de una en una
+(`default_concurrency_limit=1`) porque comparten la GPU.
+
+**Guion sugerido (8 min)** — en la ejecución entregada cada turno caliente tarda ≈ 11 s de media (p90 ≈ 15 s, §4 de `RESULTADOS.md`); el primero, algo más.
+
+| Min | Qué hacer | Qué decir/mostrar |
+|---|---|---|
+| 0:00–0:45 | Pulsa *Reiniciar sesión* con «restaurar la tienda» marcado | Tienda en el estado de `restore(SEED)`, carrito y pedidos vacíos |
+| 0:45–4:30 | **(a) Compra completa por voz**: «Busco una botella de agua, mi presupuesto es de cuarenta euros» → «Añade dos unidades del primero al carrito» → si el agente repite «Entendí: … ¿Es correcto?», responde «Sí, es correcto» → «Prepara la cotización» → «Sí, confirmo el pedido» | Deja que **al menos un turno se vea entero sin cortar**: fin de grabación → contador de Gradio → audio de respuesta. Luego lee el desglose por etapa (ASR, LLM, TTS…). Al confirmar aparece el pedido y baja el stock |
+| 4:30–5:15 | Repite «Sí, confirmo el pedido» | Confirmación idempotente: devuelve el mismo pedido, no crea otro |
+| 5:15–7:00 | **(b) Aclaración**: *Reiniciar sesión* (sin restaurar la tienda, para conservar el pedido) → «Añade eso al carrito» → «Busco audífonos bluetooth» | Sin contexto el agente no añade nada y pregunta a qué producto te refieres (escenario v2, correcto con audio y con transcripción); el carrito sigue vacío |
+| 7:00–8:00 | **(c) Estado final** | Panel de pedidos (pedido de (a), uno solo), stock reducido del producto comprado, carrito y tabla de latencias por turno |
+
+Se recomienda el caso de **aclaración** y no el de recuperación: en la ejecución entregada v2 (aclaración) es
+correcto, mientras que v4 (agotado) y v5 (corrección de transcripción) fallan con el LLM (§6 de `RESULTADOS.md`).
+Como el LLM no es determinista, ensaya el guion antes de grabar; si una respuesta se desvía, *Reiniciar sesión* y repetir.
