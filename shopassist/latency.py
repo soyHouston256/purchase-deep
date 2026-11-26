@@ -85,9 +85,11 @@ class VoicePipeline:
         self.load_timings.extend(rows)
         return rows
 
-    def run_turn(self, audio_path: str, turn_id: Optional[str] = None, transcript: Optional[str] = None) -> dict:
+    def run_turn(self, audio_path: str, turn_id: Optional[str] = None, transcript: Optional[str] = None,
+                 synthesize: bool = True) -> dict:
         """Ejecuta ASR -> agente -> TTS. Si ``transcript`` se da, se omite el ASR
-        (útil para la repetición con transcripción correcta)."""
+        (útil para la repetición con transcripción correcta). Con ``synthesize=False`` se omite el
+        TTS (``tts_s`` = 0): la demo web sintetiza después, frase a frase (streaming)."""
         timer = StageTimer()
         t_start = time.perf_counter()
         info = {}
@@ -105,7 +107,7 @@ class VoicePipeline:
         # tiempo del agente no atribuido (lógica de control, NLU, memoria)
         timer.add("agent_other_s", max(0.0, agent_s - sum(at.get(k, 0.0) for k in ("retrieval_s", "llm_s", "tools_s"))))
         audio_out = None
-        if self.tts is not None and turn.reply:
+        if synthesize and self.tts is not None and turn.reply:
             tid = turn_id or f"turn_{len(self.history):03d}"
             out = self.out_dir / f"{tid}_reply.wav"
             with timer("tts_s"):

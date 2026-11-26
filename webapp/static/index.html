@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShopAssist · compra por voz</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🛒</span>
+      <div>
+        <h1>ShopAssist</h1>
+        <p class="sub">Compra por voz · Whisper → agente (Qwen2.5-3B) → XTTS-v2 con voz clonada, frase a frase · todo local</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span id="health" class="badge badge-wait" title="Estado de los modelos">cargando…</span>
+      <label class="chk"><input type="checkbox" id="restore"> restaurar tienda (semilla)</label>
+      <button id="reset" class="btn btn-ghost">Reiniciar</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ======================= catálogo ======================= -->
+    <section class="catalog">
+      <div id="results-wrap" class="results hidden">
+        <h2>Resultados de la última búsqueda del agente <small>(“el primero”, “el segundo”… se refiere a este orden)</small></h2>
+        <div id="results" class="grid grid-results"></div>
+      </div>
+
+      <div class="catalog-head">
+        <h2>Catálogo <small id="cat-count"></small></h2>
+        <div class="catalog-tools">
+          <input id="q" type="search" placeholder="Filtrar catálogo (p. ej. funda, cuaderno, pilas)…" autocomplete="off">
+          <label class="chk"><input type="checkbox" id="instock"> solo con stock</label>
+        </div>
+      </div>
+      <div id="grid" class="grid"></div>
+      <div class="pager">
+        <button id="prev" class="btn btn-ghost">← Anterior</button>
+        <span id="page"></span>
+        <button id="next" class="btn btn-ghost">Siguiente →</button>
+      </div>
+    </section>
+
+    <!-- ======================= panel lateral ======================= -->
+    <aside class="side">
+      <div class="card voice">
+        <button id="mic" class="mic" aria-label="Hablar" disabled>
+          <span class="mic-icon">🎙️</span>
+          <span id="mic-label" class="mic-label">Cargando modelos…</span>
+        </button>
+        <div class="voice-status">
+          <div id="status" class="status">Mantén pulsado para hablar (o haz clic para empezar y otra vez para enviar). Tecla: espacio.</div>
+          <div id="timer" class="timer hidden">
+            <span class="spinner"></span>
+            <span>Esperando respuesta… <b id="timer-val">0.0</b> s</span>
+          </div>
+        </div>
+        <form id="text-form" class="text-form">
+          <input id="text" type="text" placeholder="…o escribe (respaldo: se omite el ASR)" autocomplete="off">
+          <button class="btn" type="submit">Enviar</button>
+        </form>
+        <audio id="player" controls class="player"></audio>
+      </div>
+
+      <div class="card">
+        <h3>Conversación</h3>
+        <div id="chat" class="chat"><p class="muted">Aún no hay turnos. Prueba: “Busco una botella de agua, mi presupuesto es de cuarenta euros”.</p></div>
+      </div>
+
+      <div class="card">
+        <h3>Latencia del último turno <small>(medida real, sin retardos añadidos)</small></h3>
+        <div id="latency"><p class="muted">—</p></div>
+        <details>
+          <summary>Historial de latencias</summary>
+          <table class="tbl" id="lat-hist">
+            <thead><tr><th>turno</th><th>entrada</th><th>ASR</th><th>recup.</th><th>LLM</th><th>TTS</th><th>1.ª voz</th><th>total</th><th>navegador</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </details>
+      </div>
+
+      <div class="card">
+        <h3>Carrito <small id="cart-count"></small></h3>
+        <div id="cart"><p class="muted">Vacío.</p></div>
+      </div>
+
+      <div class="card">
+        <h3>Pedidos de esta sesión</h3>
+        <div id="orders"><p class="muted">Ninguno todavía.</p></div>
+      </div>
+
+      <div class="card">
+        <h3>Stock de productos relevantes</h3>
+        <div id="stock"><p class="muted">—</p></div>
+      </div>
+    </aside>
+  </main>
+
+  <div id="overlay" class="overlay">
+    <div class="overlay-box">
+      <div class="spinner big"></div>
+      <h2>Cargando modelos…</h2>
+      <p id="overlay-stage">iniciando</p>
+      <ul id="overlay-models"></ul>
+      <p class="muted">La primera vez descarga Whisper, el codificador e5, el re-ranker y XTTS-v2 (varios GB). Imágenes de producto: generadas offline con SD-Turbo (ver README).</p>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

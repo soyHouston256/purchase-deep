@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from .latency import VoicePipeline
+from .session_view import session_view, short
 
 LAT_COLS = ["turno", "entrada", "asr_s", "retrieval_s", "llm_s", "tools_s", "tts_s", "agent_other_s", "total_s"]
 CART_COLS = ["producto", "cantidad", "precio_unit", "subtotal", "stock"]
@@ -36,9 +37,7 @@ def _df(rows, cols):
     return pd.DataFrame(rows, columns=cols)
 
 
-def _short(title: str, n: int = 60) -> str:
-    title = " ".join((title or "").split())
-    return title if len(title) <= n else title[: n - 1] + "…"
+_short = short
 
 
 class DemoSession:
@@ -65,27 +64,15 @@ def _panels(sess: Optional[DemoSession], store):
     """Carrito, pedidos de la sesión y stock de los productos relevantes, leídos de la tienda."""
     if sess is None:
         return _df([], CART_COLS), _df([], ORDER_COLS), _df([], STOCK_COLS)
-    cart = store.get_cart(sess.cart_id)
+    v = session_view(store, sess.cart_id, sess.agent)
+    cart = v["cart"]["lines"]
     cart_rows = [[_short(l["title"]), l["qty"], l["unit_price"], l["line_total"], l["stock"]] for l in cart]
     if cart:
-        cart_rows.append(["TOTAL", sum(l["qty"] for l in cart), "",
-                          round(sum(l["line_total"] for l in cart), 2), ""])
-    orders = [o for o in store.list_orders() if o.get("cart_id") == sess.cart_id]
+        cart_rows.append(["TOTAL", v["cart"]["n_items"], "", v["cart"]["total"], ""])
     order_rows = [[o["order_id"], o["status"], o["total"],
                    "; ".join(f"{l['qty']}× {_short(l['title'], 40)}" for l in o["lines"])]
-                  for o in reversed(orders)]
-    # productos relevantes: carrito, líneas de pedidos y los últimos resultados mostrados
-    pids: list = []
-    for p in ([l["product_id"] for l in cart]
-              + [l["product_id"] for o in orders for l in o["lines"]]
-              + list(getattr(sess.agent.state, "last_result_list", []) or [])[:5]):
-        if p not in pids:
-            pids.append(p)
-    stock_rows = []
-    for p in pids:
-        info = store.get_product(p)
-        if info is not None:
-            stock_rows.append([p, _short(info["title"]), info["price"], info["stock"]])
+                  for o in v["orders"]]
+    stock_rows = [[r["product_id"], _short(r["title"]), r["price"], r["stock"]] for r in v["stock"]]
     return _df(cart_rows, CART_COLS), _df(order_rows, ORDER_COLS), _df(stock_rows, STOCK_COLS)
 
 

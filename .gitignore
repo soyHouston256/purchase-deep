@@ -17,3 +17,7 @@ __pycache__/
 .ipynb_checkpoints/
 # macOS
 .DS_Store
+# Entorno virtual local (demo web)
+.venv/
+# Grabaciones y respuestas de la demo web local
+results/web_demo/

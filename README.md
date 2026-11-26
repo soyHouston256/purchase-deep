@@ -276,3 +276,187 @@ Las grabaciones y respuestas quedan en `results/gradio_demo/<sesión>/`. Las pet
 Se recomienda el caso de **aclaración** y no el de recuperación: en la ejecución entregada v2 (aclaración) es
 correcto, mientras que v4 (agotado) y v5 (corrección de transcripción) fallan con el LLM (§6 de `RESULTADOS.md`).
 Como el LLM no es determinista, ensaya el guion antes de grabar; si una respuesta se desvía, *Reiniciar sesión* y repetir.
+
+## 12. Demo web local (FastAPI + Ollama)
+
+Alternativa a la demo Gradio de Colab que corre **entera en un portátil** (probada en Apple M1 Pro, 16 GB, macOS,
+sin GPU NVIDIA). Es una web con el catálogo, el carrito, los pedidos y un botón de micrófono. Reutiliza el mismo
+`VoicePipeline` cronometrado y el mismo `ShoppingAgent`. Lo único que cambia es dónde corre cada modelo:
+
+| Componente | Colab (reporte) | Demo web local |
+|---|---|---|
+| LLM | Qwen2.5-3B-Instruct fp16 (transformers, T4) | el mismo Qwen2.5-3B-Instruct en **Ollama** (`qwen2.5:3b`, Q4_K_M), clase `OllamaLLM` en `shopassist/llm.py` |
+| ASR | faster-whisper `small` float16 (GPU) | faster-whisper `small` **int8 en CPU** |
+| TTS | XTTS-v2, voz clonada `voice/referencia.wav` (GPU) | XTTS-v2, la misma voz clonada, **en CPU, frase a frase** (en MPS funciona pero es 2-3 veces más lento); opcional Piper (`TTS_ENGINE=fast`) |
+| Recuperación | BM25 + e5 + RRF + re-ranker | lo mismo (sentence-transformers usa MPS) |
+
+Código: `webapp/server.py` (API + carga de modelos), `webapp/static/` (HTML/JS/CSS sin build) y
+`shopassist/session_view.py` (vista de carrito/pedidos/stock, compartida con `demo_ui.py`).
+
+**Requisitos previos**
+
+```bash
+brew install ffmpeg            # convierte el webm/ogg del navegador a wav 16 kHz (ya estaba instalado aquí)
+ollama pull qwen2.5:3b         # ~1.9 GB; Ollama debe estar corriendo (app de Ollama u `ollama serve`)
+```
+
+`voice/referencia.wav` (la voz clonada) y `data/` (ESCI preparado, con la caché de embeddings) deben existir.
+Si falta `data/`, el servidor lo descarga y lo prepara solo la primera vez (~1 GB, varios minutos).
+
+**Instalación (una vez)**
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements-web.txt      # torch CPU/MPS, coqui-tts, faster-whisper, fastapi…
+```
+
+**Ejecutar**
+
+```bash
+.venv/bin/python -m webapp            # o: .venv/bin/uvicorn webapp.server:app --port 8000
+```
+
+Abre **http://localhost:8000**. El micrófono funciona sin HTTPS porque es `localhost`; el navegador pide permiso la
+primera vez. Los modelos se cargan una sola vez al arrancar: ~70 s con las descargas ya hechas (la primera vez se
+bajan además Whisper, e5, el re-ranker y XTTS-v2, unos 3 GB). Mientras tanto la página muestra el progreso, que
+también se puede ver en `GET /api/health`. Al terminar de cargar se ejecuta un turno de calentamiento.
+
+Uso: **mantén pulsado** el botón del micrófono (o la barra espaciadora) mientras hablas y suelta para enviar. Un
+**clic corto** empieza a grabar y otro clic envía. Mientras se procesa el turno corre un **contador en tiempo real**.
+En cuanto está la primera frase aparecen la respuesta (el audio empieza a sonar solo, frase a frase), el **tiempo hasta la primera voz** y el **desglose medido** por etapa (ASR, recuperación,
+LLM, herramientas, TTS, otros y decodificación del audio), además del tiempo medido en el navegador. Los productos de
+la última búsqueda del agente se resaltan arriba con su orden (1º, 2º…), que es al que se refiere «el primero». El
+cuadro de texto es un respaldo que se salta el ASR. *Reiniciar* vacía el carrito y la memoria del agente. Con
+«restaurar tienda» también hace `store.restore(42)`.
+
+Endpoints: `GET /api/health`, `GET /api/products?q=&offset=&limit=&ids=`, `GET /api/state?session=…`,
+`POST /api/voice` (multipart `session` + `audio`), `POST /api/text` (`{"session","text"}`), `POST /api/reset`
+(`{"session","restore_store"}`), `GET /api/tts_chunk?session=&turn=&i=` (espera a que la frase `i` esté
+sintetizada), `GET /api/turn_timings?session=&turn=` (tiempos finales del turno), `GET /audio/<sesión>/<turno>_reply_NN.wav`
+y `GET /img/<product_id>.webp`. Las grabaciones (original y wav) y las respuestas se guardan en
+`results/web_demo/<sesión>/`. Los modelos atienden un turno cada vez (`asyncio.Lock` + hilo, incluida la síntesis de
+las frases que quedan), así que el servidor sigue respondiendo mientras tanto; si llega un turno mientras aún se
+sintetiza el anterior, espera y esa cola se muestra aparte (`cola_s`).
+
+Variables de entorno opcionales: `OLLAMA_MODEL` (por defecto `qwen2.5:3b`), `OLLAMA_KEEP_ALIVE` (`2h`: el modelo no
+se descarga entre turnos), `SHOP_LLM=rules` (sin LLM), `ASR_SIZE` (`small`), `TTS_ENGINE` (`xtts` por defecto, voz
+clonada | `fast`, Piper), `TTS_DEVICE` (`cpu` | `mps` | `auto`), `TTS_MAX_CHARS` (por defecto 0 = la respuesta entera
+se lee; ya no hace falta recortar), `TORCH_THREADS` (por defecto los núcleos de rendimiento: 8 en un M1 Pro),
+`PRODUCT_IMAGES_DIR`, `SHOP_TTS=0` (solo texto), `REF_WAV`.
+
+### 12.1 Voz frase a frase ("streaming") y tiempo hasta la primera voz
+
+XTTS-v2 en CPU sintetiza más despacio que el tiempo real (RTF ≈ 1.6-1.9), así que antes el usuario esperaba a que
+se sintetizara **toda** la respuesta (y las largas se recortaban a 220-400 caracteres). Ahora:
+
+1. La respuesta se parte en frases (`split_tts_chunks` en `shopassist/voice.py`): la primera frase va sola (sale
+   antes) y las siguientes se agrupan hasta ~70-200 caracteres. No se pierde texto: **se lee la respuesta entera**.
+2. `POST /api/voice` responde en cuanto está el wav de la **primera frase**; el resto se sintetiza en segundo plano
+   mientras suena. La página pide cada frase con `/api/tts_chunk` (espera larga) y las reproduce en orden; si una
+   frase aún no está lista, el estado dice «Sintetizando la frase 2 de 3…» (el silencio entre frases es real).
+3. El panel de latencia muestra **Tiempo hasta primera voz** (servidor: fin de grabación → primer wav listo; y en el
+   navegador: soltar el botón → empieza a sonar) y el **Total** cuando termina la última frase. Nada se acelera ni
+   se retrasa artificialmente.
+
+Otras mejoras medidas del TTS (mismo modelo, misma voz clonada):
+
+* **Balbuceo de XTTS**: con la puntuación final (`.`, `?`) XTTS-v2 a veces no emite el fin de secuencia y añade
+  segundos de ruido (medido: hasta 30 s por cada 100 caracteres; lo normal son 5-7 s). A XTTS se le pasa el texto sin
+  `¿¡` ni puntuación final (pausas internas como comas; peor caso medido 9.4 s/100 caracteres), con un tope de
+  códigos de audio proporcional al texto (`2.2·caracteres + 30`) y se recorta el silencio final. El texto mostrado no
+  cambia; la entonación de pregunta se suaviza un poco.
+* Lectura de importes y pedidos: `9.98 EUR` → «9 euros con 98», `O00001` → «número 1», `2 ×` → «2 por».
+* Latentes del hablante calculados una sola vez al cargar, `torch.set_num_threads(8)` (núcleos de rendimiento; 6 o
+  10 hilos no fueron más rápidos), calentamiento de TTS, recuperación y ASR al arrancar, Ollama con `keep_alive=2h`.
+* Probado y **descartado**: cuantización dinámica int8 del GPT de XTTS (≈15 % más rápido pero sin validar la calidad),
+  `inference_stream` dentro de la frase (primer audio en 1.5 s pero, con RTF > 1, se entrecorta), Whisper con
+  `beam_size=1` o 8 hilos (no más rápido y transcribe peor 5 de los 29 clips del usuario), XTTS en MPS (2-3× más lento).
+
+**A/B del TTS con las mismas 7 respuestas del vídeo anterior (2 repeticiones, CPU, sin el servidor):**
+
+| | 1.ª voz media (mediana) | síntesis total media | audio medio | WER del audio (Whisper) |
+|---|---|---|---|---|
+| Antes (respuesta entera, sin tope) | 14.3 s (12.1) | 14.3 s | 9.0 s | 0.19 |
+| Ahora (frases, sin puntuación final, tope) | **6.3 s (5.0)** | 12.0 s | 7.6 s | 0.15 |
+
+**Modo rápido (`TTS_ENGINE=fast`)**: Piper (`piper-tts`, VITS en ONNX Runtime) con la voz española de fábrica
+`es_ES-davefx-medium` (~60 MB, se descarga sola en `data/piper/`). La síntesis pasa de segundos a décimas (medido en
+el servidor: 0.07-0.28 s la primera frase; 7.8 s de audio en 0.19 s), pero **no es la voz clonada** del usuario; por
+eso el valor por defecto sigue siendo XTTS-v2.
+
+```bash
+pip install piper-tts==1.3.0
+TTS_ENGINE=fast .venv/bin/python -m webapp
+```
+
+### 12.2 Categorías e imágenes de producto
+
+El catálogo ESCI **no trae categoría, migas de pan ni imágenes** (solo `title`, `description`, `bullet_point`,
+`brand`, `color`). Antes la categoría y el emoji salían de un regex simple (p. ej. una botella aparecía como
+«Informática» o con 🍳).
+
+* **Categorías** (`shopassist/categories.py`, 30 categorías en español): ASIN numérico = ISBN → «Libros»; reglas por
+  palabra clave sobre el título donde **la palabra de producto que aparece primero manda** («Mochila para portátil»
+  → Bolsos; «Funda para iPhone» → Móviles), con palabras débiles (funda, soporte, kit…) que solo deciden si no hay
+  otra; y el resto (≈15 %) por **kNN sobre las incrustaciones e5 del recuperador** (voto de los 15 vecinos con regla).
+  Se calcula al arrancar (~0.15 s, caché en `data/categories_*.json`). Precisión revisada a mano: 35/40 (≈88 %) en
+  una muestra aleatoria no usada para ajustar las reglas (2 muestras previas de 40 dieron ≈85 % antes de los ajustes);
+  todas las botellas de agua, auriculares Bluetooth y pilas AA de la demo quedan en «Hogar y cocina» (🥤), «Audio»
+  y «Pilas y baterías». Errores típicos: accesorios con palabras ambiguas (una funda de eBook con «atril», una placa
+  de manicura como «Salud»).
+* **Imágenes**: como no hay imágenes reales, se **generan offline** con `scripts/generate_product_images.py`:
+  `qwen2.5:3b` (Ollama) escribe una descripción visual corta en inglés del producto y **SD-Turbo**
+  (`stabilityai/sd-turbo`, fp16, ~2.4 GB, 1 paso, 512 px) la dibuja en MPS (~2 s/imagen en el M1 Pro); se guarda
+  `webapp/product_images/<product_id>.webp` a 256 px. Se generaron **348 imágenes (1.8 MB, versionadas en el repo)**:
+  los resultados del recuperador para las consultas de la demo (botellas de agua, auriculares/audífonos Bluetooth,
+  pilas AA, cuadernos, mochilas, ratones…) y 6 productos por categoría. El servidor **nunca genera durante un turno**:
+  solo sirve las cacheadas (carga diferida `loading="lazy"`) y para el resto muestra el icono de su categoría. La
+  grilla muestra primero los productos con imagen, alternando categorías. Son imágenes sintéticas: casi siempre
+  coherentes con el título (botellas, mochilas, ratones, auriculares, pilas), con fallos ocasionales (una funda con
+  purpurina dibujada como un elefante).
+
+```bash
+pip install diffusers==0.35.1      # una vez; con el servidor web PARADO (compiten por CPU/GPU)
+.venv/bin/python scripts/generate_product_images.py --per-query 20 --per-category 6
+```
+
+### 12.3 Tiempos medidos en este Mac (M1 Pro 16 GB, CPU; demo grabada, mismos clips de voz)
+
+Antes = vídeo anterior (`video/demo_web_local_v1.mp4`, respuesta entera con `TTS_MAX_CHARS=220`); ahora = vídeo
+actual. Mismas grabaciones del usuario, mismo guion y el LLM tomó el mismo camino en ambos. «1.ª voz» se mide en el
+navegador (soltar el botón → empieza a sonar); «fin» = cuando termina de sonar la respuesta. En segundos.
+
+| Turno | ASR | recup. | LLM | TTS (todas las frases) | 1.ª voz antes → ahora | fin del audio antes → ahora |
+|---|---|---|---|---|---|---|
+| «Busco una botella de agua. Mi presupuesto es de 40 euros.» | 1.81 → 1.63 | 6.84 → 1.47 | 4.17 → 4.17 | 32.6 → 37.3 | 46.1 → **23.8** | 60.5 → 58.0 |
+| «Añade dos unidades del primero al carrito.» | 1.56 → 2.87 | 0 | 0 | 26.3 → 16.4 | 28.5 → **10.0** | 40.2 → 25.1 |
+| «Sí, es correcto.» (añade y cotiza) | 1.40 → 1.49 | 0 | 7.12 → 7.05 | 10.7 → 9.6 | 19.7 → **18.4** | 25.4 → 23.3 |
+| «Prepara la cotización.» | 1.50 → 1.57 | 0 | 4.59 → 4.72 | 19.5 → 11.0 | 26.4 → **17.5** | 35.3 → 23.4 |
+| «Sí, confirmo el pedido» → O00001 | 1.77 → 1.24 | 0 | 0 | 25.1 → 14.1 | 27.3 → **10.4** | 39.0 → 18.6 |
+| «Añade eso al carrito.» (aclaración) | 1.84 → 1.41 | 0 | 1.55 → 1.48 | 16.2 → 3.7 | 19.8 → **6.8** | 28.4 → 8.6 |
+| «Busco audífonos Bluetooth.» | 1.30 → 1.41 | 7.19 → 8.11 | 3.63 → 3.75 | 15.5 → 10.0 | 27.8 → **19.0** | 35.2 → 26.5 |
+| **Media** | 1.60 → 1.66 | | | 20.8 → 14.6 | **27.9 → 15.1** | 37.7 → 26.2 |
+
+El TTS sigue dominando: la 1.ª frase del primer turno tardó 15.5 s para 2.7 s de audio (este Mac estaba con ~16 GB
+de swap y 6 GB comprimidos por otras apps; el mismo trozo tarda ~4-5 s en reposo). La recuperación de «audífonos
+Bluetooth» tarda 7-8 s en ambos vídeos (la primera consulta de la otra sesión; varía mucho con la presión de memoria).
+Carga en frío: tienda 1.2 s, recuperador 14 s, categorías 0.15 s, Ollama 2 s, Whisper 1.3 s, XTTS-v2 32 s
+(+0.5 s de latentes), calentamiento 23 s.
+
+Vídeo de la demo (`scripts/record_demo.py`, sin cortes ni aceleración, voz del usuario por el micrófono de la
+página): ahora dura **4:33** (antes 5:52) para el mismo guion. El script registra cada frase que empieza a sonar
+(evento `playing` del `<audio>`) y la coloca en su instante real en la mezcla de audio.
+
+**Guion de demo (8 min)**
+
+| Min | Qué hacer | Qué mostrar |
+|---|---|---|
+| 0:00–0:45 | Abre http://localhost:8000 con el servidor ya cargado (insignia verde), marca «restaurar tienda» y pulsa *Reiniciar* | Catálogo con precio y stock, carrito y pedidos vacíos, los modelos en la insignia (Ollama qwen2.5:3b · XTTS-v2 cpu) |
+| 0:45–5:00 | **(a) Compra completa por voz**: «Busco una botella de agua, mi presupuesto es de cuarenta euros» → «Añade dos unidades del primero al carrito» → «Sí, es correcto» → si no cotizó, «Prepara la cotización» → «Sí, confirmo el pedido» | En **un turno**, no cortes: suelta el botón, deja correr el contador (≈ 25-35 s) hasta que suene la respuesta y lee el desglose (el TTS es la mayor parte). Al confirmar aparece el pedido en «Pedidos», el carrito se vacía y baja el stock del producto (tarjeta y panel de stock) |
+| 5:00–5:30 | Repite «Sí, confirmo el pedido» | Es idempotente: devuelve el mismo pedido y no se duplica |
+| 5:30–7:00 | **(b) Aclaración**: *Reiniciar* sin «restaurar tienda» (se conserva el pedido) → «Añade eso al carrito» | Sin contexto el agente no añade nada y pregunta (burbuja con ❓ y la herramienta `ask_clarification`); el carrito sigue vacío. Turno corto (≈ 6 s). Opcional: «Busco audífonos bluetooth» para mostrar resultados resaltados |
+| 7:00–8:00 | **(c) Estado final** | Pedido O00001 con sus líneas y total, stock reducido, carrito vacío e historial de latencias de todos los turnos |
+
+Las respuestas del LLM (3B, cuantizado) no siempre siguen el mismo camino, igual que en el reporte. Por ejemplo, al
+buscar a veces ya añade una unidad y cotiza. Ensaya el guion antes de grabar y, si el agente se desvía, usa
+*Reiniciar* (con «restaurar tienda») y repite. El cuadro de texto sirve de plan B si el micrófono falla.

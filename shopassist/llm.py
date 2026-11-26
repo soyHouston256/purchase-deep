@@ -73,6 +73,67 @@ class LocalLLM:
             torch.cuda.empty_cache()
 
 
+class OllamaLLM:
+    """LLM servido por Ollama (``http://localhost:11434``) con la misma interfaz que ``LocalLLM``.
+
+    Pensado para la demo local en Mac/CPU: ``qwen2.5:3b`` es el mismo Qwen2.5-3B-Instruct del
+    reporte, cuantizado (Q4_K_M) por Ollama. Usa ``/api/chat`` sin *streaming* y
+    ``format="json"`` (el agente siempre espera un único objeto JSON por paso). Solo stdlib.
+    """
+
+    def __init__(self, model: str = "qwen2.5:3b", host: str = "http://localhost:11434",
+                 num_ctx: int = 8192, timeout_s: float = 300.0, json_mode: bool = True,
+                 keep_alive: str = "30m", seed: Optional[int] = 42):
+        self.model_name = model
+        self.host = host.rstrip("/")
+        self.num_ctx = num_ctx
+        self.timeout_s = timeout_s
+        self.json_mode = json_mode
+        self.keep_alive = keep_alive
+        self.seed = seed
+        self.last_stats: dict = {}
+        self.load_time_s: Optional[float] = None
+
+    def _post(self, path: str, payload: dict, timeout: Optional[float] = None) -> dict:
+        import urllib.request
+        req = urllib.request.Request(self.host + path, data=json.dumps(payload).encode("utf-8"),
+                                     headers={"Content-Type": "application/json"}, method="POST")
+        with urllib.request.urlopen(req, timeout=timeout or self.timeout_s) as r:
+            return json.loads(r.read().decode("utf-8"))
+
+    def available(self) -> bool:
+        """True si el servidor responde y el modelo está descargado (``ollama pull``)."""
+        import urllib.request
+        try:
+            with urllib.request.urlopen(self.host + "/api/tags", timeout=5) as r:
+                names = {m.get("name") for m in json.loads(r.read().decode("utf-8")).get("models", [])}
+        except Exception:
+            return False
+        return self.model_name in names or f"{self.model_name}:latest" in names
+
+    def load(self) -> float:
+        """Carga el modelo en memoria de Ollama (petición vacía) y mide el arranque en frío."""
+        t0 = time.perf_counter()
+        self._post("/api/generate", {"model": self.model_name, "prompt": "", "keep_alive": self.keep_alive})
+        self.load_time_s = time.perf_counter() - t0
+        return self.load_time_s
+
+    def generate(self, messages: list[dict], max_new_tokens: int = 384, temperature: float = 0.0) -> str:
+        options = {"num_predict": int(max_new_tokens), "temperature": float(temperature or 0.0),
+                   "num_ctx": self.num_ctx}
+        if self.seed is not None:
+            options["seed"] = int(self.seed)
+        payload = {"model": self.model_name, "messages": messages, "stream": False,
+                   "options": options, "keep_alive": self.keep_alive}
+        if self.json_mode:
+            payload["format"] = "json"
+        t0 = time.perf_counter()
+        out = self._post("/api/chat", payload)
+        self.last_stats = {"prompt_tokens": out.get("prompt_eval_count"), "new_tokens": out.get("eval_count"),
+                           "gen_s": time.perf_counter() - t0}
+        return (out.get("message") or {}).get("content", "")
+
+
 class MockLLM:
     """LLM simulado: devuelve respuestas guionizadas (lista de str/dict) o de una función.
 

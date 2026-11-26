@@ -158,6 +158,105 @@ def text_overlaps_reference(text: str, reference_text: str, n: int = 6) -> bool:
     return any(tuple(a[i : i + n]) in grams for i in range(max(0, len(a) - n + 1)))
 
 
+def performance_cores() -> int:
+    """Núcleos de rendimiento (Apple Silicon: ``hw.perflevel0.physicalcpu``); si no, núcleos físicos."""
+    try:
+        out = subprocess.run(["sysctl", "-n", "hw.perflevel0.physicalcpu"], capture_output=True, text=True,
+                             timeout=2)
+        n = int(out.stdout.strip())
+        if n > 0:
+            return n
+    except Exception:
+        pass
+    return max(1, (os.cpu_count() or 2) // 2)
+
+
+_ORDER_RE = re.compile(r"\bO0*(\d+)\b")
+_MONEY_RE = re.compile(r"(\d+)[\.,](\d{2})\s*(?:EUR|€|euros?)\b", re.IGNORECASE)
+
+
+def speech_text(text: str) -> str:
+    """Normaliza la respuesta para leerla en voz alta (no cambia el texto mostrado):
+    importes ``9,98 EUR`` -> ``9 euros con 98``, ``O00001`` -> ``número 1``, ``2 ×`` -> ``2 por``,
+    sin comillas angulares ni viñetas."""
+    t = _MONEY_RE.sub(lambda m: f"{int(m.group(1))} euros" + (f" con {int(m.group(2))}" if int(m.group(2)) else ""), text)
+    t = re.sub(r"\bEUR\b", "euros", t)
+    t = _ORDER_RE.sub(lambda m: f"número {int(m.group(1))}", t)
+    t = t.replace("×", " por ").replace("«", "").replace("»", "").replace("\"", "")
+    t = re.sub(r"^\s*[-•*]\s*", "", t, flags=re.MULTILINE)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def split_tts_chunks(text: str, first_min: int = 25, min_chars: int = 70, max_chars: int = 200) -> list:
+    """Parte la respuesta en trozos para la síntesis por frases (streaming).
+
+    El primer trozo es la primera frase (al menos ``first_min`` caracteres): sale antes y fija el
+    "tiempo hasta la primera voz". Los siguientes agrupan frases hasta ``min_chars``-``max_chars``
+    (XTTS tiende a divagar con frases muy cortas y cada llamada tiene un coste fijo). Las frases
+    más largas que ``max_chars`` se cortan por comas o espacios. No se pierde texto.
+    """
+    text = (text or "").strip()
+    if not text:
+        return []
+    sents = [s for s in re.split(r"(?<=[\.\!\?;:…])\s+", text) if s.strip()]
+    pieces = []
+    for s in sents:
+        while len(s) > max_chars:
+            cut = s.rfind(", ", 0, max_chars)
+            cut = cut + 1 if cut > max_chars // 3 else s.rfind(" ", 0, max_chars)
+            if cut <= 0:
+                cut = max_chars
+            pieces.append(s[:cut].strip())
+            s = s[cut:].strip()
+        if s:
+            pieces.append(s)
+    chunks, cur = [], ""
+    for p in pieces:
+        need = first_min if not chunks else min_chars
+        if not cur:
+            cur = p
+        elif len(cur) < need and len(cur) + 1 + len(p) <= max_chars:
+            cur = f"{cur} {p}"
+        else:
+            chunks.append(cur)
+            cur = p
+    if cur:
+        # un último trozo muy corto se une al anterior si cabe (evita divagaciones de XTTS)
+        if chunks and len(cur) < 25 and len(chunks[-1]) + 1 + len(cur) <= max_chars + 40:
+            chunks[-1] = f"{chunks[-1]} {cur}"
+        else:
+            chunks.append(cur)
+    return chunks
+
+
+def xtts_text(chunk: str) -> str:
+    """Texto que se pasa a XTTS: sin ¿¡ ni puntuación final, y las pausas internas como comas.
+
+    Medido aquí (3 frases x 4 semillas): con la puntuación final XTTS-v2 a veces no emite el fin de
+    secuencia y "balbucea" hasta 30 s por cada 100 caracteres; sin ella, como mucho 9.4 s (lo normal
+    son 5-7 s). La entonación de pregunta se pierde un poco, pero el texto mostrado no cambia."""
+    t = re.sub(r"[¿¡«»\"]", "", chunk)
+    t = re.sub(r"\s*[\.\?!;:…]+\s+", ", ", t)
+    return t.strip().rstrip(".?!;:…,").strip()
+
+
+def trim_trailing_silence(w, sr: int, frame_s: float = 0.02, keep_s: float = 0.15, rel_db: float = -38.0):
+    """Recorta el silencio/ruido muy débil del final (XTTS a veces deja segundos de cola)."""
+    import numpy as np
+
+    n = int(frame_s * sr)
+    if len(w) < 4 * n:
+        return w
+    frames = len(w) // n
+    rms = np.sqrt(np.mean(w[: frames * n].reshape(frames, n) ** 2, axis=1) + 1e-12)
+    thr = rms.max() * (10 ** (rel_db / 20))
+    loud = np.nonzero(rms > thr)[0]
+    if len(loud) == 0:
+        return w
+    end = min(len(w), (loud[-1] + 1) * n + int(keep_s * sr))
+    return w[:end]
+
+
 class TTS:
     """Síntesis en español con clonación de voz (Coqui XTTS-v2).
 
@@ -175,7 +274,9 @@ class TTS:
         model_name: str = XTTS_MODEL_NAME,
         temperature: float = 0.65,
         speed: float = 1.05,
-        max_chars: int = 400,
+        max_chars: Optional[int] = None,
+        num_threads: Optional[int] = None,
+        tokens_per_char: float = 2.2,
     ) -> None:
         self.reference_wav = reference_wav
         self.reference_txt = reference_txt
@@ -184,7 +285,13 @@ class TTS:
         self.model_name = model_name
         self.temperature = temperature
         self.speed = speed
-        self.max_chars = max_chars
+        self.max_chars = max_chars                 # None = sin recorte (se sintetiza la respuesta entera)
+        self.num_threads = num_threads
+        # tope de códigos de audio del GPT por carácter: ~1.8 en habla normal; el tope corta las
+        # divagaciones ("babble") de XTTS, que a veces añade varios segundos de ruido tras frases cortas
+        self.tokens_per_char = tokens_per_char
+        self.engine = "xtts"
+        self.normalize = False                     # la demo web lo activa (importes, nº de pedido)
         self._tts = None
         self._model = None
         self.gpt_cond_latent = None
@@ -202,6 +309,10 @@ class TTS:
             os.environ.setdefault("COQUI_TOS_AGREED", "1")  # acepta CPML (uso no comercial)
             from TTS.api import TTS as CoquiTTS  # import perezoso (paquete coqui-tts)
 
+            if self.num_threads:
+                import torch
+
+                torch.set_num_threads(int(self.num_threads))
             t0 = time.perf_counter()
             self._tts = CoquiTTS(self.model_name).to(self.device)
             self._model = self._tts.synthesizer.tts_model
@@ -229,52 +340,71 @@ class TTS:
                 "el laboratorio exige textos distintos a los de la referencia."
             )
 
-    def _split(self, text: str) -> list:
-        parts = re.split(r"(?<=[\.\!\?;:])\s+", text.strip())
-        chunks, cur = [], ""
-        for p in parts:
-            if len(cur) + len(p) + 1 <= 220:
-                cur = f"{cur} {p}".strip()
-            else:
-                if cur:
-                    chunks.append(cur)
-                cur = p
-        if cur:
-            chunks.append(cur)
-        return chunks or [text]
+    def split(self, text: str) -> list:
+        """Trozos de texto en el orden en que se sintetizan (normalizado para voz si ``normalize``;
+        por defecto no, para no alterar la evaluación WER/CER del notebook)."""
+        text = speech_text(text) if self.normalize else text.strip()
+        if self.max_chars and len(text) > self.max_chars:
+            text = text[: self.max_chars].rsplit(" ", 1)[0] + "."
+        return split_tts_chunks(text)
+
+    def _speaker(self, use_default_speaker: Optional[str] = None):
+        if use_default_speaker:
+            d = self._model.speaker_manager.speakers[use_default_speaker]
+            return d["gpt_cond_latent"], d["speaker_embedding"]
+        return self.gpt_cond_latent, self.speaker_embedding
+
+    def _infer(self, chunk: str, gpt, spk):
+        import numpy as np
+
+        chunk = xtts_text(chunk)
+        cap = int(30 + self.tokens_per_char * len(chunk))
+        out = self._model.inference(
+            chunk,
+            self.language,
+            gpt,
+            spk,
+            temperature=self.temperature,
+            speed=self.speed,
+            enable_text_splitting=False,
+            max_new_tokens=cap,
+        )
+        w = out["wav"]
+        w = w.cpu().numpy() if hasattr(w, "cpu") else np.asarray(w)
+        return trim_trailing_silence(w.squeeze().astype("float32"), self.sample_rate)
+
+    def synthesize_chunk(self, chunk: str, out_path: str, use_default_speaker: Optional[str] = None) -> dict:
+        """Sintetiza UN trozo (ver :meth:`split`) a ``out_path``. Devuelve tiempos y duración."""
+        import numpy as np
+        import soundfile as sf
+
+        self.load()
+        self._check_text(chunk)
+        gpt, spk = self._speaker(use_default_speaker)
+        t0 = time.perf_counter()
+        w = self._infer(chunk, gpt, spk)
+        w = np.concatenate([w, np.zeros(int(0.12 * self.sample_rate), dtype=np.float32)])
+        synth_s = time.perf_counter() - t0
+        Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+        sf.write(out_path, w, self.sample_rate)
+        return {"path": out_path, "synth_s": synth_s, "duration_s": len(w) / self.sample_rate, "text": chunk}
 
     def synthesize(self, text: str, out_path: str, use_default_speaker: Optional[str] = None) -> str:
-        """Sintetiza ``text`` a ``out_path`` (wav 24 kHz). ``use_default_speaker``
-        permite generar con un hablante de fábrica de XTTS (línea base de similitud)."""
+        """Sintetiza ``text`` completo a ``out_path`` (wav 24 kHz), trozo a trozo y sin recortar
+        (salvo ``max_chars``). ``use_default_speaker`` permite generar con un hablante de fábrica
+        de XTTS (línea base de similitud)."""
         import numpy as np
         import soundfile as sf
 
         self.load()
         self._check_text(text)
-        text = text if len(text) <= self.max_chars else text[: self.max_chars].rsplit(" ", 1)[0] + "."
-        if use_default_speaker:
-            sm = self._model.speaker_manager
-            d = sm.speakers[use_default_speaker]
-            gpt, spk = d["gpt_cond_latent"], d["speaker_embedding"]
-        else:
-            gpt, spk = self.gpt_cond_latent, self.speaker_embedding
+        gpt, spk = self._speaker(use_default_speaker)
         wavs = []
-        for chunk in self._split(text):
-            out = self._model.inference(
-                chunk,
-                self.language,
-                gpt,
-                spk,
-                temperature=self.temperature,
-                speed=self.speed,
-                enable_text_splitting=False,
-            )
-            w = out["wav"]
-            w = w.cpu().numpy() if hasattr(w, "cpu") else np.asarray(w)
-            wavs.append(w.squeeze())
+        for chunk in self.split(text):
+            wavs.append(self._infer(chunk, gpt, spk))
             wavs.append(np.zeros(int(0.15 * self.sample_rate), dtype=np.float32))
         Path(out_path).parent.mkdir(parents=True, exist_ok=True)
-        sf.write(out_path, np.concatenate(wavs), self.sample_rate)
+        sf.write(out_path, np.concatenate(wavs) if wavs else np.zeros(1, dtype=np.float32), self.sample_rate)
         return out_path
 
     def default_speakers(self) -> list:
@@ -283,6 +413,77 @@ class TTS:
             return list(self._model.speaker_manager.speakers.keys())
         except Exception:
             return []
+
+
+class PiperTTS:
+    """Modo rápido (``TTS_ENGINE=fast`` en la demo web): Piper (VITS en ONNX Runtime, CPU).
+
+    Voz española de fábrica (``es_ES-davefx-medium``, ~60 MB), NO la voz clonada: es ~50x más
+    rápida que XTTS-v2 en CPU (≈0.15 s para 5 s de audio) a cambio de perder la clonación.
+    Misma interfaz que :class:`TTS` (``load``/``split``/``synthesize_chunk``/``synthesize``).
+    """
+
+    DEFAULT_VOICE = "es/es_ES/davefx/medium/es_ES-davefx-medium.onnx"
+
+    def __init__(self, voice_path: Optional[str] = None, cache_dir: str = "data/piper",
+                 length_scale: float = 0.95) -> None:
+        self.voice_path = voice_path or str(Path(cache_dir) / self.DEFAULT_VOICE)
+        self.cache_dir = cache_dir
+        self.length_scale = length_scale
+        self.engine = "piper"
+        self.device = "cpu"
+        self.sample_rate = 22050
+        self._voice = None
+        self.load_time_s: Optional[float] = None
+        self.latents_time_s = 0.0
+
+    def load(self) -> float:
+        if self._voice is None:
+            from piper import PiperVoice  # paquete piper-tts
+
+            t0 = time.perf_counter()
+            if not Path(self.voice_path).exists():
+                from huggingface_hub import hf_hub_download
+
+                for suf in ("", ".json"):
+                    hf_hub_download("rhasspy/piper-voices", self.DEFAULT_VOICE + suf, local_dir=self.cache_dir)
+            self._voice = PiperVoice.load(self.voice_path)
+            self.sample_rate = int(self._voice.config.sample_rate)
+            self.load_time_s = time.perf_counter() - t0
+        return self.load_time_s or 0.0
+
+    def split(self, text: str) -> list:
+        return split_tts_chunks(speech_text(text))
+
+    def _wav(self, text: str):
+        import numpy as np
+        from piper import SynthesisConfig
+
+        parts = [c.audio_float_array for c in self._voice.synthesize(
+            text, syn_config=SynthesisConfig(length_scale=self.length_scale))]
+        return np.concatenate(parts).astype("float32") if parts else np.zeros(1, dtype="float32")
+
+    def synthesize_chunk(self, chunk: str, out_path: str, **_) -> dict:
+        import numpy as np
+        import soundfile as sf
+
+        self.load()
+        t0 = time.perf_counter()
+        w = np.concatenate([self._wav(chunk), np.zeros(int(0.12 * self.sample_rate), dtype=np.float32)])
+        synth_s = time.perf_counter() - t0
+        Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+        sf.write(out_path, w, self.sample_rate)
+        return {"path": out_path, "synth_s": synth_s, "duration_s": len(w) / self.sample_rate, "text": chunk}
+
+    def synthesize(self, text: str, out_path: str, **_) -> str:
+        import numpy as np
+        import soundfile as sf
+
+        self.load()
+        w = self._wav(speech_text(text))
+        Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+        sf.write(out_path, w if len(w) else np.zeros(1, dtype=np.float32), self.sample_rate)
+        return out_path
 
 
 # ---------------------------------------------------------------------------
